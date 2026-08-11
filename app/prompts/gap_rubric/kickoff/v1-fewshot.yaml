@@ -1,0 +1,9 @@
+# PLACEHOLDER gap-theme rubric for call_type=kickoff, mode=few_shot
+# Same themes as description_only, plus real annotated example calls once
+# the business team provides them. Do not use to analyse real calls.
+call_type: kickoff
+mode: few_shot
+themes:
+  - name: "PLACEHOLDER — Example Gap Theme"
+    description: "Replace with the real gap-theme description for kickoff calls."
+    examples: []

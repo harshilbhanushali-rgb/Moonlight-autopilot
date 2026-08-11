@@ -1,0 +1,89 @@
+{
+  "effort": "medium",
+  "model": "gemini-3.5-flash",
+  "gap_rubric_mode": "descriptiononly",
+  "concurrency": 1,
+  "generated_at": "2026-08-10T20:04:56.329461+00:00",
+  "wall_clock_seconds": 144.9,
+  "results": [
+    {
+      "recording_id": "06e7fa8b-7060-4070-ad51-650f793b7a24",
+      "effort": "medium",
+      "call_type": "Technical Integration",
+      "call_score": "Medium",
+      "card_type": "Coaching",
+      "gaps": [
+        {
+          "theme": "No Committed Timeline",
+          "evidence_type": "dialogue",
+          "evidence": "hopefully, I can get that to you as soon as possible because. I believe it's. I mean, you need that updated feed in order to address. Sonic Jobs'. Correct. Okay. So I'll ask them to get it done as soon as possible.",
+          "timestamp": "23:57",
+          "confidence": "high"
+        }
+      ],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 1508,
+        "scoring": 1123,
+        "gap_analysis": 1791,
+        "card_type": 937
+      },
+      "seconds": 43.6
+    },
+    {
+      "recording_id": "0bbe93f1-adb6-425d-b725-60d8776ef10d",
+      "effort": "medium",
+      "call_type": "Discovery",
+      "call_score": "Low",
+      "card_type": "Risk",
+      "gaps": [
+        {
+          "theme": "Swim Lanes & Rules of Engagement Unclear",
+          "evidence_type": "dialogue",
+          "evidence": "I'm looking at notes. Yeah. I need to do some homework myself. Apologies. I I kind of was brought in. I've been working with Raytheon. I kinda brought in last minute, but I'm looking like there was a a a, there was an Aditi. Aditi on our side that was in 2025, talked to them, working with you, and it looked like we tried to get you to work on a CPC basis or CPA basis or something.",
+          "timestamp": "10:43",
+          "confidence": "high"
+        }
+      ],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 682,
+        "scoring": 1327,
+        "gap_analysis": 2729,
+        "card_type": 594
+      },
+      "seconds": 44.4
+    },
+    {
+      "recording_id": "1b240e1f-3302-4132-859e-9601db927fb5",
+      "effort": "medium",
+      "call_type": "Technical Integration",
+      "call_score": "Low",
+      "card_type": "Risk",
+      "gaps": [
+        {
+          "theme": "No Committed Timeline",
+          "evidence_type": "dialogue",
+          "evidence": "I at least wanna be able to put some legs on the timeline and the plan and and what we are going to do so I know how long we will be suffering. It's one thing to suffer, but when you know it's not gonna be forever, then you can kinda push through.",
+          "timestamp": "26:59",
+          "confidence": "high"
+        },
+        {
+          "theme": "Escalation Path Not Established",
+          "evidence_type": "explanation",
+          "evidence": "The call concluded without establishing any clear escalation path or identifying a named point of contact to handle potential blockers or integration issues between sessions.",
+          "timestamp": null,
+          "confidence": "high"
+        }
+      ],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 2371,
+        "scoring": 1114,
+        "gap_analysis": 1514,
+        "card_type": 835
+      },
+      "seconds": 56.9
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+01:31:14 INFO    A/B side 'medium': 3 call(s), model=gemini-3.5-flash, concurrency=10, gap_rubric_mode=descriptiononly
+01:31:14 INFO    baseline 'high' side stays in `analysis` untouched; this side -> docs\eval\reasoning-effort-medium-20260810-200112.json
+01:31:37 INFO    [1/3] 0bbe93f1-adb6-425d-b  23.0s  call_type=None score=None card=Risk gaps=0  ERRORS=['call_type']
+01:31:37 INFO    [2/3] 06e7fa8b-7060-4070-a  23.5s  call_type=None score=None card=Coaching gaps=0  ERRORS=['call_type']
+01:31:50 INFO    [3/3] 1b240e1f-3302-4132-8  35.6s  call_type=None score=None card=Risk gaps=0  ERRORS=['call_type']
+01:31:50 INFO    side 'medium' done: 3 call(s) in 35.9s wall-clock (27.4s/call serial-equivalent) -> docs\eval\reasoning-effort-medium-20260810-200112.json
+01:31:50 INFO    
+01:31:50 INFO    ==============================================================================
+01:31:50 INFO    high (in `analysis`)  vs  medium (this run)   --  3 call(s)
+01:31:50 INFO    ==============================================================================
+01:31:50 INFO    
+01:31:50 INFO    AGREEMENT WITH THE high BASELINE
+01:31:50 INFO      call_type     0/3    0%
+01:31:50 INFO      call_score    0/3    0%
+01:31:50 INFO      card_type     3/3    100%
+01:31:50 INFO      gap count     0/3    0% (identical number of gaps)
+01:31:50 INFO    
+01:31:50 INFO    GAP VOLUME AND ANCHORING
+01:31:50 INFO      high      5 gaps,   3 anchored (60%)
+01:31:50 INFO      medium    0 gaps,   0 anchored (n/a)
+01:31:50 INFO    
+01:31:50 INFO    STRATIFIED BY CALL TYPE (baseline's call_type)
+01:31:50 INFO      call_type                    n      type    score     card   anchor high   anchor medium
+01:31:50 INFO      Discovery                    1        0%       0%     100%   1/1 (100%)    0/0 (n/a)    
+01:31:50 INFO      Pricing/Negotiation          1        0%       0%     100%   1/2 (50%)     0/0 (n/a)    
+01:31:50 INFO      Technical Integration        1        0%       0%     100%   1/2 (50%)     0/0 (n/a)    
+01:31:50 INFO    
+01:31:50 INFO    EVERY DISAGREEMENT (6)
+01:31:50 INFO      06e7fa8b-7060-4070-a  [Pricing/Negotiation]  call_type: high='Pricing/Negotiation' -> medium=None
+01:31:50 INFO      06e7fa8b-7060-4070-a  [Pricing/Negotiation]  call_score: high='Low' -> medium=None
+01:31:50 INFO      0bbe93f1-adb6-425d-b  [Discovery]  call_type: high='Discovery' -> medium=None
+01:31:50 INFO      0bbe93f1-adb6-425d-b  [Discovery]  call_score: high='Medium' -> medium=None
+01:31:50 INFO      1b240e1f-3302-4132-8  [Technical Integration]  call_type: high='Technical Integration' -> medium=None
+01:31:50 INFO      1b240e1f-3302-4132-8  [Technical Integration]  call_score: high='Low' -> medium=None
+01:31:50 INFO    
+01:31:50 INFO    COST / LATENCY FOR THIS SIDE (no baseline equivalent -- never recorded for the high run)
+01:31:50 INFO      reasoning tokens per call: mean 942, min 559, max 1135
+01:31:50 INFO      seconds per call:          mean 27.4, min 23.0, max 35.6
+01:31:50 INFO    
+01:31:50 INFO    !! 3 call(s) had step errors -- treat their rows above as incomplete:
+01:31:50 INFO       06e7fa8b-7060-4070-a  {'call_type': 'APIConnectionError: Connection error.'}
+01:31:50 INFO       0bbe93f1-adb6-425d-b  {'call_type': 'APIConnectionError: Connection error.'}
+01:31:50 INFO       1b240e1f-3302-4132-8  {'call_type': 'APIConnectionError: Connection error.'}
+01:31:50 INFO    ==============================================================================

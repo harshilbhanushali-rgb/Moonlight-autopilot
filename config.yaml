@@ -1,0 +1,78 @@
+llm_gateway:
+  trace_name: moonlight_autopilot
+  environment: dev
+  default_model: gemini-3.5-flash
+  timeout_seconds: 60
+  max_retries: 3
+  # Gemini's thinking level. MUST be sent as OpenAI's `reasoning_effort` — the
+  # native `thinking_config`/`thinking_level` shapes are silently dropped by
+  # this gateway (verified: identical reasoning_token counts to sending
+  # nothing), so they look wired up while doing nothing.
+  # Accepted: none | minimal | low | medium | high. On this gateway only
+  # medium and high actually think; none/minimal/low report no reasoning
+  # tokens at all.
+  reasoning_effort: high
+  # 0 for reproducible reasoning across runs. Note this is best-effort
+  # reproducibility, not a contract — output *structure* is guaranteed by the
+  # per-step Pydantic schemas in app/domain/response_models.py, not by this.
+  temperature: 0
+
+scheduler:
+  # Fixed time of day the fetcher + analyser pipeline runs, in-process
+  # inside the FastAPI server (see docs/superpowers/specs/2026-08-07-in-process-scheduler-design.md).
+  hour: 2
+  minute: 0
+  timezone: UTC
+
+analyser:
+  # Few-shot vs. description-only gap-theme prompting is an unresolved,
+  # build-time experiment (Prompt.md section 8) — not a settled default.
+  # Swap this without touching code once the eval harness has a verdict.
+  gap_rubric_mode: descriptiononly
+  batch_size: 10
+  max_retries: 3
+  # How many calls are analysed at once. Each call still runs its four steps
+  # strictly in order (they depend on each other's output), so this is also the
+  # ceiling on simultaneous requests to the LLM gateway.
+  #
+  # Not a measured optimum: this gateway's rate limits aren't documented
+  # anywhere we control, so watch for HTTP 429s after raising it. They arrive as
+  # APIStatusError, which the circuit breaker counts as transport failures, so
+  # throttling presents as an outage rather than as backpressure. Must be >= 1,
+  # validated at config load because 0 builds a semaphore nothing can acquire
+  # and the batch would hang silently instead of failing.
+  max_concurrent_calls: 10
+  # How long a row may sit in `processing` before claim_rows assumes the run
+  # that claimed it died and makes it claimable again. Without this, a crashed
+  # run strands up to batch_size rows: `processing` is invisible to the
+  # retry/dead-letter logic, so those rows are never picked up again.
+  #
+  # Sized to be comfortably longer than one whole batch, not one row: every
+  # row in a batch shares the single claim timestamp written when the batch
+  # was claimed, so the last row of a batch is already batch_size rows' worth
+  # of processing "old" before it starts. Pathological upper bound is
+  # batch_size x 4 steps x llm_gateway.timeout_seconds x (max_retries + 1)
+  # / max_concurrent_calls = 10 x 4 x 60 x 4 / 4 = ~40min of pure gateway
+  # timeouts; a typical row takes ~82s, so a typical batch is now ~3.5min
+  # (it was ~14min before calls were analysed concurrently). 6h leaves a very
+  # large margin over the pathological case while staying well under the 24h
+  # scheduler cadence, so a stranded row is always reclaimed on the very next
+  # daily run.
+  #
+  # Concurrency only ever shortens a batch, so it can't invalidate this bound.
+  # Raise this if batch_size, the gateway timeout, or max_retries goes up —
+  # or if max_concurrent_calls comes back down.
+  stale_claim_minutes: 360
+  # Consecutive *gateway-unreachable* failures before the analyser abandons the
+  # batch, releases the rows it hasn't attempted, and raises so the scheduler
+  # records the day's run as failed. Counts only transport failures (timeout /
+  # connection / HTTP 5xx); a rejected *answer* proves the gateway is alive and
+  # resets the counter, so malformed responses can never trip it.
+  #
+  # Must be 0 (disabled) or > 4. A row has 4 steps, so any value in 1..4 could
+  # be reached by a single oversized transcript timing out on all of its own
+  # steps — a per-call problem, not an outage. 6 guarantees a second row is
+  # involved. Each failure costs up to llm_gateway.timeout_seconds x
+  # (max_retries + 1) = 240s, so 6 trips in ~24min instead of grinding through
+  # the full batch's ~2.7h worst case.
+  circuit_breaker_consecutive_failures: 6

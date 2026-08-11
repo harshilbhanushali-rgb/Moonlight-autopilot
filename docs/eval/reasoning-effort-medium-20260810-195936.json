@@ -1,0 +1,38 @@
+{
+  "effort": "medium",
+  "model": "gemini-3.5-flash",
+  "gap_rubric_mode": "descriptiononly",
+  "concurrency": 10,
+  "generated_at": "2026-08-10T20:00:04.236497+00:00",
+  "wall_clock_seconds": 25.5,
+  "results": [
+    {
+      "recording_id": "06e7fa8b-7060-4070-ad51-650f793b7a24",
+      "effort": "medium",
+      "call_type": "Technical Integration",
+      "call_score": null,
+      "card_type": "Coaching",
+      "gaps": [],
+      "errors": {
+        "call_type": "AttributeError: 'ClassificationResult' object has no attribute 'usage'",
+        "card_type": "AttributeError: 'ClassificationResult' object has no attribute 'usage'"
+      },
+      "reasoning_tokens": {},
+      "seconds": 25.5
+    },
+    {
+      "recording_id": "0bbe93f1-adb6-425d-b725-60d8776ef10d",
+      "effort": "medium",
+      "call_type": "Discovery",
+      "call_score": null,
+      "card_type": "Risk",
+      "gaps": [],
+      "errors": {
+        "call_type": "AttributeError: 'ClassificationResult' object has no attribute 'usage'",
+        "card_type": "AttributeError: 'ClassificationResult' object has no attribute 'usage'"
+      },
+      "reasoning_tokens": {},
+      "seconds": 17.9
+    }
+  ]
+}

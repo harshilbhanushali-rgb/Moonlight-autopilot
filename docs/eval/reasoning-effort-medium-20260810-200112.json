@@ -1,0 +1,55 @@
+{
+  "effort": "medium",
+  "model": "gemini-3.5-flash",
+  "gap_rubric_mode": "descriptiononly",
+  "concurrency": 10,
+  "generated_at": "2026-08-10T20:01:50.117051+00:00",
+  "wall_clock_seconds": 35.9,
+  "results": [
+    {
+      "recording_id": "06e7fa8b-7060-4070-ad51-650f793b7a24",
+      "effort": "medium",
+      "call_type": null,
+      "call_score": null,
+      "card_type": "Coaching",
+      "gaps": [],
+      "errors": {
+        "call_type": "APIConnectionError: Connection error."
+      },
+      "reasoning_tokens": {
+        "card_type": 1135
+      },
+      "seconds": 23.5
+    },
+    {
+      "recording_id": "0bbe93f1-adb6-425d-b725-60d8776ef10d",
+      "effort": "medium",
+      "call_type": null,
+      "call_score": null,
+      "card_type": "Risk",
+      "gaps": [],
+      "errors": {
+        "call_type": "APIConnectionError: Connection error."
+      },
+      "reasoning_tokens": {
+        "card_type": 559
+      },
+      "seconds": 23.0
+    },
+    {
+      "recording_id": "1b240e1f-3302-4132-859e-9601db927fb5",
+      "effort": "medium",
+      "call_type": null,
+      "call_score": null,
+      "card_type": "Risk",
+      "gaps": [],
+      "errors": {
+        "call_type": "APIConnectionError: Connection error."
+      },
+      "reasoning_tokens": {
+        "card_type": 1132
+      },
+      "seconds": 35.6
+    }
+  ]
+}

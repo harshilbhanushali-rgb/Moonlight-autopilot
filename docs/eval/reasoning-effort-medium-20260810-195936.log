@@ -1,0 +1,35 @@
+01:29:38 INFO    A/B side 'medium': 2 call(s), model=gemini-3.5-flash, concurrency=10, gap_rubric_mode=descriptiononly
+01:29:38 INFO    baseline 'high' side stays in `analysis` untouched; this side -> docs\eval\reasoning-effort-medium-20260810-195936.json
+01:29:56 INFO    [1/2] 0bbe93f1-adb6-425d-b  17.9s  call_type=Discovery score=None card=Risk gaps=0  ERRORS=['call_type', 'card_type']
+01:30:04 INFO    [2/2] 06e7fa8b-7060-4070-a  25.5s  call_type=Technical Integration score=None card=Coaching gaps=0  ERRORS=['call_type', 'card_type']
+01:30:04 INFO    side 'medium' done: 2 call(s) in 25.5s wall-clock (21.7s/call serial-equivalent) -> docs\eval\reasoning-effort-medium-20260810-195936.json
+01:30:05 INFO    
+01:30:05 INFO    ==============================================================================
+01:30:05 INFO    high (in `analysis`)  vs  medium (this run)   —  2 call(s)
+01:30:05 INFO    ==============================================================================
+01:30:05 INFO    
+01:30:05 INFO    AGREEMENT WITH THE high BASELINE
+01:30:05 INFO      call_type     1/2    50%
+01:30:05 INFO      call_score    0/2    0%
+01:30:05 INFO      card_type     2/2    100%
+01:30:05 INFO      gap count     0/2    0% (identical number of gaps)
+01:30:05 INFO    
+01:30:05 INFO    GAP VOLUME AND ANCHORING
+01:30:05 INFO      high      3 gaps,   2 anchored (67%)
+01:30:05 INFO      medium    0 gaps,   0 anchored (n/a)
+01:30:05 INFO    
+01:30:05 INFO    STRATIFIED BY CALL TYPE (baseline's call_type)
+01:30:05 INFO      call_type                    n      type    score     card   anchor high   anchor medium
+01:30:05 INFO      Discovery                    1      100%       0%     100%   1/1 (100%)    0/0 (n/a)    
+01:30:05 INFO      Pricing/Negotiation          1        0%       0%     100%   1/2 (50%)     0/0 (n/a)    
+01:30:05 INFO    
+01:30:05 INFO    EVERY DISAGREEMENT (3)
+01:30:05 INFO      06e7fa8b-7060-4070-a  [Pricing/Negotiation]  call_type: high='Pricing/Negotiation' -> medium='Technical Integration'
+01:30:05 INFO      06e7fa8b-7060-4070-a  [Pricing/Negotiation]  call_score: high='Low' -> medium=None
+01:30:05 INFO      0bbe93f1-adb6-425d-b  [Discovery]  call_score: high='Medium' -> medium=None
+01:30:05 INFO      seconds per call:          mean 21.7, min 17.9, max 25.5
+01:30:05 INFO    
+01:30:05 INFO    !! 2 call(s) had step errors — treat their rows above as incomplete:
+01:30:05 INFO       06e7fa8b-7060-4070-a  {'call_type': "AttributeError: 'ClassificationResult' object has no attribute 'usage'", 'card_type': "AttributeError: 'ClassificationResult' object has no attribute 'usage'"}
+01:30:05 INFO       0bbe93f1-adb6-425d-b  {'call_type': "AttributeError: 'ClassificationResult' object has no attribute 'usage'", 'card_type': "AttributeError: 'ClassificationResult' object has no attribute 'usage'"}
+01:30:05 INFO    ==============================================================================

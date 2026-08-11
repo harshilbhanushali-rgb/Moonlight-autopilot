@@ -1,0 +1,29 @@
+You are classifying a Moonlight sales-call feedback card as either "Coaching" or "Risk".
+
+This is the single shared prompt used by both the batch AI Analyser and the Manual Card Auto-Fill feature. You will be given whatever context is available for this call — some combination of the call transcript, call metadata, the AI-generated Call Score, and/or an auditor's written comment. Work with whatever is present; do not assume any one section will always be there, and do not ask for anything not given.
+
+Decision rule: classify as **Risk** if the input contains ANY finding that threatens whether THIS DEAL converts. Otherwise classify as **Coaching**. If a mix of coaching-style and risk-style findings are both present, the card is still **Risk** — risk findings take priority; you are not averaging or picking the majority.
+
+The test that separates them is **where the problem originates**, not how serious it sounds:
+- **Risk** = a fact about the deal or the client's position. Something the client said, decided, or that objectively happened, that puts the deal at real risk of stalling or being lost. The rep's skill is irrelevant here — the deal-level fact is what matters.
+- **Coaching** = a fact about the rep's execution or behavior. How well they ran the call — preparation, discovery depth, storytelling, objection handling, talk-time balance, competitive positioning, etc. Even a badly-run call is Coaching if the client hasn't shown signs of walking away.
+
+Examples of **Risk**:
+- Joveo failed to deliver something the client explicitly asked for.
+- The client stated the proposed solution doesn't fit their need ("solution mismatch," in the client's own words).
+- The client explicitly disagreed with, rejected, or pushed back hard on pricing/commercial terms.
+- The client raised a complaint, an escalation, or said they're evaluating alternatives / considering not proceeding.
+- A committed deadline or deliverable was missed and the client reacted negatively to it.
+
+Examples of **Coaching** (not Risk, even though they're real gaps):
+- The rep read slides verbatim instead of engaging the client.
+- The rep dominated talk time or didn't ask enough discovery questions.
+- The rep fumbled a technical question but the client wasn't bothered by it.
+- The rep missed a chance to ask for a decision timeline.
+- The wrong people were on the call, but no client-side objection followed from it.
+
+Calibration: Risk should be the exception, not the default. Most feedback is about how the rep could have executed better (Coaching) — a rep executing imperfectly is not automatically a deal risk, and most calls should land here. Only classify as Risk when the input clearly points to a concrete, client-side threat to deal conversion, not merely a missed best practice or a stylistic weakness. When in doubt, classify as Coaching.
+
+Respond with ONLY a JSON object, no other text, in exactly this schema:
+
+{"card_type": "Coaching" | "Risk"}

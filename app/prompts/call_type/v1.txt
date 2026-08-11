@@ -1,0 +1,26 @@
+You are classifying a New Business sales call transcript into exactly one Call Type. Classify by the dominant activity and purpose of the call — what the participants are actually doing and why — not by isolated keywords or jargon, since technical/product vocabulary can appear in more than one call type.
+
+Classify as exactly one of: "Discovery", "Demo", "Follow-up Demo", "Pricing/Negotiation", "Technical Integration", "Kick-off".
+
+## Discovery
+The rep is learning the prospect's current environment through broad, open-ended questions: what tools/vendors they use today, spend, team structure, pain points, what prompted them to take the call. The rep explicitly frames the call as assessing fit ("let's see if this makes sense for both of us") rather than pitching. Little to no product is shown — at most a brief, explicitly-deferred teaser ("I don't have enough context to jump into a demo yet"). Usually ends by proposing a *future* Demo call.
+
+## Demo
+The rep runs a real, substantive product walkthrough — screen share, slides, or a live/demo account — covering Joveo's platform or a specific solution, for a prospect with little or no prior product exposure. Some brief discovery-style warm-up questions (current stack, what they're evaluating) can open the call, but the dominant activity that follows is showing the product, not asking about the prospect's business. Prospect questions are reactive, anchored to what's being shown. Can still end by scheduling a further, more tailored demo — that alone doesn't make it Discovery or Follow-up Demo; what matters is this is the *first* time the platform is being shown to this buyer.
+
+## Follow-up Demo
+Same product-walkthrough activity as Demo, but built on an existing relationship or prior call(s), not a first exposure. Signals: opens with a status/relationship check-in ("how's it been going," references to a prior process change or prior conversation); the walkthrough itself is often partial or incremental (new/additional capabilities, not the whole platform again); proof points reference the prospect's own already-live examples; ends by advancing an established, ongoing motion (a recurring update cadence, a specific next deliverable tied to an existing account) rather than booking a first deep-dive.
+
+## Pricing/Negotiation
+The dominant activity is producing or discussing a specific commercial number — indicative pricing, a quote, budget/cost-per-hire benchmarks — tied to a bounded scope (a position count, named regions/roles). Info-gathering here is narrow and quote-oriented (current provider being displaced, existing budget, volume), not broad business discovery. Often carries real urgency ("need this by end of day") and competitive-displacement framing (naming and replacing an incumbent). No product walkthrough. Ends with a concrete commercial deliverable and deadline, not a scheduled meeting. Can occur directly with the buyer or through a partner/reseller relaying pricing to their own end client — classify by the commercial content, not by who's literally on the call.
+
+## Technical Integration
+Attendees are technical/implementation roles on both sides — no economic buyer, no pricing discussion. Content is API/systems-level: authentication, scopes, webhooks vs. API pulls, pixel placement, field/status mapping, tickets, environment (sandbox vs. production) — and it is resolving a *specific, already-encountered* technical blocker or configuration task (an error, a missing credential, a scope mismatch, a duplicate setup needing reconciliation). This can happen as a raw dialogue transcript or as a structured meeting-notes summary (participants/decisions/action items) — classify by subject matter and attendee roles, not by input format.
+
+## Kick-off
+The first project meeting after the deal is signed, introducing how the engagement will run. Signals: explicit relationship/expectation-setting framing ("I haven't worked with you before, want to make sure we're aligned on how this works"), confirmation the contract/SOW is signed, a phased/conceptual overview of scope and approach, agreement on communication cadence and timeline, and next-step ownership assigned per person. Kick-off calls can be just as technical (API approach, auth method, integration scope) as a Technical Integration call — the difference is stage and purpose: Kick-off agrees on the *approach* and sets up the relationship/cadence going forward; Technical Integration is *doing the work*, fixing a specific already-encountered technical problem.
+
+## Output format
+Respond with ONLY a JSON object, no other text, in exactly this schema:
+
+{"call_type": "Discovery" | "Demo" | "Follow-up Demo" | "Pricing/Negotiation" | "Technical Integration" | "Kick-off"}

@@ -1,0 +1,9 @@
+PLACEHOLDER — Manual Card Auto-Fill "Gap" field summarizer.
+
+Given whatever context is available (at minimum the auditor's comment text;
+optionally transcript context, per the open decision in Prompt.md section 8),
+produce a short, clear description of the coaching/risk gap for the card's
+Gap field. This is NOT the batch pipeline's rubric-theme gap detection
+(app/core/gap_analysis.py) — do not conflate the two.
+
+Respond as JSON: {"gap": "<short description>"}

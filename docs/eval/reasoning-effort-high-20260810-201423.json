@@ -1,0 +1,1386 @@
+{
+  "effort": "high",
+  "model": "gemini-3.5-flash",
+  "gap_rubric_mode": "descriptiononly",
+  "concurrency": 10,
+  "generated_at": "2026-08-10T20:15:36.203989+00:00",
+  "wall_clock_seconds": 70.2,
+  "results": [
+    {
+      "recording_id": "06e7fa8b-7060-4070-ad51-650f793b7a24",
+      "effort": "high",
+      "call_type": "Pricing/Negotiation",
+      "call_score": "Low",
+      "card_type": "Coaching",
+      "gaps": [
+        {
+          "theme": "IC-Level Only at Pricing Stage",
+          "evidence_type": "explanation",
+          "evidence": "The entire commercial and pricing discussion regarding budgets and media plans for Raytheon UK, Pratt Canada, and New Zealand is conducted solely between Marie Lo (an individual contributor/program manager on the client side) and Rohit (an account manager/IC at Joveo), with no senior leadership present on either side to make decisions or reinforce Joveo's strategic commitment.",
+          "timestamp": null,
+          "confidence": "high"
+        },
+        {
+          "theme": "No Competitive Framing at Pricing Stage",
+          "evidence_type": "dialogue",
+          "evidence": "I essentially just asked the person to ask Phenom if I mean, just replicate the Recruitix feed, but it's for Joveo.",
+          "timestamp": "22:45",
+          "confidence": "high"
+        }
+      ],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 2828,
+        "scoring": 1097,
+        "gap_analysis": 4297,
+        "card_type": 1143
+      },
+      "seconds": 15.2
+    },
+    {
+      "recording_id": "0bbe93f1-adb6-425d-b725-60d8776ef10d",
+      "effort": "high",
+      "call_type": "Discovery",
+      "call_score": "Medium",
+      "card_type": "Risk",
+      "gaps": [
+        {
+          "theme": "Swim Lanes & Rules of Engagement Unclear",
+          "evidence_type": "dialogue",
+          "evidence": "The whole issue with us was, I think you didn't have a lot of history on... Narayan... didn't have the very clear history of why we why Hellowork didn't wanna work, in collaboration with you, last time we spoke.",
+          "timestamp": "01:39",
+          "confidence": "high"
+        }
+      ],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 1137,
+        "scoring": 1589,
+        "gap_analysis": 3572,
+        "card_type": 606
+      },
+      "seconds": 12.0
+    },
+    {
+      "recording_id": "1b240e1f-3302-4132-859e-9601db927fb5",
+      "effort": "high",
+      "call_type": "Technical Integration",
+      "call_score": "Low",
+      "card_type": "Risk",
+      "gaps": [
+        {
+          "theme": "No Committed Timeline",
+          "evidence_type": "dialogue",
+          "evidence": "I at least wanna be able to put some legs on the timeline and the plan and and what we are going to do so I know how long we will be suffering.",
+          "timestamp": "26:59",
+          "confidence": "high"
+        },
+        {
+          "theme": "Escalation Path Not Established",
+          "evidence_type": "explanation",
+          "evidence": "While the team discussed being blocked on the Oracle API stages and display piece integration, they did not establish a clear escalation path or named point of contact to resolve these blockers between sessions.",
+          "timestamp": null,
+          "confidence": "high"
+        }
+      ],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 2545,
+        "scoring": 1750,
+        "gap_analysis": 2428,
+        "card_type": 1079
+      },
+      "seconds": 13.3
+    },
+    {
+      "recording_id": "1be6ad19-11e0-4caf-8d98-09f662b52a88",
+      "effort": "high",
+      "call_type": "Demo",
+      "call_score": "High",
+      "card_type": "Risk",
+      "gaps": [
+        {
+          "theme": "Demo Not Customised to Client",
+          "evidence_type": "dialogue",
+          "evidence": "when you're looking at this hiring funnel here in a demo environment, it's a very, you know, generic hiring funnel, but this is fully customized to your stages, as we go live",
+          "timestamp": "16:21",
+          "confidence": "high"
+        },
+        {
+          "theme": "Seller-Dominated Call & Poor Time Management",
+          "evidence_type": "dialogue",
+          "evidence": "I do have to run. I'm getting pinged. Okay. That'll work. Way over. We're way over. So thank you for the extra sign that.",
+          "timestamp": "67:50",
+          "confidence": "high"
+        },
+        {
+          "theme": "Competitive Intelligence Not Used",
+          "evidence_type": "explanation",
+          "evidence": "When Matthew mentions that they are coming off of their competitor Radency's website and the Luke CRM over the next year, the Joveo team fails to ask what Radency currently does or doesn't solve for them, missing an opportunity to leverage competitive intelligence.",
+          "timestamp": null,
+          "confidence": "medium"
+        }
+      ],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 1647,
+        "scoring": 1137,
+        "gap_analysis": 4144,
+        "card_type": 593
+      },
+      "seconds": 12.0
+    },
+    {
+      "recording_id": "1e67e05f-9a4a-4ea0-852c-29708b766c3c",
+      "effort": "high",
+      "call_type": "Follow-up Demo",
+      "call_score": "High",
+      "card_type": "Coaching",
+      "gaps": [],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 1511,
+        "scoring": 1290,
+        "gap_analysis": 2227,
+        "card_type": 935
+      },
+      "seconds": 14.8
+    },
+    {
+      "recording_id": "2c356e27-68d9-4789-a322-e7da5cad3202",
+      "effort": "high",
+      "call_type": "Technical Integration",
+      "call_score": "Low",
+      "card_type": "Coaching",
+      "gaps": [
+        {
+          "theme": "No Committed Timeline",
+          "evidence_type": "explanation",
+          "evidence": "Kayleen agreed to send over a new spreadsheet containing critical, high, and medium priority roles to be integrated, but the parties did not establish any concrete timeline, milestones, or delivery dates for when these roles would be processed and go live. David only vaguely stated that he would be in touch with updates.",
+          "timestamp": null,
+          "confidence": "high"
+        }
+      ],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 1869,
+        "scoring": 1431,
+        "gap_analysis": 3313,
+        "card_type": 1224
+      },
+      "seconds": 15.9
+    },
+    {
+      "recording_id": "35f28528-192e-4813-8c5b-56876744ef94",
+      "effort": "high",
+      "call_type": "Discovery",
+      "call_score": "Low",
+      "card_type": "Coaching",
+      "gaps": [],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 556,
+        "scoring": 438,
+        "gap_analysis": 440,
+        "card_type": 433
+      },
+      "seconds": 7.8
+    },
+    {
+      "recording_id": "3fd1f2a6-97b1-4d2b-8c2f-a89d3ee43e1e",
+      "effort": "high",
+      "call_type": "Pricing/Negotiation",
+      "call_score": "Low",
+      "card_type": "Risk",
+      "gaps": [
+        {
+          "theme": "IC-Level Only at Pricing Stage",
+          "evidence_type": "explanation",
+          "evidence": "The entire commercial and pricing discussion (covering proposals for Raytheon UK, Mexicali, Pratt & Whitney, and the PO for the persona SOW) is conducted solely with Marie Lo, who is an individual contributor (as she notes at 19:13 that leadership decisions are 'way above me'). No senior leadership from the client side is present to make decisions or reinforce strategic commitment.",
+          "timestamp": null,
+          "confidence": "high"
+        },
+        {
+          "theme": "No Competitive Framing at Pricing Stage",
+          "evidence_type": "dialogue",
+          "evidence": "Yeah. That'd be helpful. Yeah. So that way we can anyway, well, I I think I need to break it down on what is a paper post, what is actually a programmatic vendor, and then we can kinda do some depending on how we figure out what will be the best allocation.",
+          "timestamp": "38:14",
+          "confidence": "high"
+        }
+      ],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 2080,
+        "scoring": 1411,
+        "gap_analysis": 3961,
+        "card_type": 627
+      },
+      "seconds": 12.6
+    },
+    {
+      "recording_id": "4ac4eea2-dc3f-431e-96d7-7b1fb0f4622a",
+      "effort": "high",
+      "call_type": "Follow-up Demo",
+      "call_score": "Low",
+      "card_type": "Coaching",
+      "gaps": [],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 747,
+        "scoring": 856,
+        "gap_analysis": 924,
+        "card_type": 1157
+      },
+      "seconds": 13.5
+    },
+    {
+      "recording_id": "52280de1-8295-4e75-acfd-a43e61871b72",
+      "effort": "high",
+      "call_type": "Pricing/Negotiation",
+      "call_score": "Low",
+      "card_type": "Coaching",
+      "gaps": [
+        {
+          "theme": "IC-Level Only at Pricing Stage",
+          "evidence_type": "explanation",
+          "evidence": "The commercial and pricing discussions regarding the Raytheon UK trial budget (\u00a324,000 annual) and the CPQA pricing model are conducted entirely with Marie Lo, an individual contributor/program manager who lacks decision-making authority and must refer the proposal to the UK team and her communications partner. No senior leadership is present on the call to reinforce Joveo's strategic commitment or make commercial decisions.",
+          "timestamp": null,
+          "confidence": "high"
+        },
+        {
+          "theme": "No Competitive Framing at Pricing Stage",
+          "evidence_type": "dialogue",
+          "evidence": "The other, I think the other thing I think we'd want and is if they have any sort of targets in terms of. CPA or I guess, CPCs or CPAs, that, you know, you know, depending on how they wanna break it down. Right? They would say, if you're performing better than, Broadbeam for these roles, you know, here's here's what you would you know, here's here's the here's the goal. Is it applicants we're gonna be measured on? Is it, you you know, CPAs we could be measured on? Just kind of what is the what is the benchmark that wins the business? Right?",
+          "timestamp": "41:19",
+          "confidence": "high"
+        }
+      ],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 1765,
+        "scoring": 1417,
+        "gap_analysis": 2574,
+        "card_type": 1613
+      },
+      "seconds": 16.0
+    },
+    {
+      "recording_id": "5907cf07-c393-4e3e-af80-d899691156e5",
+      "effort": "high",
+      "call_type": "Pricing/Negotiation",
+      "call_score": "Low",
+      "card_type": "Coaching",
+      "gaps": [
+        {
+          "theme": "IC-Level Only at Pricing Stage",
+          "evidence_type": "dialogue",
+          "evidence": "Yes. So, so Steve is actually working on that, Megan, along with Doug. So I think he'd follow up with you next steps. I did see an update, and I think they were just, discussing some things and going back and forth. So I think I'll let him know. So he'll probably follow up with you, pretty quickly.",
+          "timestamp": "01:54",
+          "confidence": "high"
+        }
+      ],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 2279,
+        "scoring": 1000,
+        "gap_analysis": 2581,
+        "card_type": 1113
+      },
+      "seconds": 14.5
+    },
+    {
+      "recording_id": "5b5cea1d-8677-4688-985f-78b4d253e6e1",
+      "effort": "high",
+      "call_type": "Discovery",
+      "call_score": "Low",
+      "card_type": "Coaching",
+      "gaps": [
+        {
+          "theme": "Outcome-Based Positioning Missing",
+          "evidence_type": "dialogue",
+          "evidence": "We're really fleshing out like set of agentic solutions? I know you've already got the Happy Dance and higher, right? I mean, does Happy Dance generate landing pages?",
+          "timestamp": "12:30",
+          "confidence": "high"
+        },
+        {
+          "theme": "Buzzword Fatigue \u2014 No Case Study Evidence",
+          "evidence_type": "dialogue",
+          "evidence": "I think where I'm still kind of, like, Scott, where where I'm, like where where I'm at is just trying to understand what you all are gonna bring to the table specifically a little bit more around the strategy perspective. You know? ... This is what we've seen success in these markets.",
+          "timestamp": "10:24",
+          "confidence": "high"
+        },
+        {
+          "theme": "No Pre-Call Research on Client's Current Stack",
+          "evidence_type": "dialogue",
+          "evidence": "I mean, we're getting to the point now where we're we're getting close on the Happy Dance kind of first sight, and so, you know, I think this kinda goes back to the the last conversation, and you know, just what are you guys gonna do different than than Recritics, Scott?",
+          "timestamp": "04:14",
+          "confidence": "high"
+        }
+      ],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 889,
+        "scoring": 1022,
+        "gap_analysis": 3510,
+        "card_type": 1312
+      },
+      "seconds": 13.4
+    },
+    {
+      "recording_id": "6050cf3b-b1fc-4496-9781-06ea603898ed",
+      "effort": "high",
+      "call_type": "Demo",
+      "call_score": "High",
+      "card_type": "Coaching",
+      "gaps": [
+        {
+          "theme": "Demo Not Customised to Client",
+          "evidence_type": "dialogue",
+          "evidence": "I would like to preface that this is a demo. This is not my is not your data, so take it as it is. Right? So there'll be some things that you might see. They're like, oh, that's not my industry. There might be some things that are not necessarily global, but you will get the idea",
+          "timestamp": "44:16",
+          "confidence": "high"
+        },
+        {
+          "theme": "Wrong People on the Call",
+          "evidence_type": "dialogue",
+          "evidence": "Understood. So I think the short answer is we are fully capable to do this. Jesse will provide you with names of phenom clients that we work with, and then we're very happy to schedule a call with the technical team who will ask you all the right questions to understand how we would scope this.",
+          "timestamp": "26:41",
+          "confidence": "high"
+        }
+      ],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 738,
+        "scoring": 1117,
+        "gap_analysis": 2660,
+        "card_type": 1206
+      },
+      "seconds": 14.5
+    },
+    {
+      "recording_id": "641ed63c-cf6d-4a88-9909-27619ac725e6",
+      "effort": "high",
+      "call_type": "Discovery",
+      "call_score": "Medium",
+      "card_type": "Coaching",
+      "gaps": [
+        {
+          "theme": "Outcome-Based Positioning Missing",
+          "evidence_type": "dialogue",
+          "evidence": "These all can be modulized. But the good part is, you know, you can insert something here, but everything's still tracked through the process from, you know, finding them on the the programmatic piece, you engaging them on career sites and landing pages. We can have a conversational AI chatbot that understands health care, could talk to them in a conversational way, engage them, and then even let them, you know, find the location of the job, go through a sort of screening question, and then even apply to the jobs through the chatbot and then put that into your ATS, and if they qualify based upon the criteria that we work out or set up in the in the setup, We can even have, you know, schedule themselves for interviews. They can do use an AI interviewer...",
+          "timestamp": "18:27",
+          "confidence": "high"
+        },
+        {
+          "theme": "Buzzword Fatigue \u2014 No Case Study Evidence",
+          "evidence_type": "explanation",
+          "evidence": "Throughout the call, Scott repeatedly uses buzzwords like 'AI first' and 'conversational AI' to describe Joveo's platform. While he mentions working with healthcare clients like Tenet and HCA, he does not share any concrete customer stories, mini case studies, or specific metrics of success to build credibility, relying instead on generic claims and an anonymized template.",
+          "timestamp": null,
+          "confidence": "high"
+        },
+        {
+          "theme": "No Pre-Call Research on Client's Current Stack",
+          "evidence_type": "dialogue",
+          "evidence": "I saw you're using Symphony on your career side and and you know, just kinda get the lay of the land and and see where we might be able to help or you know, assist you in some of the things that you're doing...",
+          "timestamp": "01:23",
+          "confidence": "high"
+        }
+      ],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 1272,
+        "scoring": 1252,
+        "gap_analysis": 2882,
+        "card_type": 672
+      },
+      "seconds": 9.8
+    },
+    {
+      "recording_id": "64a952cd-c3d6-4143-96b9-0cd833f98075",
+      "effort": "high",
+      "call_type": "Pricing/Negotiation",
+      "call_score": "Low",
+      "card_type": "Coaching",
+      "gaps": [
+        {
+          "theme": "Reactive Pricing With No Anchors Prepared",
+          "evidence_type": "dialogue",
+          "evidence": "Yeah, and like, what you were saying. Right? We need we need not pay the complete 1,500. Yeah. So on then on what basis are we paying? Is this based on RSVPs? So if it is based on RSVPs, then what's the cost per our RSVP which usually comes in? ... Yeah. Alright. I will get that info back to y'all.",
+          "timestamp": "03:20",
+          "confidence": "high"
+        },
+        {
+          "theme": "IC-Level Only at Pricing Stage",
+          "evidence_type": "explanation",
+          "evidence": "The entire pricing and commercial conversation regarding the hiring event budget, CPC bidding, and target CPA is conducted solely by Trey Nichols, an individual contributor, without any Joveo senior leadership present to reinforce strategic commitment.",
+          "timestamp": null,
+          "confidence": "high"
+        },
+        {
+          "theme": "No Competitive Framing at Pricing Stage",
+          "evidence_type": "dialogue",
+          "evidence": "for this location, Leesport, it's like, currently, the CPA is going up to $11 and previously, Talu was delivering, like, you know, near about the goal. ... Yeah. So They're all rolling up into just one campaign now. Okay. So yeah. Yeah. Which doesn't really matter since it's CPC. So for any that are higher, I would lower the bids.",
+          "timestamp": "05:37",
+          "confidence": "high"
+        }
+      ],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 1100,
+        "scoring": 1213,
+        "gap_analysis": 3362,
+        "card_type": 1703
+      },
+      "seconds": 16.4
+    },
+    {
+      "recording_id": "68525756-5d75-43c2-82fe-1ac7dd8ab0b8",
+      "effort": "high",
+      "call_type": "Technical Integration",
+      "call_score": "High",
+      "card_type": "Risk",
+      "gaps": [
+        {
+          "theme": "Technical Prerequisites Not Validated Upfront",
+          "evidence_type": "dialogue",
+          "evidence": "This is redirected to Greenhouse because I think, when we did the initial integration, we did not do the integration for Greenhouse. Maybe if you are moving to Ashby, we could we could do that integration, Nicole, and and the development will be essentially heavy on our side, but but I think, you know, on Spring Health side, it would essentially be sharing the API keys, and then we can share you, like, what API keys do we essentially need, and then once you provide access, we will configure that within our system so that way you are seeing analytics",
+          "timestamp": "14:57",
+          "confidence": "high"
+        },
+        {
+          "theme": "No Committed Timeline",
+          "evidence_type": "dialogue",
+          "evidence": "I'll go ahead and send out the plan within two days, and then we can align on next steps and launch, and then I'll add Emily to the next call, and then also send over the ASHB document, Nicole.",
+          "timestamp": "27:12",
+          "confidence": "high"
+        },
+        {
+          "theme": "Escalation Path Not Established",
+          "evidence_type": "explanation",
+          "evidence": "The team discussed the upcoming Ashby integration, API key requirements, and pixel placement, but failed to establish a clear escalation path or designate a specific point of contact to handle any technical blockers or integration issues that might arise between sessions.",
+          "timestamp": null,
+          "confidence": "high"
+        }
+      ],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 3554,
+        "scoring": 1821,
+        "gap_analysis": 3432,
+        "card_type": 1503
+      },
+      "seconds": 15.3
+    },
+    {
+      "recording_id": "6860ac19-cec5-48c8-a4d7-c7ad35419419",
+      "effort": "high",
+      "call_type": "Kick-off",
+      "call_score": "Low",
+      "card_type": "Coaching",
+      "gaps": [
+        {
+          "theme": "Kick-off Agenda Not Proactively Set",
+          "evidence_type": "explanation",
+          "evidence": "The meeting begins without Joveo proactively setting a shared agenda or presenting preparation materials. Once the client joins, they immediately transition into discussing the project tracker updates without establishing a structured plan for the call.",
+          "timestamp": null,
+          "confidence": "high"
+        },
+        {
+          "theme": "Scope Not Locked Before Kick-off",
+          "evidence_type": "dialogue",
+          "evidence": "Lo, Marie (USA): Yeah. So I'm just I saw your email to Heidi Scott, and no response yet as in whether they still I mean, whether they do need the mini logo and Jawcard logo and app name. I didn't. Scott Garrett: I didn't know how to answer those. Do you have those? Do you know what she's looking for in those? Lo, Marie (USA): No. I I didn't know that those were assets that are needed.",
+          "timestamp": "12:41",
+          "confidence": "high"
+        },
+        {
+          "theme": "Success Metrics Not Agreed at Start",
+          "evidence_type": "explanation",
+          "evidence": "The call concludes without any alignment on success metrics, KPIs, reporting cadence, or QBR timing. Joveo only mentions providing access to the unified analytics dashboard once the campaign is live, leaving future performance expectations completely ambiguous.",
+          "timestamp": null,
+          "confidence": "high"
+        }
+      ],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 1389,
+        "scoring": 1334,
+        "gap_analysis": 4229,
+        "card_type": 1109
+      },
+      "seconds": 13.0
+    },
+    {
+      "recording_id": "6be6157e-a139-41c0-8ee2-8dfd2b0932a0",
+      "effort": "high",
+      "call_type": "Demo",
+      "call_score": "Medium",
+      "card_type": "Coaching",
+      "gaps": [
+        {
+          "theme": "Seller-Dominated Call & Poor Time Management",
+          "evidence_type": "explanation",
+          "evidence": "The Joveo team failed to manage the call's time effectively, resulting in them running out of time to present the programmatic job advertising and unified analytics dashboard, which the client noted was 'top of mind.' Delia had to prompt the team to move on to programmatic with only 14 minutes left, and Steve ultimately had to apologize for not being able to cover the analytics dashboard. Additionally, Steve repeatedly deferred simple questions to multiple other team members rather than answering them directly.",
+          "timestamp": null,
+          "confidence": "high"
+        }
+      ],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 983,
+        "scoring": 1467,
+        "gap_analysis": 4567,
+        "card_type": 1198
+      },
+      "seconds": 14.0
+    },
+    {
+      "recording_id": "74877391-561c-4a53-94c7-edd0ea8f1ac7",
+      "effort": "high",
+      "call_type": "Demo",
+      "call_score": "High",
+      "card_type": "Coaching",
+      "gaps": [
+        {
+          "theme": "Seller-Dominated Call & Poor Time Management",
+          "evidence_type": "dialogue",
+          "evidence": "Actually, Scott. Yeah. Sorry. Joey was reading my mind. We have another 30 minutes on this call. Oh, do we? Oh, crap. Okay. Sorry... Yeah. That was not that was not professional. You would not hire, Scott. I know. I know. I just got blocked. The the the conversational AI was running me. My bad. I'm sorry about that. I thought we were, I did yeah, then I'll slow down and I'll answer questions. Right?",
+          "timestamp": "55:51",
+          "confidence": "high"
+        },
+        {
+          "theme": "Wrong People on the Call",
+          "evidence_type": "dialogue",
+          "evidence": "I I will have to check. I don't I don't know. Yeah. I I don't know.",
+          "timestamp": "77:07",
+          "confidence": "high"
+        },
+        {
+          "theme": "Imprecise Messaging & Stats",
+          "evidence_type": "dialogue",
+          "evidence": "one of the 10 largest health systems in the country had an 18% conversion rate on Appcast, and since moving to Joveo almost a year ago, they're at 24%.",
+          "timestamp": "63:04",
+          "confidence": "high"
+        },
+        {
+          "theme": "Missed Strategic Deal-Driving Moments",
+          "evidence_type": "dialogue",
+          "evidence": "Joey, was there anything else that we know about what we do that you wanted us to share with the team? No. The these are the two. I think the AI interviewing and then the marketing that I think those are the two key pieces. I think next step for us, I'm gonna be on vacation for the next couple of weeks. So I'll I'll touch base with the team at the end of this week, and then we'll see what the next step would be for us, and then we'll we can go from there.",
+          "timestamp": "86:35",
+          "confidence": "high"
+        },
+        {
+          "theme": "Unanswered / Poorly Handled Questions",
+          "evidence_type": "dialogue",
+          "evidence": "Although that I'd have to ask engineering because they're already in Paradox, maybe we could eliminate the two FA on that because they were already in your system. Don't know. We'd have to check on that.",
+          "timestamp": "50:51",
+          "confidence": "high"
+        }
+      ],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 1074,
+        "scoring": 1430,
+        "gap_analysis": 5635,
+        "card_type": 966
+      },
+      "seconds": 13.1
+    },
+    {
+      "recording_id": "74a5ff96-4202-44a0-8587-14fd4beadaca",
+      "effort": "high",
+      "call_type": "Discovery",
+      "call_score": "Low",
+      "card_type": "Coaching",
+      "gaps": [
+        {
+          "theme": "Outcome-Based Positioning Missing",
+          "evidence_type": "dialogue",
+          "evidence": "we got CRM. We've got, you know, chat bots, which obviously worked as Paradox, and we've also got other, AI interview and things like that. But what's interesting, I think, that separates us from, like, a smartphone or anything else is just the the media buying capabilities.",
+          "timestamp": "13:07",
+          "confidence": "high"
+        },
+        {
+          "theme": "Buzzword Fatigue \u2014 No Case Study Evidence",
+          "evidence_type": "dialogue",
+          "evidence": "I think it's important for her to you know, I definitely lead I would lead with that you do tenant and Chris' and any other health care systems. Right? Because, you know, we know then that they, you know, obviously, you then you get health care, and it can be a little unique.",
+          "timestamp": "14:48",
+          "confidence": "high"
+        },
+        {
+          "theme": "No Pre-Call Research on Client's Current Stack",
+          "evidence_type": "explanation",
+          "evidence": "The rep starts the call without knowing the prospect's current tech stack (Workday and Smashfly) and has to be informed by the prospect. Even after learning they use Smashfly, the rep fails to position Joveo specifically against Smashfly's gaps, instead asking generic questions about what they are doing today.",
+          "timestamp": null,
+          "confidence": "high"
+        }
+      ],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 576,
+        "scoring": 914,
+        "gap_analysis": 4228,
+        "card_type": 1083
+      },
+      "seconds": 12.1
+    },
+    {
+      "recording_id": "79dac970-5a11-4131-bb03-a4e5d81ecbb4",
+      "effort": "high",
+      "call_type": "Demo",
+      "call_score": "Medium",
+      "card_type": "Risk",
+      "gaps": [
+        {
+          "theme": "Competitive Intelligence Not Used",
+          "evidence_type": "dialogue",
+          "evidence": "Meaghan Monastero: \"I don't know too much about Jovio specifically, but I've worked with, like, Appcast. I've worked with speaker in a lot of their products, like, and and other, like, similar tools, Phenom as well. So, even if it's just differentiation between other tools that I'm more familiar with, that would be helpful.\"",
+          "timestamp": "16:22",
+          "confidence": "high"
+        },
+        {
+          "theme": "Unanswered / Poorly Handled Questions",
+          "evidence_type": "dialogue",
+          "evidence": "Meaghan Monastero: \"Maybe in the recap somewhere is it could be, like, a short paragraph or something explaining that unique scenario where you mentioned, like, the pixels pulling into the dash, but, like, having their own like, how how if we were to look at something in the future future to work something in there, how does that work so that I can effectively communicate it?\" ... Deborah Andrychuk: \"We would have to take it on a case by case, and it would have to be scoped. But certainly, you know, we're open for discussion on that for sure.\"",
+          "timestamp": "46:14",
+          "confidence": "high"
+        },
+        {
+          "theme": "Wrong People on the Call",
+          "evidence_type": "explanation",
+          "evidence": "Solutions and technical staff were absent from the call, leaving the sales team unable to answer Meaghan's technical question about how pixel integration works to pull third-party chat data into the Joveo dashboard. The seller had to deflect the question by stating it would need to be scoped on a case-by-case basis.",
+          "timestamp": null,
+          "confidence": "medium"
+        },
+        {
+          "theme": "Missed Strategic Deal-Driving Moments",
+          "evidence_type": "dialogue",
+          "evidence": "Meaghan Monastero: \"and maybe even have, like, you know, figuring out when the time's right for a targeted demo around that specifically.\" ... Scott Garrett: \"We'll send some follow up, and then yeah, if, if there's a time to reconnect, we'd love to love to speak again and see what we can do.\"",
+          "timestamp": "47:32",
+          "confidence": "high"
+        }
+      ],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 1074,
+        "scoring": 1110,
+        "gap_analysis": 8120,
+        "card_type": 941
+      },
+      "seconds": 14.7
+    },
+    {
+      "recording_id": "7a17eedc-0a57-4d06-9878-49726b431e68",
+      "effort": "high",
+      "call_type": "Kick-off",
+      "call_score": "High",
+      "card_type": "Risk",
+      "gaps": [
+        {
+          "theme": "Kick-off Agenda Not Proactively Set",
+          "evidence_type": "dialogue",
+          "evidence": "speaker-2: Ruhi, I think did you create a document? Nargis Roohi: I just created, like, one space so that Okay. You know, we could just talk through some of those things, and then I can go ahead and like, update some of those individual tasks that we have.",
+          "timestamp": "05:05",
+          "confidence": "high"
+        },
+        {
+          "theme": "Scope Not Locked Before Kick-off",
+          "evidence_type": "dialogue",
+          "evidence": "speaker-2: Ruki, III want to see if you had more, historical knowledge about the ask, the original ask, that, was, like like, for Hellowork and Collins. ... Melissa said that there was something about. Collins had like, there were some legal implications where they couldn't directly work with Hellowork",
+          "timestamp": "11:29",
+          "confidence": "high"
+        },
+        {
+          "theme": "Success Metrics Not Agreed at Start",
+          "evidence_type": "explanation",
+          "evidence": "The kick-off meeting concludes without any discussion or agreement on success metrics, KPIs, reporting cadence, or QBR timing.",
+          "timestamp": null,
+          "confidence": "high"
+        }
+      ],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 2190,
+        "scoring": 2254,
+        "gap_analysis": 2221,
+        "card_type": 636
+      },
+      "seconds": 14.2
+    },
+    {
+      "recording_id": "7cf8dcfb-9b84-423d-9204-85041d8cf56f",
+      "effort": "high",
+      "call_type": "Discovery",
+      "call_score": "Low",
+      "card_type": "Coaching",
+      "gaps": [],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 1154,
+        "scoring": 529,
+        "gap_analysis": 481,
+        "card_type": 499
+      },
+      "seconds": 9.6
+    },
+    {
+      "recording_id": "8742c6f5-0a5c-46af-8f72-36c715e4fb5d",
+      "effort": "high",
+      "call_type": "Demo",
+      "call_score": "High",
+      "card_type": "Coaching",
+      "gaps": [
+        {
+          "theme": "Demo Not Customised to Client",
+          "evidence_type": "dialogue",
+          "evidence": "We use registered nurse a lot. We don't have a lot of psychiatry jobs. So for demo, let's just pretend registered nurse equals psychiatrist. You know? We'll go with that, or therapist.",
+          "timestamp": "17:30",
+          "confidence": "high"
+        },
+        {
+          "theme": "Missed Strategic Deal-Driving Moments",
+          "evidence_type": "dialogue",
+          "evidence": "But if we get any sense of cost, I think the business is very eager to invest in this kind of work, especially when it's demonstrating value and impact, which this clearly does. So if we can get any kind of range of cost, that would help me just, like, plant the seeds.",
+          "timestamp": "61:06",
+          "confidence": "high"
+        }
+      ],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 2466,
+        "scoring": 1783,
+        "gap_analysis": 4518,
+        "card_type": 773
+      },
+      "seconds": 11.2
+    },
+    {
+      "recording_id": "87ad656f-9da6-4364-8419-dbc6f58a189f",
+      "effort": "high",
+      "call_type": "Follow-up Demo",
+      "call_score": "Medium",
+      "card_type": "Coaching",
+      "gaps": [
+        {
+          "theme": "Follow-Up Not Driving the Agenda",
+          "evidence_type": "explanation",
+          "evidence": "Throughout the call, the Joveo team is highly reactive rather than proactively driving the commercial agenda. Instead of proposing a structured pilot or commercial next steps, they wait for the client to ask about a pilot ('is there a way to do a pilot if we move forward? In other words, 30 days, no fee...'). The call ends without Joveo setting a firm follow-up meeting or establishing clear timelines, simply telling the client to 'shoot them on over' if any other questions come up.",
+          "timestamp": null,
+          "confidence": "high"
+        }
+      ],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 877,
+        "scoring": 1676,
+        "gap_analysis": 3453,
+        "card_type": 1512
+      },
+      "seconds": 17.3
+    },
+    {
+      "recording_id": "8adb3faf-80ce-42ca-bfc3-5c76e846f270",
+      "effort": "high",
+      "call_type": "Pricing/Negotiation",
+      "call_score": "Low",
+      "card_type": "Coaching",
+      "gaps": [
+        {
+          "theme": "IC-Level Only at Pricing Stage",
+          "evidence_type": "dialogue",
+          "evidence": "I'm sure also, my boss, Shazad, if you wanna jump on a call with him, he'd be more than happy to talk with you about, once you've had a conversation with your manager. So.",
+          "timestamp": "14:01",
+          "confidence": "high"
+        }
+      ],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 1716,
+        "scoring": 1144,
+        "gap_analysis": 2157,
+        "card_type": 1066
+      },
+      "seconds": 13.1
+    },
+    {
+      "recording_id": "8c2407f0-ae2e-41ad-9f6f-52a0e81a996f",
+      "effort": "high",
+      "call_type": "Technical Integration",
+      "call_score": "Medium",
+      "card_type": "Risk",
+      "gaps": [
+        {
+          "theme": "Technical Prerequisites Not Validated Upfront",
+          "evidence_type": "dialogue",
+          "evidence": "Yeah. So let's see. I'll have to ask Rich if it will support too, like, Rich from hiring thing. If it'll support you, I really don't know.",
+          "timestamp": "02:12",
+          "confidence": "high"
+        },
+        {
+          "theme": "No Committed Timeline",
+          "evidence_type": "dialogue",
+          "evidence": "Alright. Well, let's keep in touch about timelines, and we'll go from there.",
+          "timestamp": "19:40",
+          "confidence": "high"
+        },
+        {
+          "theme": "Escalation Path Not Established",
+          "evidence_type": "dialogue",
+          "evidence": "One last thing is if you could help us with, your backup point of contact while you're away tomorrow, for anything, that would be great as well.",
+          "timestamp": "20:12",
+          "confidence": "high"
+        }
+      ],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 725,
+        "scoring": 1333,
+        "gap_analysis": 2822,
+        "card_type": 862
+      },
+      "seconds": 10.0
+    },
+    {
+      "recording_id": "90f339c5-c18b-4af6-b6d9-9bceece461ca",
+      "effort": "high",
+      "call_type": "Kick-off",
+      "call_score": "Low",
+      "card_type": "Risk",
+      "gaps": [
+        {
+          "theme": "Kick-off Agenda Not Proactively Set",
+          "evidence_type": "explanation",
+          "evidence": "The meeting was entirely driven by the client, Marie, who initiated the call with her updates, established the next steps, and set up the meeting schedule. Scott did not introduce a pre-set agenda or Joveo-led structure, instead reactively agreeing to the client's directions.",
+          "timestamp": null,
+          "confidence": "high"
+        },
+        {
+          "theme": "Scope Not Locked Before Kick-off",
+          "evidence_type": "dialogue",
+          "evidence": "I think one thing that I do want to, get validation on, which I don't think that there's tracking that's available, as in if Jovio sends the feed to Sonic jobs, if there could be any sort of, I guess, Jovio tracking.",
+          "timestamp": "03:56",
+          "confidence": "high"
+        },
+        {
+          "theme": "Success Metrics Not Agreed at Start",
+          "evidence_type": "explanation",
+          "evidence": "The kick-off meeting concluded without any discussion or agreement regarding success metrics, KPIs, reporting cadence, or QBR schedules for the Sonic Jobs campaign.",
+          "timestamp": null,
+          "confidence": "high"
+        }
+      ],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 1976,
+        "scoring": 1718,
+        "gap_analysis": 2380,
+        "card_type": 1265
+      },
+      "seconds": 13.8
+    },
+    {
+      "recording_id": "a41bceca-dbc3-4589-bd34-764f8f5ab4cc",
+      "effort": "high",
+      "call_type": "Follow-up Demo",
+      "call_score": "Medium",
+      "card_type": "Coaching",
+      "gaps": [],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 2141,
+        "scoring": 1129,
+        "gap_analysis": 1598,
+        "card_type": 2667
+      },
+      "seconds": 18.9
+    },
+    {
+      "recording_id": "a60f3243-d46b-4120-806d-520c1dfa7539",
+      "effort": "high",
+      "call_type": "Follow-up Demo",
+      "call_score": "High",
+      "card_type": "Coaching",
+      "gaps": [],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 1111,
+        "scoring": 1703,
+        "gap_analysis": 2318,
+        "card_type": 978
+      },
+      "seconds": 12.3
+    },
+    {
+      "recording_id": "b026da73-fd2b-4bcd-b76c-1bec0c68c10a",
+      "effort": "high",
+      "call_type": "Discovery",
+      "call_score": "Low",
+      "card_type": "Coaching",
+      "gaps": [],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 1485,
+        "scoring": 570,
+        "gap_analysis": 536,
+        "card_type": 482
+      },
+      "seconds": 7.9
+    },
+    {
+      "recording_id": "b06b6d38-df71-4b54-946d-c9912768bdab",
+      "effort": "high",
+      "call_type": "Technical Integration",
+      "call_score": "Medium",
+      "card_type": "Coaching",
+      "gaps": [
+        {
+          "theme": "No Committed Timeline",
+          "evidence_type": "explanation",
+          "evidence": "While the integration of Sonic Jobs and CPQ are discussed, no concrete timeline milestones or delivery dates are committed. Nargis mentions she will prioritize Sonic Jobs 'immediately right away' and get to CPQ 'this week,' but no specific dates or milestones are established.",
+          "timestamp": null,
+          "confidence": "high"
+        },
+        {
+          "theme": "Escalation Path Not Established",
+          "evidence_type": "explanation",
+          "evidence": "Throughout the call, the parties discuss multiple integration projects (Sonic Jobs, CPQ, and upcoming campaigns), but they do not establish a clear escalation path or designate a specific point of contact for resolving blockers between sessions.",
+          "timestamp": null,
+          "confidence": "high"
+        }
+      ],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 1004,
+        "scoring": 1188,
+        "gap_analysis": 2508,
+        "card_type": 535
+      },
+      "seconds": 10.2
+    },
+    {
+      "recording_id": "c19bb775-e42b-4ac0-bcf6-f55e83bde8a3",
+      "effort": "high",
+      "call_type": "Kick-off",
+      "call_score": "Medium",
+      "card_type": "Coaching",
+      "gaps": [
+        {
+          "theme": "Scope Not Locked Before Kick-off",
+          "evidence_type": "dialogue",
+          "evidence": "Do have a couple of questions, and I noticed that and I'm not sure if it's because this is just in developer mode, and so it's showing all RTX's jobs. But for Raytheon US jobs, there should, right now, kinda be approximately 1,800 jobs in the feed, and I'm seeing, like, 3,000 plus. So it seems like that's all RTX jobs. The other thing is. I'm also seeing for these search results, those are Collins Aerospace jobs. I just wanna make sure that, one, we are using the correct feed.",
+          "timestamp": "18:07",
+          "confidence": "high"
+        },
+        {
+          "theme": "Success Metrics Not Agreed at Start",
+          "evidence_type": "explanation",
+          "evidence": "The kick-off meeting concluded without any discussion or agreement on success metrics, KPIs, reporting cadence, or QBR timing.",
+          "timestamp": null,
+          "confidence": "high"
+        }
+      ],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 1180,
+        "scoring": 1839,
+        "gap_analysis": 3019,
+        "card_type": 1167
+      },
+      "seconds": 13.9
+    },
+    {
+      "recording_id": "c2fbc27e-51a2-4f46-a7cf-030323e336d5",
+      "effort": "high",
+      "call_type": "Technical Integration",
+      "call_score": "High",
+      "card_type": "Coaching",
+      "gaps": [
+        {
+          "theme": "No Committed Timeline",
+          "evidence_type": "explanation",
+          "evidence": "Throughout the call, several integration efforts (such as the tracking setup with Phenom/Workday, the Sonic jobs feed integration, and the Stepstone Germany consolidation) were discussed, but no concrete timeline milestones or delivery dates were committed. For instance, Nargis agreed to double-check the Phenom feed behavior and report back, but did not establish a deadline, and Marie vaguely noted that the Germany team wants to get started 'soon' without setting specific dates.",
+          "timestamp": null,
+          "confidence": "high"
+        },
+        {
+          "theme": "Escalation Path Not Established",
+          "evidence_type": "explanation",
+          "evidence": "The call did not establish any clear escalation path or designate a specific point of contact for handling blockers or technical issues that might arise between sessions, leaving both parties without a defined process for resolving integration challenges.",
+          "timestamp": null,
+          "confidence": "high"
+        }
+      ],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 1970,
+        "scoring": 1640,
+        "gap_analysis": 4376,
+        "card_type": 732
+      },
+      "seconds": 10.0
+    },
+    {
+      "recording_id": "cb0e260a-47c5-449b-a120-91ac73d70f15",
+      "effort": "high",
+      "call_type": "Follow-up Demo",
+      "call_score": "High",
+      "card_type": "Risk",
+      "gaps": [
+        {
+          "theme": "Follow-Up Not Driving the Agenda",
+          "evidence_type": "dialogue",
+          "evidence": "So, I'll add maybe a quick intro and then maybe while you're trying to get on the Internet, what would you I guess, where would you like to start? I mean, I we can kinda talk or maybe the at high level any I mean, the the Jovio interviewer, but, maybe intro yourself, and then if there's you know what? I mean, maybe you came to the call with some things you wanted, answered or some questions, and maybe we could start there.",
+          "timestamp": "12:24",
+          "confidence": "high"
+        }
+      ],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 1053,
+        "scoring": 1273,
+        "gap_analysis": 2775,
+        "card_type": 827
+      },
+      "seconds": 10.3
+    },
+    {
+      "recording_id": "d48a9880-f15b-40a2-a219-98c256c681e9",
+      "effort": "high",
+      "call_type": "Follow-up Demo",
+      "call_score": "Medium",
+      "card_type": "Risk",
+      "gaps": [
+        {
+          "theme": "Follow-Up Not Driving the Agenda",
+          "evidence_type": "dialogue",
+          "evidence": "Oh, yeah. Yeah. I shared the document. I I so you approved just kinda what the overview of kind of what we could do versus what they could do. Yeah. I had a question. I know they were doing 2,001 month, which, you know, that's not much, and it would be, I guess, replicating the fee to the one that they do have a contract with and then you know, whatever we could buy programmatically for the roles. I'm trying to recall. Was there a budget that was bigger than that that was on the table for the kind of the engineer hiring push that they were gonna do at the end of the year? Do we or do you want me to expand on something for that? I I the call's on record. I've got so lazy now. It's hard for me to find my notes anymore. Do you remember what the did they have a.",
+          "timestamp": "21:28",
+          "confidence": "high"
+        },
+        {
+          "theme": "Operational Gaps Surfaced Late",
+          "evidence_type": "dialogue",
+          "evidence": "My next question is, I think, Scott, like, I don't I mean, I I least I hope not because I feel like you're probably not in the role of, like, project management, and you don't kinda, you know, really manage this stuff day to day. So who from Joveo's side is, I guess, owning this project and really being, like, the key, like, PM on managing this project with Sonicjobs and like, with me, like, with RTX?",
+          "timestamp": "34:55",
+          "confidence": "high"
+        }
+      ],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 3641,
+        "scoring": 1381,
+        "gap_analysis": 7236,
+        "card_type": 1804
+      },
+      "seconds": 15.0
+    },
+    {
+      "recording_id": "d50fd019-76a2-430e-ba72-419b7ccc0ca6",
+      "effort": "high",
+      "call_type": "Discovery",
+      "call_score": "Medium",
+      "card_type": "Risk",
+      "gaps": [
+        {
+          "theme": "Outcome-Based Positioning Missing",
+          "evidence_type": "dialogue",
+          "evidence": "And, Kaylene, on the courier side, I think with LLMs now so, it's great that you've built that, but I think you can't just rest on the laurels if I'm using that. There has to be content created frequently in order for all of these LLMs to crawl that to make sure that that's appearing in search results and things like that. So one of the, you know, one of the things of I don't know if that's your car what what your current kind of website provider is and how that was flexible, but landing pages is a big thing... GEO, which is the generative engine optimization. Right? So, I think everybody's working on that now, right, and addressing learning about it and addressing it.",
+          "timestamp": "28:47",
+          "confidence": "high"
+        },
+        {
+          "theme": "Buzzword Fatigue \u2014 No Case Study Evidence",
+          "evidence_type": "explanation",
+          "evidence": "The Joveo team relies heavily on technical buzzwords such as 'LLMs', 'GEO (generative engine optimization)', and 'learning machine finding' to describe their career site capabilities. When the prospect mentions a peer in the senior living space (Discovery) who is engaging with Joveo, the team fails to leverage this opportunity to share a concrete customer story or case study, offering only generic explanations about volume instead.",
+          "timestamp": null,
+          "confidence": "high"
+        }
+      ],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 2238,
+        "scoring": 2132,
+        "gap_analysis": 4694,
+        "card_type": 635
+      },
+      "seconds": 9.2
+    },
+    {
+      "recording_id": "d91b4ac0-af69-4b81-b8d0-06b34374b502",
+      "effort": "high",
+      "call_type": "Discovery",
+      "call_score": "Medium",
+      "card_type": "Coaching",
+      "gaps": [
+        {
+          "theme": "No Pre-Call Research on Client's Current Stack",
+          "evidence_type": "dialogue",
+          "evidence": "So back to job advertising now. Yeah. Back to the reason. I know. So I know you you mentioned in one of your emails in between that, you know, you've been having a hard time with Indeed. I've actually been hearing that from some other, like, healthier staffing companies recently too with, like, quality declines. So wasn't sure if you want to go more into that or just talk about, you know, what a what a pilot could look like and what we would do to address that.",
+          "timestamp": "07:38",
+          "confidence": "high"
+        },
+        {
+          "theme": "Outcome-Based Positioning Missing",
+          "evidence_type": "explanation",
+          "evidence": "Throughout the call, the Joveo team focuses heavily on technical features, integration capabilities (such as Salesforce object-based integrations, SMS, email, ad retargeting, and multi-apply features), and platform mechanics rather than leading with or highlighting concrete, practitioner-level outcomes like qualified candidate volume or speed-to-hire ROI.",
+          "timestamp": null,
+          "confidence": "high"
+        },
+        {
+          "theme": "Swim Lanes & Rules of Engagement Unclear",
+          "evidence_type": "dialogue",
+          "evidence": "My gut is to test you on just our rehab team, which is the most critical for our business is our rehab team. Right. Because that's where all of our direct jobs are. Allied is a lot of VMS. Say you know, pharmacy is a small job pool, so I'm not concerned about them. I can leave them on Appcast and feel fine that I can control that.",
+          "timestamp": "12:53",
+          "confidence": "high"
+        }
+      ],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 1118,
+        "scoring": 1890,
+        "gap_analysis": 4422,
+        "card_type": 1166
+      },
+      "seconds": 13.0
+    },
+    {
+      "recording_id": "e8bfc3fb-985f-43d0-a09f-5d6e92e88b3f",
+      "effort": "high",
+      "call_type": "Demo",
+      "call_score": "Medium",
+      "card_type": "Coaching",
+      "gaps": [
+        {
+          "theme": "Demo Not Customised to Client",
+          "evidence_type": "dialogue",
+          "evidence": "I don't know if this is an exact, and I'm gonna go back to the old school because this is live. This is a, it's not relevant to you necessarily, Mike, because you're in health care, but this is a retailer. It's bricks and mortar.",
+          "timestamp": "14:02",
+          "confidence": "high"
+        },
+        {
+          "theme": "Wrong People on the Call",
+          "evidence_type": "dialogue",
+          "evidence": "Is there one ready? That, I'll have to check. I I don't wanna answer that. I know that we have talked to UKG multiple times. I can affirmatively answer that. I just don't know if it, you know, where it's at. I, that would be a Patrick Yorker. Deb, that'd be a Patrick York question.",
+          "timestamp": "23:42",
+          "confidence": "high"
+        },
+        {
+          "theme": "Unanswered / Poorly Handled Questions",
+          "evidence_type": "dialogue",
+          "evidence": "Say, ask me that again because this sounds like we're into solutioning which I'm always I'm always afraid to do that while we're on a call.",
+          "timestamp": "12:28",
+          "confidence": "high"
+        },
+        {
+          "theme": "Missed Strategic Deal-Driving Moments",
+          "evidence_type": "dialogue",
+          "evidence": "Definitely definitely wanna advance the conversation and you know, talk about what your recommendations would be for us as far as next steps, and I think definitely talking to our folks. UKG, how Jovio could could help support or or run a parallel to Rapidhire because, you know, it being a UKG product.",
+          "timestamp": "33:59",
+          "confidence": "medium"
+        }
+      ],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 966,
+        "scoring": 1382,
+        "gap_analysis": 3049,
+        "card_type": 798
+      },
+      "seconds": 11.1
+    },
+    {
+      "recording_id": "ec138c8a-12bd-4df8-8d5b-06f857c69fc5",
+      "effort": "high",
+      "call_type": "Follow-up Demo",
+      "call_score": "Medium",
+      "card_type": "Risk",
+      "gaps": [],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 1694,
+        "scoring": 1797,
+        "gap_analysis": 1146,
+        "card_type": 1694
+      },
+      "seconds": 15.8
+    },
+    {
+      "recording_id": "efe793fa-cfa5-4223-ba16-a0793a87b241",
+      "effort": "high",
+      "call_type": "Demo",
+      "call_score": "High",
+      "card_type": "Coaching",
+      "gaps": [
+        {
+          "theme": "Seller-Dominated Call & Poor Time Management",
+          "evidence_type": "dialogue",
+          "evidence": "Andres: \"I'm so sorry, Debbie. I have to run to another...\" Deborah: \"No. No. No. I know we're way over. So thank you so much. I appreciate all your time, and we'll talk next week.\"",
+          "timestamp": "40:14",
+          "confidence": "high"
+        }
+      ],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 1819,
+        "scoring": 1600,
+        "gap_analysis": 4857,
+        "card_type": 502
+      },
+      "seconds": 8.9
+    },
+    {
+      "recording_id": "f03b6bd6-8e71-437d-a971-ce49745d66a2",
+      "effort": "high",
+      "call_type": "Discovery",
+      "call_score": "High",
+      "card_type": "Risk",
+      "gaps": [
+        {
+          "theme": "Buzzword Fatigue \u2014 No Case Study Evidence",
+          "evidence_type": "dialogue",
+          "evidence": "That would be great. I mean, and seeing some more data on that specifically would probably be excellent. Yeah. Yeah. I mean, those are couple use cases, yeah, of where, you know, you specifically seen this metric go from this to this over this much time, and any last, you know, cost of savings for that company, and if you have any that are senior living would be great. If not, health care. If not, anybody, you know, similar size. Frontline turnover issues, you know, that that those types of case scenarios would be great.",
+          "timestamp": "16:10",
+          "confidence": "high"
+        }
+      ],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 2357,
+        "scoring": 1144,
+        "gap_analysis": 4223,
+        "card_type": 1641
+      },
+      "seconds": 14.3
+    },
+    {
+      "recording_id": "f2b812cc-0ef6-49d2-9339-94a3cb4f0ed7",
+      "effort": "high",
+      "call_type": "Discovery",
+      "call_score": "Low",
+      "card_type": "Risk",
+      "gaps": [
+        {
+          "theme": "Swim Lanes & Rules of Engagement Unclear",
+          "evidence_type": "dialogue",
+          "evidence": "Joe, yes, we can, you know, but Joe went out and he purchased, a company called Job atx to kind of manage his programmatic. But you know, I don't know if his commitment to that or if he be open to, you know, put it, putting that aside to work with us direct. ... if there's a conversation to be had, if you want to bring us together, more than happy to",
+          "timestamp": "07:36",
+          "confidence": "high"
+        },
+        {
+          "theme": "Outcome-Based Positioning Missing",
+          "evidence_type": "dialogue",
+          "evidence": "I think we've got best of, you know, we've got the best of breed technology in terms of programmatic and global reach, et cetera, et cetera.",
+          "timestamp": "06:30",
+          "confidence": "medium"
+        }
+      ],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 1373,
+        "scoring": 1265,
+        "gap_analysis": 4205,
+        "card_type": 1013
+      },
+      "seconds": 12.9
+    },
+    {
+      "recording_id": "f3262215-ea69-4d17-aab3-f22f3941c9a9",
+      "effort": "high",
+      "call_type": "Technical Integration",
+      "call_score": "Low",
+      "card_type": "Coaching",
+      "gaps": [
+        {
+          "theme": "No Committed Timeline",
+          "evidence_type": "explanation",
+          "evidence": "Although the integration scope and various phases (such as Workday API integration, feed adjustments, and tracking configurations) were discussed, no concrete timeline milestones or delivery dates were committed during the call. The timeline discussions remained tentative, with vague next steps like uploading plans to the project tracker without agreed-upon deadlines.",
+          "timestamp": null,
+          "confidence": "high"
+        },
+        {
+          "theme": "Escalation Path Not Established",
+          "evidence_type": "explanation",
+          "evidence": "The call did not establish any clear escalation path or named point of contact for resolving technical blockers (such as Workday API access issues or feed modification delays) between sessions, leaving both parties without a defined process for handling integration issues.",
+          "timestamp": null,
+          "confidence": "high"
+        }
+      ],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 920,
+        "scoring": 1880,
+        "gap_analysis": 2648,
+        "card_type": 653
+      },
+      "seconds": 10.7
+    },
+    {
+      "recording_id": "f3848947-fd3c-4260-b953-bd1cc28a3cf3",
+      "effort": "high",
+      "call_type": "Discovery",
+      "call_score": "Low",
+      "card_type": "Risk",
+      "gaps": [
+        {
+          "theme": "Outcome-Based Positioning Missing",
+          "evidence_type": "dialogue",
+          "evidence": "essentially, we have evolved from 8 years ago, 7 years ago being predominantly an advertising platform for recruitment, which is our origins, to today being essentially an agentic platform that covers the top half of the recruitment funnel and beyond. Okay? So everything from attraction, which is our, historical strength in job advertising, and that covers all media, programmatic media, job boards, nontraditional, everything from Spotify, and Tiktok through to the basics like Indeed, and it goes from that attraction to driving candidates to take and apply action, and and that engagement gets delivered through a career site service, which has two elements.",
+          "timestamp": "06:19",
+          "confidence": "high"
+        },
+        {
+          "theme": "Buzzword Fatigue \u2014 No Case Study Evidence",
+          "evidence_type": "explanation",
+          "evidence": "Throughout the call, the sales representative repeatedly uses buzzwords such as 'agentic platform', 'Agentic AI', and 'unified analytics dashboard' without providing concrete case studies or customer success stories that demonstrate clear ROI or practitioner-level outcomes to build credibility.",
+          "timestamp": null,
+          "confidence": "high"
+        },
+        {
+          "theme": "No Pre-Call Research on Client's Current Stack",
+          "evidence_type": "dialogue",
+          "evidence": "And then do you already have a sense of who, if any, are the incumbent vendors that you think we would be replacing or coexisting with besides ATSs? Because I know for ATS, we've talked about Oracle, we've talked about Folio, but are there other vendors that you think you know, who's providing the career sites and landing pages for these current clients today, for instance?",
+          "timestamp": "31:53",
+          "confidence": "high"
+        }
+      ],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 1087,
+        "scoring": 1511,
+        "gap_analysis": 5927,
+        "card_type": 1761
+      },
+      "seconds": 18.8
+    },
+    {
+      "recording_id": "faa0f85e-4a55-48fe-872c-36eb02a16125",
+      "effort": "high",
+      "call_type": "Pricing/Negotiation",
+      "call_score": "Low",
+      "card_type": "Risk",
+      "gaps": [
+        {
+          "theme": "Reactive Pricing With No Anchors Prepared",
+          "evidence_type": "dialogue",
+          "evidence": "So do you guys wanna do you guys wanna take those numbers now that we have and kinda we plug them in to kind of the systems and we come back? I hate to schedule another call, but maybe we we dig into them a little bit and we come back with something.",
+          "timestamp": "22:57",
+          "confidence": "high"
+        },
+        {
+          "theme": "IC-Level Only at Pricing Stage",
+          "evidence_type": "dialogue",
+          "evidence": "Yeah. It is not. It is not because we again, I'm not looking for a specific tool right now. We already have the budget for the current tool that we have, but not for additional tools. So I would have to go and talk to to my. VPs and to finance and procurement and to a 100 teams. I'm not kidding. So they can release the money.",
+          "timestamp": "27:53",
+          "confidence": "high"
+        }
+      ],
+      "errors": {},
+      "reasoning_tokens": {
+        "call_type": 1410,
+        "scoring": 1813,
+        "gap_analysis": 3199,
+        "card_type": 1346
+      },
+      "seconds": 12.9
+    }
+  ]
+}

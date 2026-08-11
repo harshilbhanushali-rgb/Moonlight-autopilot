@@ -1,0 +1,45 @@
+02:00:42 INFO    
+02:00:42 INFO    ==============================================================================
+02:00:42 INFO    RUN-TO-RUN: high vs medium  --  46 shared call(s)
+02:00:42 INFO      nonce: left='fresh-ab-1786393150' right='fresh-ab-1786393150'
+02:00:42 INFO    ==============================================================================
+02:00:42 INFO    
+02:00:42 INFO    AGREEMENT BETWEEN THE TWO RUNS
+02:00:42 INFO      call_type    38/46   83%
+02:00:42 INFO      call_score   38/46   83%
+02:00:42 INFO      card_type    44/46   96%
+02:00:42 INFO      gap count    26/46   57%
+02:00:42 INFO    
+02:00:42 INFO      high     77 gaps,  49 anchored (64%) | 64.7s/call | 7620 reasoning tokens/call | 346s wall-clock
+02:00:42 INFO    
+02:00:42 INFO      medium   70 gaps,  42 anchored (60%) | 61.3s/call | 5935 reasoning tokens/call | 313s wall-clock
+02:00:42 INFO    
+02:00:42 INFO    STRATIFIED BY CALL TYPE (high's call_type)
+02:00:42 INFO      call_type                    n      type    score     card
+02:00:42 INFO      Demo                         8       88%      75%     100%
+02:00:42 INFO      Discovery                   11      100%      82%      91%
+02:00:42 INFO      Follow-up Demo               8       75%      75%      88%
+02:00:42 INFO      Kick-off                     5       80%      80%     100%
+02:00:42 INFO      Pricing/Negotiation          8       88%      88%     100%
+02:00:42 INFO      Technical Integration        6       50%     100%     100%
+02:00:42 INFO    
+02:00:42 INFO    EVERY DISAGREEMENT (18)
+02:00:42 INFO      06e7fa8b-7060-4070-a  [Pricing/Negotiation]  call_type: high='Pricing/Negotiation' -> medium='Technical Integration'
+02:00:42 INFO      06e7fa8b-7060-4070-a  [Pricing/Negotiation]  call_score: high='Low' -> medium='Medium'
+02:00:42 INFO      0bbe93f1-adb6-425d-b  [Discovery]  call_score: high='Low' -> medium='Medium'
+02:00:42 INFO      1b240e1f-3302-4132-8  [Technical Integration]  call_type: high='Technical Integration' -> medium='Discovery'
+02:00:42 INFO      2c356e27-68d9-4789-a  [Technical Integration]  call_type: high='Technical Integration' -> medium='Follow-up Demo'
+02:00:42 INFO      3fd1f2a6-97b1-4d2b-8  [Follow-up Demo]  call_type: high='Follow-up Demo' -> medium='Pricing/Negotiation'
+02:00:42 INFO      3fd1f2a6-97b1-4d2b-8  [Follow-up Demo]  call_score: high='Medium' -> medium='Low'
+02:00:42 INFO      4ac4eea2-dc3f-431e-9  [Follow-up Demo]  card_type: high='Coaching' -> medium='Risk'
+02:00:42 INFO      a41bceca-dbc3-4589-b  [Follow-up Demo]  call_type: high='Follow-up Demo' -> medium='Pricing/Negotiation'
+02:00:42 INFO      a41bceca-dbc3-4589-b  [Follow-up Demo]  call_score: high='Medium' -> medium='Low'
+02:00:42 INFO      b026da73-fd2b-4bcd-b  [Technical Integration]  call_type: high='Technical Integration' -> medium='Discovery'
+02:00:42 INFO      c19bb775-e42b-4ac0-b  [Kick-off]  call_score: high='Medium' -> medium='High'
+02:00:42 INFO      d48a9880-f15b-40a2-a  [Kick-off]  call_type: high='Kick-off' -> medium='Follow-up Demo'
+02:00:42 INFO      e8bfc3fb-985f-43d0-a  [Demo]  call_score: high='Medium' -> medium='High'
+02:00:42 INFO      efe793fa-cfa5-4223-b  [Demo]  call_type: high='Demo' -> medium='Discovery'
+02:00:42 INFO      efe793fa-cfa5-4223-b  [Demo]  call_score: high='High' -> medium='Medium'
+02:00:42 INFO      f03b6bd6-8e71-437d-a  [Discovery]  call_score: high='High' -> medium='Medium'
+02:00:42 INFO      f3848947-fd3c-4260-b  [Discovery]  card_type: high='Risk' -> medium='Coaching'
+02:00:42 INFO    ==============================================================================

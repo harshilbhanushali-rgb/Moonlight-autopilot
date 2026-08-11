@@ -1,0 +1,110 @@
+01:49:14 INFO    A/B side 'high': 46 call(s), model=gemini-3.5-flash, concurrency=10, gap_rubric_mode=descriptiononly
+01:49:14 INFO    baseline 'high' side stays in `analysis` untouched; this side -> docs\eval\reasoning-effort-high-20260810-201911.json
+01:49:14 INFO    cache-busting nonce: fresh-ab-1786393150
+01:49:42 INFO    [1/46] 35f28528-192e-4813-8  27.4s  call_type=Discovery score=Low card=Coaching gaps=0
+01:49:58 INFO    [2/46] 4ac4eea2-dc3f-431e-9  42.9s  call_type=Follow-up Demo score=Low card=Coaching gaps=0
+01:50:02 INFO    [3/46] 2c356e27-68d9-4789-a  47.2s  call_type=Technical Integration score=Low card=Coaching gaps=0
+01:50:12 INFO    [4/46] 1e67e05f-9a4a-4ea0-8  57.7s  call_type=Follow-up Demo score=High card=Coaching gaps=0
+01:50:21 INFO    [5/46] 1b240e1f-3302-4132-8  65.9s  call_type=Technical Integration score=Medium card=Risk gaps=2
+01:50:21 INFO    [6/46] 52280de1-8295-4e75-a  66.0s  call_type=Pricing/Negotiation score=Low card=Coaching gaps=2
+01:50:21 INFO    [7/46] 06e7fa8b-7060-4070-a  66.7s  call_type=Pricing/Negotiation score=Low card=Coaching gaps=2
+01:50:22 INFO    [8/46] 0bbe93f1-adb6-425d-b  67.5s  call_type=Discovery score=Low card=Risk gaps=1
+01:50:28 INFO    [9/46] 3fd1f2a6-97b1-4d2b-8  73.0s  call_type=Follow-up Demo score=Medium card=Risk gaps=1
+01:50:33 INFO    [10/46] 1be6ad19-11e0-4caf-8  78.1s  call_type=Demo score=High card=Risk gaps=1
+01:50:41 INFO    [11/46] 5907cf07-c393-4e3e-a  58.7s  call_type=Pricing/Negotiation score=Low card=Coaching gaps=1
+01:50:55 INFO    [12/46] 5b5cea1d-8677-4688-9  57.4s  call_type=Discovery score=Low card=Coaching gaps=3
+01:51:07 INFO    [13/46] 6050cf3b-b1fc-4496-9  65.7s  call_type=Demo score=High card=Coaching gaps=3
+01:51:13 INFO    [14/46] 64a952cd-c3d6-4143-9  52.6s  call_type=Pricing/Negotiation score=Low card=Risk gaps=2
+01:51:26 INFO    [15/46] 641ed63c-cf6d-4a88-9  74.0s  call_type=Discovery score=Medium card=Coaching gaps=3
+01:51:32 INFO    [16/46] 68525756-5d75-43c2-8  71.7s  call_type=Pricing/Negotiation score=Low card=Risk gaps=2
+01:51:39 INFO    [17/46] 74877391-561c-4a53-9  71.6s  call_type=Demo score=High card=Coaching gaps=3
+01:51:44 INFO    [18/46] 74a5ff96-4202-44a0-8  71.1s  call_type=Discovery score=Low card=Coaching gaps=2
+01:51:45 INFO    [19/46] 6860ac19-cec5-48c8-a  84.4s  call_type=Kick-off score=Medium card=Coaching gaps=2
+01:51:46 INFO    [20/46] 7cf8dcfb-9b84-423d-9  38.2s  call_type=Discovery score=Low card=Coaching gaps=0
+01:51:50 INFO    [21/46] 6be6157e-a139-41c0-8  88.0s  call_type=Demo score=Medium card=Coaching gaps=2
+01:52:01 INFO    [22/46] 7a17eedc-0a57-4d06-9  66.0s  call_type=Kick-off score=Medium card=Risk gaps=3
+01:52:12 INFO    [23/46] 79dac970-5a11-4131-b  90.7s  call_type=Demo score=Medium card=Risk gaps=3
+01:52:29 INFO    [24/46] b026da73-fd2b-4bcd-b  38.6s  call_type=Technical Integration score=Low card=Coaching gaps=0
+01:52:31 INFO    [25/46] 8c2407f0-ae2e-41ad-9  51.4s  call_type=Technical Integration score=Medium card=Risk gaps=3
+01:52:34 INFO    [26/46] a41bceca-dbc3-4589-b  48.6s  call_type=Follow-up Demo score=Medium card=Coaching gaps=0
+01:52:35 INFO    [27/46] 87ad656f-9da6-4364-8  68.2s  call_type=Follow-up Demo score=Medium card=Coaching gaps=1
+01:52:36 INFO    [28/46] 8adb3faf-80ce-42ca-b  63.8s  call_type=Pricing/Negotiation score=Low card=Coaching gaps=1
+01:52:36 INFO    [29/46] 8742c6f5-0a5c-46af-8  83.2s  call_type=Demo score=High card=Coaching gaps=3
+01:52:43 INFO    [30/46] 90f339c5-c18b-4af6-b  58.7s  call_type=Kick-off score=Low card=Risk gaps=3
+01:52:46 INFO    [31/46] a60f3243-d46b-4120-8  60.4s  call_type=Follow-up Demo score=High card=Coaching gaps=0
+01:52:55 INFO    [32/46] b06b6d38-df71-4b54-9  53.7s  call_type=Technical Integration score=Medium card=Coaching gaps=1
+01:53:06 INFO    [33/46] c19bb775-e42b-4ac0-b  54.5s  call_type=Kick-off score=Medium card=Coaching gaps=3
+01:53:34 INFO    [34/46] cb0e260a-47c5-449b-a  63.0s  call_type=Follow-up Demo score=High card=Risk gaps=1
+01:53:39 INFO    [35/46] c2fbc27e-51a2-4f46-a  70.5s  call_type=Pricing/Negotiation score=Low card=Coaching gaps=1
+01:53:42 INFO    [36/46] d48a9880-f15b-40a2-a  67.6s  call_type=Kick-off score=Medium card=Risk gaps=3
+01:53:45 INFO    [37/46] d91b4ac0-af69-4b81-b  69.0s  call_type=Discovery score=Medium card=Coaching gaps=1
+01:53:47 INFO    [38/46] e8bfc3fb-985f-43d0-a  70.5s  call_type=Demo score=Medium card=Coaching gaps=3
+01:53:49 INFO    [39/46] ec138c8a-12bd-4df8-8  66.1s  call_type=Follow-up Demo score=Medium card=Risk gaps=0
+01:53:51 INFO    [40/46] d50fd019-76a2-430e-b  76.8s  call_type=Discovery score=High card=Risk gaps=2
+01:53:53 INFO    [41/46] efe793fa-cfa5-4223-b  66.6s  call_type=Demo score=High card=Coaching gaps=2
+01:54:11 INFO    [42/46] f03b6bd6-8e71-437d-a  76.8s  call_type=Discovery score=High card=Risk gaps=1
+01:54:27 INFO    [43/46] f2b812cc-0ef6-49d2-9  80.5s  call_type=Discovery score=Low card=Risk gaps=2
+01:54:32 INFO    [44/46] f3262215-ea69-4d17-a  58.3s  call_type=Technical Integration score=Medium card=Coaching gaps=2
+01:54:48 INFO    [45/46] faa0f85e-4a55-48fe-8  66.1s  call_type=Pricing/Negotiation score=Low card=Risk gaps=2
+01:55:00 INFO    [46/46] f3848947-fd3c-4260-b  80.9s  call_type=Discovery score=Medium card=Risk gaps=4
+01:55:00 INFO    side 'high' done: 46 call(s) in 345.8s wall-clock (64.7s/call serial-equivalent) -> docs\eval\reasoning-effort-high-20260810-201911.json
+Traceback (most recent call last):
+  File "c:\PF\Joveo\Moonlight-Autopilot\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+  File "c:\PF\Joveo\Moonlight-Autopilot\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+  File "c:\PF\Joveo\Moonlight-Autopilot\.venv\Lib\site-packages\psycopg\cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+psycopg.OperationalError: consuming input failed: SSL connection has been closed unexpectedly
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\PF\Joveo\Moonlight-Autopilot\app\services\eval\reasoning_effort_ab.py", line 550, in <module>
+    )
+^^^^^^
+  File "C:\PF\Joveo\Moonlight-Autopilot\app\services\eval\reasoning_effort_ab.py", line 545, in main
+    anchored,
+           ^^^
+  File "C:\PF\Joveo\Moonlight-Autopilot\app\services\eval\reasoning_effort_ab.py", line 87, in load_baseline
+    rows = session.execute(
+           ^^^^^^^^^^^^^^^^
+  File "c:\PF\Joveo\Moonlight-Autopilot\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2373, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\PF\Joveo\Moonlight-Autopilot\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2271, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\PF\Joveo\Moonlight-Autopilot\.venv\Lib\site-packages\sqlalchemy\orm\context.py", line 306, in orm_execute_statement
+    result = conn.execute(
+             ^^^^^^^^^^^^^
+  File "c:\PF\Joveo\Moonlight-Autopilot\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1421, in execute
+    return meth(
+           ^^^^^
+  File "c:\PF\Joveo\Moonlight-Autopilot\.venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 526, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\PF\Joveo\Moonlight-Autopilot\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1643, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\PF\Joveo\Moonlight-Autopilot\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1848, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\PF\Joveo\Moonlight-Autopilot\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1988, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "c:\PF\Joveo\Moonlight-Autopilot\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 2365, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "c:\PF\Joveo\Moonlight-Autopilot\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+  File "c:\PF\Joveo\Moonlight-Autopilot\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+  File "c:\PF\Joveo\Moonlight-Autopilot\.venv\Lib\site-packages\psycopg\cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+sqlalchemy.exc.OperationalError: (psycopg.OperationalError) consuming input failed: SSL connection has been closed unexpectedly
+[SQL: SELECT analysis.id, analysis.avoma_recording_id, analysis.call_score, analysis.call_type, analysis.risk_gap_analysis, analysis.card_type, analysis.call_type_prompt_version_id, analysis.scoring_prompt_version_id, analysis.gap_rubric_version_id, analysis.card_type_prompt_version_id, analysis.call_type_status, analysis.scoring_status, analysis.gap_status, analysis.card_type_status, analysis.call_type_error, analysis.scoring_error, analysis.gap_error, analysis.card_type_error, analysis.status, analysis.retry_count, analysis.call_type_retry_count, analysis.scoring_retry_count, analysis.gap_retry_count, analysis.card_type_retry_count, analysis.dead_letter_at, analysis.created_at, analysis.updated_at, call_storage.id AS id_1, call_storage.avoma_recording_id AS avoma_recording_id_1, call_storage.client_record_id, call_storage.transcript, call_storage.call_metadata, call_storage.fetched_at 
+FROM analysis JOIN call_storage ON analysis.avoma_recording_id = call_storage.avoma_recording_id 
+WHERE analysis.status = %(status_1)s::VARCHAR ORDER BY analysis.avoma_recording_id]
+[parameters: {'status_1': 'processed'}]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)

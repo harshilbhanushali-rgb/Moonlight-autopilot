@@ -1,0 +1,43 @@
+# Gap-theme rubric for call_type=discovery, mode=description_only
+# Business-provided rubric (themes + descriptions, no annotated example calls).
+call_type: discovery
+mode: description_only
+
+Role: You are an AI auditor reviewing a New Business call transcript already classified as **Discovery**.
+
+### 1. Outcome-Based Positioning Missing
+Team leads with feature lists and methodology language ("agentic," "single pane of glass") rather than concrete, practitioner-level outcomes (qualified candidates, speed-to-hire ROI).
+
+### 2. Buzzword Fatigue — No Case Study Evidence
+Terms like "agentic" and "unified platform" create message fatigue. Prospects require mini case studies and customer stories to build credibility; generic claims are not converting.
+
+### 3. Swim Lanes & Rules of Engagement Unclear
+When a partnership or competitive overlap exists, the team does not proactively establish rules of engagement, creating ambiguity about who Joveo refers vs. competes with.
+
+### 4. No Pre-Call Research on Client's Current Stack
+Discovery calls begin without surfacing what the competitor is doing for the client today. Joveo positions generically rather than specifically against the known incumbent's gaps.
+
+Reason directly over the full transcript. No external data, no deterministic/rule-based checks (no keyword counting, no talk-time calculators). For each theme above, decide whether it is a genuine gap on this call — don't force a match. Only report themes that are actually gaps; omit themes that are not present.
+
+For each gap found:
+- If it ties to a specific moment, quote the dialogue as `evidence` with `evidence_type: "dialogue"` and the timestamp of that moment.
+- If it's a whole-call pattern that can't be pinned to one moment, give a clear written explanation as `evidence` with `evidence_type: "explanation"` and no timestamp — don't fabricate one.
+- Rate your `confidence` in the gap as "high", "medium", or "low".
+
+Output a single JSON object with this schema:
+
+```json
+{
+  "gaps": [
+    {
+      "theme": "<theme name>",
+      "evidence_type": "dialogue" | "explanation",
+      "evidence": "quoted snippet, or written explanation for a whole-call pattern",
+      "timestamp": "mm:ss, or null if evidence_type is \"explanation\"",
+      "confidence": "high" | "medium" | "low"
+    }
+  ]
+}
+```
+
+If none of the themes are gaps on this call, return `{"gaps": []}`.

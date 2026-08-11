@@ -1,0 +1,84 @@
+01:44:25 INFO    A/B side 'high': 46 call(s), model=gemini-3.5-flash, concurrency=10, gap_rubric_mode=descriptiononly
+01:44:25 INFO    baseline 'high' side stays in `analysis` untouched; this side -> docs\eval\reasoning-effort-high-20260810-201423.json
+01:44:34 INFO    [1/46] 35f28528-192e-4813-8  7.8s  call_type=Discovery score=Low card=Coaching gaps=0
+01:44:38 INFO    [2/46] 0bbe93f1-adb6-425d-b  12.0s  call_type=Discovery score=Medium card=Risk gaps=1
+01:44:38 INFO    [3/46] 1be6ad19-11e0-4caf-8  12.0s  call_type=Demo score=High card=Risk gaps=3
+01:44:38 INFO    [4/46] 3fd1f2a6-97b1-4d2b-8  12.6s  call_type=Pricing/Negotiation score=Low card=Risk gaps=2
+01:44:39 INFO    [5/46] 1b240e1f-3302-4132-8  13.3s  call_type=Technical Integration score=Low card=Risk gaps=2
+01:44:39 INFO    [6/46] 4ac4eea2-dc3f-431e-9  13.5s  call_type=Follow-up Demo score=Low card=Coaching gaps=0
+01:44:41 INFO    [7/46] 06e7fa8b-7060-4070-a  15.2s  call_type=Pricing/Negotiation score=Low card=Coaching gaps=2
+01:44:41 INFO    [8/46] 1e67e05f-9a4a-4ea0-8  14.8s  call_type=Follow-up Demo score=High card=Coaching gaps=0
+01:44:42 INFO    [9/46] 2c356e27-68d9-4789-a  15.9s  call_type=Technical Integration score=Low card=Coaching gaps=1
+01:44:42 INFO    [10/46] 52280de1-8295-4e75-a  16.0s  call_type=Pricing/Negotiation score=Low card=Coaching gaps=2
+01:44:48 INFO    [11/46] 5907cf07-c393-4e3e-a  14.5s  call_type=Pricing/Negotiation score=Low card=Coaching gaps=1
+01:44:48 INFO    [12/46] 641ed63c-cf6d-4a88-9  9.8s  call_type=Discovery score=Medium card=Coaching gaps=3
+01:44:51 INFO    [13/46] 5b5cea1d-8677-4688-9  13.4s  call_type=Discovery score=Low card=Coaching gaps=3
+01:44:52 INFO    [14/46] 6050cf3b-b1fc-4496-9  14.5s  call_type=Demo score=High card=Coaching gaps=2
+01:44:54 INFO    [15/46] 6860ac19-cec5-48c8-a  13.0s  call_type=Kick-off score=Low card=Coaching gaps=3
+01:44:54 INFO    [16/46] 74a5ff96-4202-44a0-8  12.1s  call_type=Discovery score=Low card=Coaching gaps=3
+01:44:55 INFO    [17/46] 68525756-5d75-43c2-8  15.3s  call_type=Technical Integration score=High card=Risk gaps=3
+01:44:55 INFO    [18/46] 6be6157e-a139-41c0-8  14.0s  call_type=Demo score=Medium card=Coaching gaps=1
+01:44:55 INFO    [19/46] 74877391-561c-4a53-9  13.1s  call_type=Demo score=High card=Coaching gaps=5
+01:44:56 INFO    [20/46] 64a952cd-c3d6-4143-9  16.4s  call_type=Pricing/Negotiation score=Low card=Coaching gaps=3
+01:45:01 INFO    [21/46] 7cf8dcfb-9b84-423d-9  9.6s  call_type=Discovery score=Low card=Coaching gaps=0
+01:45:03 INFO    [22/46] 7a17eedc-0a57-4d06-9  14.2s  call_type=Kick-off score=High card=Risk gaps=3
+01:45:03 INFO    [23/46] 79dac970-5a11-4131-b  14.7s  call_type=Demo score=Medium card=Risk gaps=4
+01:45:04 INFO    [24/46] 8742c6f5-0a5c-46af-8  11.2s  call_type=Demo score=High card=Coaching gaps=2
+01:45:05 INFO    [25/46] 8c2407f0-ae2e-41ad-9  10.0s  call_type=Technical Integration score=Medium card=Risk gaps=3
+01:45:07 INFO    [26/46] 8adb3faf-80ce-42ca-b  13.1s  call_type=Pricing/Negotiation score=Low card=Coaching gaps=1
+01:45:08 INFO    [27/46] a60f3243-d46b-4120-8  12.3s  call_type=Follow-up Demo score=High card=Coaching gaps=0
+01:45:08 INFO    [28/46] 90f339c5-c18b-4af6-b  13.8s  call_type=Kick-off score=Low card=Risk gaps=3
+01:45:09 INFO    [29/46] b026da73-fd2b-4bcd-b  7.9s  call_type=Discovery score=Low card=Coaching gaps=0
+01:45:11 INFO    [30/46] 87ad656f-9da6-4364-8  17.3s  call_type=Follow-up Demo score=Medium card=Coaching gaps=1
+01:45:13 INFO    [31/46] b06b6d38-df71-4b54-9  10.2s  call_type=Technical Integration score=Medium card=Coaching gaps=2
+01:45:14 INFO    [32/46] c2fbc27e-51a2-4f46-a  10.0s  call_type=Technical Integration score=High card=Coaching gaps=2
+01:45:14 INFO    [33/46] a41bceca-dbc3-4589-b  18.9s  call_type=Follow-up Demo score=Medium card=Coaching gaps=0
+01:45:15 INFO    [34/46] cb0e260a-47c5-449b-a  10.3s  call_type=Follow-up Demo score=High card=Risk gaps=1
+01:45:17 INFO    [35/46] c19bb775-e42b-4ac0-b  13.9s  call_type=Kick-off score=Medium card=Coaching gaps=2
+01:45:17 INFO    [36/46] d50fd019-76a2-430e-b  9.2s  call_type=Discovery score=Medium card=Risk gaps=2
+01:45:20 INFO    [37/46] e8bfc3fb-985f-43d0-a  11.1s  call_type=Demo score=Medium card=Coaching gaps=4
+01:45:21 INFO    [38/46] d91b4ac0-af69-4b81-b  13.0s  call_type=Discovery score=Medium card=Coaching gaps=3
+01:45:22 INFO    [39/46] efe793fa-cfa5-4223-b  8.9s  call_type=Demo score=High card=Coaching gaps=1
+01:45:22 INFO    [40/46] d48a9880-f15b-40a2-a  15.0s  call_type=Follow-up Demo score=Medium card=Risk gaps=2
+01:45:26 INFO    [41/46] f3262215-ea69-4d17-a  10.7s  call_type=Technical Integration score=Low card=Coaching gaps=2
+01:45:27 INFO    [42/46] f2b812cc-0ef6-49d2-9  12.9s  call_type=Discovery score=Low card=Risk gaps=2
+01:45:27 INFO    [43/46] ec138c8a-12bd-4df8-8  15.8s  call_type=Follow-up Demo score=Medium card=Risk gaps=0
+01:45:28 INFO    [44/46] f03b6bd6-8e71-437d-a  14.3s  call_type=Discovery score=High card=Risk gaps=1
+01:45:30 INFO    [45/46] faa0f85e-4a55-48fe-8  12.9s  call_type=Pricing/Negotiation score=Low card=Risk gaps=2
+01:45:36 INFO    [46/46] f3848947-fd3c-4260-b  18.8s  call_type=Discovery score=Low card=Risk gaps=3
+01:45:36 INFO    side 'high' done: 46 call(s) in 70.2s wall-clock (13.0s/call serial-equivalent) -> docs\eval\reasoning-effort-high-20260810-201423.json
+01:45:37 INFO    
+01:45:37 INFO    ==============================================================================
+01:45:37 INFO    high (in `analysis`)  vs  high (this run)   --  46 call(s)
+01:45:37 INFO    ==============================================================================
+01:45:37 INFO    
+01:45:37 INFO    AGREEMENT WITH THE high BASELINE
+01:45:37 INFO      call_type    46/46   100%
+01:45:37 INFO      call_score   46/46   100%
+01:45:37 INFO      card_type    43/46   93%
+01:45:37 INFO      gap count    46/46   100% (identical number of gaps)
+01:45:37 INFO    
+01:45:37 INFO    GAP VOLUME AND ANCHORING
+01:45:37 INFO      high     86 gaps,  58 anchored (67%)
+01:45:37 INFO      high     86 gaps,  58 anchored (67%)
+01:45:37 INFO    
+01:45:37 INFO    STRATIFIED BY CALL TYPE (baseline's call_type)
+01:45:37 INFO      call_type                    n      type    score     card   anchor high   anchor high  
+01:45:37 INFO      Demo                         8      100%     100%     100%   38/44 (86%)   38/44 (86%)  
+01:45:37 INFO      Discovery                   12      100%     100%      92%   32/42 (76%)   32/42 (76%)  
+01:45:37 INFO      Follow-up Demo               8      100%     100%     100%   6/8 (75%)     6/8 (75%)    
+01:45:37 INFO      Kick-off                     4      100%     100%      75%   10/22 (45%)   10/22 (45%)  
+01:45:37 INFO      Pricing/Negotiation          7      100%     100%      86%   18/26 (69%)   18/26 (69%)  
+01:45:37 INFO      Technical Integration        7      100%     100%     100%   12/30 (40%)   12/30 (40%)  
+01:45:37 INFO    
+01:45:37 INFO    EVERY DISAGREEMENT (3)
+01:45:37 INFO      64a952cd-c3d6-4143-9  [Pricing/Negotiation]  card_type: high='Risk' -> high='Coaching'
+01:45:37 INFO      74a5ff96-4202-44a0-8  [Discovery]  card_type: high='Risk' -> high='Coaching'
+01:45:37 INFO      7a17eedc-0a57-4d06-9  [Kick-off]  card_type: high='Coaching' -> high='Risk'
+01:45:37 INFO    
+01:45:37 INFO    COST / LATENCY FOR THIS SIDE (no baseline equivalent -- never recorded for the high run)
+01:45:37 INFO      reasoning tokens per call: mean 7349, min 1867, max 14062
+01:45:37 INFO      seconds per call:          mean 13.0, min 7.8, max 18.9
+01:45:37 INFO    
+01:45:37 INFO    no step errors on this side.
+01:45:37 INFO    ==============================================================================

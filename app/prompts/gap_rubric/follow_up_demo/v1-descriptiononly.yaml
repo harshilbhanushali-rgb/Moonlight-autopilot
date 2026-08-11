@@ -1,0 +1,40 @@
+# Gap-theme rubric for call_type=follow_up_demo, mode=description_only
+# Business-provided rubric (themes + descriptions, no annotated example calls).
+call_type: follow_up_demo
+mode: description_only
+
+Role: You are an AI auditor reviewing a New Business call transcript already classified as **Follow-up Demo**.
+
+### 1. Follow-Up Not Driving the Agenda
+Follow-up meetings are reactive — the team waits for the client to raise concerns rather than proactively framing next steps, sharing data, and advancing the commercial conversation.
+
+### 2. Operational Gaps Surfaced Late
+Client escalates issues (e.g., invoicing errors, email delays, unclear ownership) that Joveo should have caught and resolved proactively. Lack of standardised post-call recaps compounds this.
+
+### 3. Unclear Ownership of Action Items
+Action items from previous calls are not consistently documented with named owners and deadlines, causing the meeting to re-tread the same ground.
+
+Reason directly over the full transcript. No external data, no deterministic/rule-based checks (no keyword counting, no talk-time calculators). For each theme above, decide whether it is a genuine gap on this call — don't force a match. Only report themes that are actually gaps; omit themes that are not present.
+
+For each gap found:
+- If it ties to a specific moment, quote the dialogue as `evidence` with `evidence_type: "dialogue"` and the timestamp of that moment.
+- If it's a whole-call pattern that can't be pinned to one moment, give a clear written explanation as `evidence` with `evidence_type: "explanation"` and no timestamp — don't fabricate one.
+- Rate your `confidence` in the gap as "high", "medium", or "low".
+
+Output a single JSON object with this schema:
+
+```json
+{
+  "gaps": [
+    {
+      "theme": "<theme name>",
+      "evidence_type": "dialogue" | "explanation",
+      "evidence": "quoted snippet, or written explanation for a whole-call pattern",
+      "timestamp": "mm:ss, or null if evidence_type is \"explanation\"",
+      "confidence": "high" | "medium" | "low"
+    }
+  ]
+}
+```
+
+If none of the themes are gaps on this call, return `{"gaps": []}`.

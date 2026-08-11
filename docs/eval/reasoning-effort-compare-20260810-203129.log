@@ -1,0 +1,49 @@
+02:01:32 INFO    
+02:01:32 INFO    ==============================================================================
+02:01:32 INFO    high (in `analysis`)  vs  high (this run)   --  46 call(s)
+02:01:32 INFO    ==============================================================================
+02:01:32 INFO    
+02:01:32 INFO    AGREEMENT WITH THE high BASELINE
+02:01:32 INFO      call_type    41/46   89%
+02:01:32 INFO      call_score   36/46   78%
+02:01:32 INFO      card_type    44/46   96%
+02:01:32 INFO      gap count    26/46   57% (identical number of gaps)
+02:01:32 INFO    
+02:01:32 INFO    GAP VOLUME AND ANCHORING
+02:01:32 INFO      high     86 gaps,  58 anchored (67%)
+02:01:32 INFO      high     77 gaps,  49 anchored (64%)
+02:01:32 INFO    
+02:01:32 INFO    STRATIFIED BY CALL TYPE (baseline's call_type)
+02:01:32 INFO      call_type                    n      type    score     card   anchor high   anchor high  
+02:01:32 INFO      Demo                         8      100%     100%     100%   34/42 (81%)   34/42 (81%)  
+02:01:32 INFO      Discovery                   12       92%      75%      92%   31/40 (78%)   31/40 (78%)  
+02:01:32 INFO      Follow-up Demo               8       88%     100%     100%   6/9 (67%)     6/9 (67%)    
+02:01:32 INFO      Kick-off                     4      100%      50%      75%   10/22 (45%)   10/22 (45%)  
+02:01:32 INFO      Pricing/Negotiation          7       86%      86%     100%   15/24 (62%)   15/24 (62%)  
+02:01:32 INFO      Technical Integration        7       71%      43%     100%   11/26 (42%)   11/26 (42%)  
+02:01:32 INFO    
+02:01:32 INFO    EVERY DISAGREEMENT (17)
+02:01:32 INFO      0bbe93f1-adb6-425d-b  [Discovery]  call_score: high='Medium' -> high='Low'
+02:01:32 INFO      1b240e1f-3302-4132-8  [Technical Integration]  call_score: high='Low' -> high='Medium'
+02:01:32 INFO      3fd1f2a6-97b1-4d2b-8  [Pricing/Negotiation]  call_type: high='Pricing/Negotiation' -> high='Follow-up Demo'
+02:01:32 INFO      3fd1f2a6-97b1-4d2b-8  [Pricing/Negotiation]  call_score: high='Low' -> high='Medium'
+02:01:32 INFO      68525756-5d75-43c2-8  [Technical Integration]  call_type: high='Technical Integration' -> high='Pricing/Negotiation'
+02:01:32 INFO      68525756-5d75-43c2-8  [Technical Integration]  call_score: high='High' -> high='Low'
+02:01:32 INFO      6860ac19-cec5-48c8-a  [Kick-off]  call_score: high='Low' -> high='Medium'
+02:01:32 INFO      74a5ff96-4202-44a0-8  [Discovery]  card_type: high='Risk' -> high='Coaching'
+02:01:32 INFO      7a17eedc-0a57-4d06-9  [Kick-off]  call_score: high='High' -> high='Medium'
+02:01:32 INFO      7a17eedc-0a57-4d06-9  [Kick-off]  card_type: high='Coaching' -> high='Risk'
+02:01:32 INFO      b026da73-fd2b-4bcd-b  [Discovery]  call_type: high='Discovery' -> high='Technical Integration'
+02:01:32 INFO      c2fbc27e-51a2-4f46-a  [Technical Integration]  call_type: high='Technical Integration' -> high='Pricing/Negotiation'
+02:01:32 INFO      c2fbc27e-51a2-4f46-a  [Technical Integration]  call_score: high='High' -> high='Low'
+02:01:32 INFO      d48a9880-f15b-40a2-a  [Follow-up Demo]  call_type: high='Follow-up Demo' -> high='Kick-off'
+02:01:32 INFO      d50fd019-76a2-430e-b  [Discovery]  call_score: high='Medium' -> high='High'
+02:01:32 INFO      f3262215-ea69-4d17-a  [Technical Integration]  call_score: high='Low' -> high='Medium'
+02:01:32 INFO      f3848947-fd3c-4260-b  [Discovery]  call_score: high='Low' -> high='Medium'
+02:01:32 INFO    
+02:01:32 INFO    COST / LATENCY FOR THIS SIDE (no baseline equivalent -- never recorded for the high run)
+02:01:32 INFO      reasoning tokens per call: mean 7620, min 1979, max 12939
+02:01:32 INFO      seconds per call:          mean 64.7, min 27.4, max 90.7
+02:01:32 INFO    
+02:01:32 INFO    no step errors on this side.
+02:01:32 INFO    ==============================================================================
