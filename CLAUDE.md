@@ -292,7 +292,80 @@ Same shape at the batch entrypoint: `batch.run.main()` stays **sync**, wrapping 
 
 The circuit breaker needs **no lock** — all coroutines share one event-loop thread and none of its mutators contain an `await`. What concurrency does change is the meaning of "consecutive": failures now interleave across in-flight calls, so the threshold is a heuristic, and a batch may attempt up to `max_concurrent_calls - 1` extra rows after it opens (rows already started are allowed to finish; rows not yet started are released un-attempted). Most tests in `tests/services/batch/test_processor.py` therefore pin `max_concurrency=1` so their exact counts stay deterministic and to prove the sequential semantics are unchanged; the concurrency-specific tests assert properties that hold at any width.
 
+## call_type is measured now — and the classifier is not the problem
+
+Hand labels exist: `app/services/eval/call_type_labels.py`, all 32 in-scope calls
+read in full and blind to the stored prediction. Scored by
+`call_type_accuracy.py --labelled`. Before this there was no accuracy figure at
+all, only an 11% flip rate between identical re-runs.
+
+**`Ground_Truth_call_type/` is NOT a test set.** Those six transcripts are the six
+sections of `Call_examples.md`, the material `call_type/v1.txt` was written from.
+Scoring on them measures nothing — the type descriptions were authored to make
+exactly those six come out right. It is a floor check only: a failure means
+something is broken, a pass means nothing. It does currently fail 1 of 6,
+reproducibly over three runs (the transcript that *defines* Demo classifies as
+Discovery, because a 27% warm-up defeats "brief" and balanced talk time defeats
+"dominant activity").
+
+**Do not tune the call_type prompt.** On the 8 held-out calls that have a clean
+answer it scored **6/8 then 8/8 on identical input**. The run-to-run variance
+exceeds any signal a set that size can carry, so no accuracy figure is quotable
+*and no prompt change is verifiable against it*. Any edit would be
+indistinguishable from churn.
+
+**The taxonomy is what fails.** Of 32 calls:
+
+```text
+ 4  not sales calls at all
+28  labelled, but 20 of them ambiguous
+ 8  strictly usable  ->  Discovery 3, Follow-up Demo 3, Demo 1, Tech Int 1
+                         Kick-off 0, Pricing/Negotiation 0
+```
+
+Six calls could only be labelled `Kick-off`, and three reviewers working
+independently each flagged the same doubt: *it is the Nth weekly cadence call,
+not a first project meeting*. Not one call in 32 is an unambiguous
+`Pricing/Negotiation`. The six types describe stages of a linear NB funnel, and
+recurring account-onboarding cadence — roughly 40% of the corpus — is not a stage
+in one. **This needs a rubric-owner decision (a seventh type), not a prompt fix.**
+
+**The cascade is measured, not inferred.** One recurring meeting series (11 RTX
+recordings) was spread across **5 call types**, and within `Kick-off` alone the
+score came back Medium, Low *and* High; within `Technical Integration`, Low, High
+*and* Medium. Since `call_type` selects both the scoring prompt and the gap
+rubric, a misfit produces a wrong score *and* gaps from an inapplicable rubric.
+
+**Four calls in 32 are not sales calls, and each got a type, a score and a card:**
+a single 30-word turn (Discovery/Low), a recording that captures only the meeting
+moving to Zoom (Discovery/Low), a client no-show where two Joveo staff talk to
+each other (Follow-up Demo/Low), and a supply negotiation where the counterparty
+is a job board refusing Joveo access (Discovery/**Medium/Risk with a coaching
+gap**). All are mechanically detectable — word count, no client-domain
+participant, a "moving to Zoom" ending. An input gate needs no ground truth to
+validate, which makes it the cheapest real improvement available.
+
 ## Two databases — do not confuse them
+
+**`moonlight_calls` is rewritten, not appended to — and only its current contents
+are in scope.** On 2026-08-12 it went from **296 rows to 197** within hours; the id
+range is 2..296, so ~99 rows were deleted. **19 of our 51 fetched calls vanished
+from it**, while other accounts *gained* calls (Alexander Mann 4 -> 18, Spring
+Health 3 -> 14) and two lost all of theirs (Talroo, Pratt & Whitney). All 156
+accounts stayed `active`, so this is call-level churn from a sync job, not
+deactivation. Confirmed with the user: **a call absent from Koushik's table is not
+in scope — treat it as not needed.** So the real corpus is **32 calls, not 51**,
+and any measurement should be recomputed on that basis (the R1/R2 rubric numbers
+were taken before this rule and include out-of-scope calls; the direction holds
+but the counts would shift).
+
+Two consequences worth remembering. That rule removes the worst *scope* offender
+for free — the Talroo bi-weekly where Joveo is the buyer and the pipeline coached
+Talroo's rep — but it removes none of the empty/artifact calls, which are all
+still in Koushik's table. And **the fetcher has no reconciliation**: it diffs new
+ids forward from `moonlight_calls` into `call_storage`, so a call deleted at
+source stays in our `call_storage` and `analysis` forever and nothing notices.
+Ask Koushik why the table shrank before drawing conclusions from the backlog size.
 
 1. **Our app DB** (Neon Postgres, `DATABASE_URL`): `call_storage`, `analysis`, `prompt_versions`, `autofill_requests`. We own this schema and its Alembic migrations (`app/db/migrations/`).
 2. **Client Table source DB** (AWS RDS, `weatherman` database, `CONVERSATIONAL_EXPERIENCE_RDS_*` env vars): `moonlight_calls` / `moonlight_accounts`, owned and migrated by Koushik's side. **Read-only, always** — mapped on a separate `ClientBase`/engine (`app/db/client_*.py`) specifically so our Alembic autogenerate never sees these tables. `moonlight_calls.avoma_meeting_uuid` is the Avoma Recording ID; `transcription_uuid` is Avoma's own transcription ID (returned by their API, not queried by).
@@ -415,6 +488,9 @@ The fetcher and analyser are triggered by an in-process `BackgroundScheduler` (A
 - **`CardTableClient`** (writing Type/Gap into Koushik's external manual-card table) — still a `NotImplementedError` in `app/api/deps.py`. Blocked on that table's schema, which hasn't been shared yet.
 - **Account-level risk rollup** — surface this if a task seems to need it; not in this build's scope.
 - **Partial completion is deliberately NOT pursued** — confirmed with the user: once any step exhausts its own budget the **whole call dies** (`overall_status` → `failed_permanent`, which `claim_rows` no longer picks up), even if other steps still had retries left. A call that can't be fully analysed shouldn't become a moderator's card. The row still physically holds whatever succeeded before that point, marked `failed_permanent` so nothing treats it as complete — don't "fix" this into chasing 3-of-4 rows without asking again.
+- **An input gate is the highest-value unbuilt change, and it needs no ground truth.** 4 of 32 in-scope calls are not sales calls (see "call_type is measured now") and every reject is structural: a word-count floor, no participant on the client's email domain, a transcript that ends by moving to another platform. Because the criteria are mechanical rather than judgement calls, the gate can be validated without labels — unlike everything else on this list. Undecided: whether a rejected call gets a distinct `status` (so it is visibly excluded rather than silently scored) or is skipped at fetch time. Prefer the former; the project's pattern is visible status over silent state.
+- **A seventh call type for recurring account cadence — needs the rubric owner.** Six of 32 calls could only be labelled `Kick-off` and every one was flagged "Nth weekly, not a first project meeting"; 0 of 32 are an unambiguous `Pricing/Negotiation`. A seventh type needs a seventh gap rubric and a seventh scoring prompt, both business-team-owned, so this cannot be resolved on our side. It is the single change that would most improve `call_type`, `call_score` and gap relevance at once.
+- **~~call_type prompt wording~~ — do not pursue.** Measured: 6/8 then 8/8 on identical held-out input, so no prompt change is verifiable at this sample size. Revisit only with more labelled calls.
 - **Whether to extend R2 to the four untouched rubrics** — adding precondition/disqualifier clauses to every theme improved discovery (8 surviving gaps vs 6–7, at higher precision) and *failed* on pricing. There is no general rule here, so each of demo, follow_up_demo, kickoff and technical_integration needs its own A/B before adopting. Kick-off is the most tempting (all three of its themes fire on 75–100% of its calls) and the least conclusive — only **4** kick-off calls exist in the corpus, so fetch more before measuring. See "Gap rubric versions".
 - **Two themes still need attention and neither has been touched.** `Wrong People on the Call` (demo) fired 4/8 and the verifier kept **4 of 4**, yet both hand-reviewed instances were wrong — one fired because a rep said "I'll have to check" and a colleague answered seven seconds later. It passes every downstream check, so nothing catches it. And three themes have **never fired in 46 calls** (`Slide Reading & Poor Storytelling`, `Irrelevant or Inaccurate Content Shown`, `Unclear Ownership of Action Items`) — either the behaviour is absent or the wording is unmatchable, and the data cannot tell which.
 - **Nothing produced by R1/R2 has been hand-reviewed**, so the pipeline's gap quality is now measured against the entailment verifier rather than against a human. That verifier keeps 90% of good gaps and removes 67% of bad ones, so it is a proxy, and it is currently the binding constraint on knowing whether changes help. Getting ~50 calls labelled by a real Moonlight auditor would be worth more than any further prompt work.
