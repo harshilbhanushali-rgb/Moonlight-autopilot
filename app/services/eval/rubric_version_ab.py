@@ -120,22 +120,30 @@ async def _verify(llm_client, gaps, transcript, verification_prompts):
     ]
 
 
-async def _run_call(llm_client, call, rubrics, verification_prompts, nonce, target_themes):
+async def _run_call(
+    llm_client, call, rubrics, verification_prompts, nonce, target_themes, verify_all
+):
     transcript = _with_nonce(call["transcript"], nonce)
     out = {"id": call["id"], "title": call["title"], "arms": {}}
     for label, rubric in rubrics.items():
         try:
             gaps = await _one_arm(llm_client, transcript, rubric)
             target = [g for g in gaps if any(t in (g.theme or "") for t in target_themes)]
+            # By default only the rewritten theme is verified, since the others
+            # are unchanged between arms. `verify_all` is for the case where a
+            # change is expected to alter OTHER themes' output — then "more
+            # gaps" is not a result on its own, and only survival tells you
+            # whether the extra ones are worth a moderator's time.
+            verified = gaps if verify_all else target
+            verdicts = await _verify(llm_client, verified, transcript, verification_prompts)
             out["arms"][label] = {
                 "themes": [g.theme for g in gaps],
                 "target_fired": len(target),
-                # Only the rewritten theme's firings are verified — the other
-                # themes are unchanged between arms and would add cost without
-                # bearing on the question.
-                "target_verdicts": await _verify(
-                    llm_client, target, transcript, verification_prompts
-                ),
+                "target_verdicts": [
+                    v for v in verdicts
+                    if any(t in (v["theme"] or "") for t in target_themes)
+                ],
+                "all_verdicts": verdicts if verify_all else None,
                 "error": None,
             }
         except Exception as exc:
@@ -144,7 +152,7 @@ async def _run_call(llm_client, call, rubrics, verification_prompts, nonce, targ
     return out
 
 
-async def _run(call_type, labels, target_themes, nonce, out_path, concurrency):
+async def _run(call_type, labels, target_themes, nonce, out_path, concurrency, verify_all):
     registry = PromptRegistry(root=_PROMPTS_ROOT)
     rubric_dir = CALL_TYPE_DIRS[call_type]
     rubrics = {
@@ -177,7 +185,7 @@ async def _run(call_type, labels, target_themes, nonce, out_path, concurrency):
     async def guarded(call):
         async with semaphore:
             return await _run_call(
-                llm_client, call, rubrics, verification_prompts, nonce, target_themes
+                llm_client, call, rubrics, verification_prompts, nonce, target_themes, verify_all
             )
 
     try:
@@ -186,24 +194,47 @@ async def _run(call_type, labels, target_themes, nonce, out_path, concurrency):
         await llm_client.aclose()
 
     Path(out_path).write_text(json.dumps(results, indent=1), encoding="utf-8")
-    _report(results, labels, out_path)
+    _report(results, labels, out_path, verify_all)
 
 
-def _report(results, labels, out_path):
-    print(f"\n{'':<12}{'fired on':<12}{'survived verification':<24}{'total gaps'}")
+def _report(results, labels, out_path, verify_all=False):
+    print(f"\n{'':<12}{'target fired':<14}{'target survived':<18}{'raw gaps':<11}{'gaps surviving'}")
     for label in labels:
         arms = [r["arms"][label] for r in results if not r["arms"][label].get("error")]
         fired = [a for a in arms if a["target_fired"]]
         verdicts = [v for a in arms for v in a["target_verdicts"]]
         kept = sum(1 for v in verdicts if v["kept"])
         total = sum(len(a["themes"]) for a in arms)
+        # The figure that actually matters when other themes are expected to
+        # move: raw gap count rewards noise, surviving count does not.
+        if verify_all:
+            allv = [v for a in arms for v in (a["all_verdicts"] or [])]
+            survived = f"{sum(1 for v in allv if v['kept'])}/{len(allv)}"
+        else:
+            survived = "n/a"
         print(
-            f"  {label:<10}{len(fired)}/{len(arms):<10}"
-            f"{kept}/{len(verdicts):<22}{total}"
+            f"  {label:<10}{len(fired)}/{len(arms):<12}"
+            f"{kept}/{len(verdicts):<16}{total:<11}{survived}"
         )
         errs = sum(1 for r in results if r["arms"][label].get("error"))
         if errs:
             print(f"             ({errs} call(s) errored)")
+
+    if verify_all:
+        print("\nper-theme: raw firings -> surviving verification")
+        themes = sorted({t for r in results for label in labels
+                         for t in (r["arms"][label].get("themes") or [])})
+        width = max((len(t) for t in themes), default=10)
+        print(f"  {'theme':<{width}}  " + "  ".join(f"{l:>9}" for l in labels))
+        for theme in themes:
+            cells = []
+            for label in labels:
+                arms = [r["arms"][label] for r in results if not r["arms"][label].get("error")]
+                raw = sum(1 for a in arms for t in a["themes"] if t == theme)
+                kept = sum(1 for a in arms for v in (a["all_verdicts"] or [])
+                           if v["theme"] == theme and v["kept"])
+                cells.append(f"{raw:>4} ->{kept:>3}")
+            print(f"  {theme:<{width}}  " + "  ".join(f"{c:>9}" for c in cells))
 
     print("\nper-call detail for the rewritten theme:")
     for r in results:
@@ -246,6 +277,13 @@ def main() -> None:
     parser.add_argument("--nonce", default=None, help="busts the gateway response cache")
     parser.add_argument("--out", default="rubric_version_ab.json")
     parser.add_argument("--concurrency", type=int, default=6)
+    parser.add_argument(
+        "--verify-all",
+        action="store_true",
+        help="verify every gap, not just the rewritten theme's. Needed when a "
+             "change is expected to move OTHER themes too, because then raw gap "
+             "counts reward noise and only survival is a result.",
+    )
     args = parser.parse_args()
     asyncio.run(
         _run(
@@ -255,6 +293,7 @@ def main() -> None:
             args.nonce,
             args.out,
             args.concurrency,
+            args.verify_all,
         )
     )
 

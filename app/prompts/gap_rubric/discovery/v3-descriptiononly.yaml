@@ -1,0 +1,43 @@
+# Gap-theme rubric for call_type=discovery, mode=description_only
+# Business-provided rubric (themes + descriptions, no annotated example calls).
+call_type: discovery
+mode: description_only
+
+Role: You are an AI auditor reviewing a New Business call transcript already classified as **Discovery**.
+
+### 1. Outcome-Based Positioning Missing
+Applies only when the rep is actually positioning Joveo on this call — presenting capabilities, walking through the platform, or making a case for it. The rep describes what Joveo does in feature and methodology terms ("agentic", "single pane of glass", "unified platform") without tying any of it to a result the client would measure: cost per hire, time to fill, applicant quality, recruiter hours saved. Do **not** report this theme if the rep connects a capability to a named metric or business outcome, if the rep quantifies results with figures, or if the client explicitly asked for a feature or product walkthrough.
+
+### 2. Buzzword Fatigue — No Case Study Evidence
+Applies only when the rep makes credibility claims about how well Joveo works. Those claims rest on abstract platform language rather than evidence — no named customer, no specific result, nothing a prospect could check. Do **not** report this theme if the rep names any customer alongside a concrete result or figure, tells a specific customer story, or offers references or case studies. A single named example carrying a number is enough to disprove this theme.
+
+### 3. Swim Lanes & Rules of Engagement Unclear
+Applies only when an agency, partner, reseller or channel relationship is actually in play on this call — some party other than Joveo and the end client has a role in the deal. Nobody establishes who owns which accounts, who Joveo refers business to versus competes with, or how a conflict would be resolved, leaving the boundary ambiguous. Do **not** report this theme if no third party is involved, if the boundaries are stated or agreed anywhere on the call, or if the parties explicitly hand the question to a named follow-up.
+
+### 4. Incumbent Vendor Not Probed
+Applies only when the client has an existing programmatic or recruitment-marketing vendor. The rep does not ask what that vendor fails to solve for them, so Joveo's positioning stays generic instead of aimed at a named weakness. Do **not** report this theme if the rep names the incumbent, references prior research about the client's stack, or asks any question about the incumbent's performance or gaps — any of those means the behaviour this theme describes did not occur.
+
+Reason directly over the full transcript. No external data, no deterministic/rule-based checks (no keyword counting, no talk-time calculators). For each theme above, decide whether it is a genuine gap on this call — don't force a match. Only report themes that are actually gaps; omit themes that are not present.
+
+For each gap found:
+- If it ties to a specific moment, quote the dialogue as `evidence` with `evidence_type: "dialogue"` and the timestamp of that moment.
+- If it's a whole-call pattern that can't be pinned to one moment, give a clear written explanation as `evidence` with `evidence_type: "explanation"` and no timestamp — don't fabricate one.
+- Rate your `confidence` in the gap as "high", "medium", or "low".
+
+Output a single JSON object with this schema:
+
+```json
+{
+  "gaps": [
+    {
+      "theme": "<theme name>",
+      "evidence_type": "dialogue" | "explanation",
+      "evidence": "quoted snippet, or written explanation for a whole-call pattern",
+      "timestamp": "mm:ss, or null if evidence_type is \"explanation\"",
+      "confidence": "high" | "medium" | "low"
+    }
+  ]
+}
+```
+
+If none of the themes are gaps on this call, return `{"gaps": []}`.
