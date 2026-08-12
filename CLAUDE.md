@@ -335,14 +335,33 @@ not a first project meeting*. Not one call in 32 is an unambiguous
 Discovery -> Demo -> Follow-up Demo -> Pricing/Negotiation -> [signed] -> Kick-off -> Technical Integration
 ```
 
-**What is missing is a type for calls that are not on that line at all.** Roughly
-40% of the corpus is recurring account-management cadence — a weekly
-project-tracker review with an existing customer, repeating indefinitely. That is
-not Discovery, either Demo, a negotiation, a first project meeting, or a specific
-technical fix. Six calls were forced into `Kick-off` for want of anywhere else,
-and every one was flagged "Nth weekly, not a first project meeting". **This needs
-a rubric-owner decision — a seventh type with its own gap rubric and scoring
-prompt — not a prompt fix on our side.**
+**There will be no seventh call type — decided by the user 2026-08-13, final. Do
+not propose one again.** Roughly 40% of the corpus is recurring account-management
+cadence (a weekly project-tracker review with an existing customer, repeating
+indefinitely), and six such calls were labelled `Kick-off` for want of anywhere
+else. With the taxonomy fixed, **the goal is not to classify these calls better —
+it is to make the pipeline absorb them.** Two findings make that achievable:
+
+- **`Kick-off`'s scoring prompt already fits them.** Its ten categories are
+  Executive Reassurance, Goal & KPI Alignment, Roles/Responsibilities/Governance,
+  Onboarding Timeline & Milestone Review, Change Management, Mutual
+  Accountability, Communication Rhythm & Cadence, Stakeholder Engagement, Active
+  Listening, First Action Item Alignment. That is a description of ongoing
+  delivery governance, which is what these calls are.
+- **`Kick-off`'s gap rubric contradicts its own scoring prompt.** All three themes
+  are anchored to a single moment — "Agenda Not Proactively Set", "Scope Not
+  Locked *Before* Kick-off", "Success Metrics Not Agreed *at Start*" — so they
+  cannot fire meaningfully on the Nth weekly call, which is why they saturate at
+  75-100% and say nothing.
+
+So the fix inside the six types is: **route recurring cadence to `Kick-off`
+consistently, and widen `Kick-off`'s gap rubric to match its own scoring
+categories.** Both are rubric-owner changes, but far smaller than a new type.
+
+Residual damage we are choosing to accept: these calls still receive
+stage-specific themes that can misfire, and the classifier still scatters them
+(one RTX series spans 5 types), which no prompt change can currently be verified
+to fix — see the sample-size finding above.
 
 One observed exception to the ordering, worth knowing but not a refutation of it:
 integration work sometimes starts before the paperwork closes. On the Paychex call
@@ -511,7 +530,8 @@ The fetcher and analyser are triggered by an in-process `BackgroundScheduler` (A
 - **Account-level risk rollup** — surface this if a task seems to need it; not in this build's scope.
 - **Partial completion is deliberately NOT pursued** — confirmed with the user: once any step exhausts its own budget the **whole call dies** (`overall_status` → `failed_permanent`, which `claim_rows` no longer picks up), even if other steps still had retries left. A call that can't be fully analysed shouldn't become a moderator's card. The row still physically holds whatever succeeded before that point, marked `failed_permanent` so nothing treats it as complete — don't "fix" this into chasing 3-of-4 rows without asking again.
 - **An input gate is the highest-value unbuilt change, and it needs no ground truth.** 4 of 32 in-scope calls are not sales calls (see "call_type is measured now") and every reject is structural: a word-count floor, no participant on the client's email domain, a transcript that ends by moving to another platform. Because the criteria are mechanical rather than judgement calls, the gate can be validated without labels — unlike everything else on this list. Undecided: whether a rejected call gets a distinct `status` (so it is visibly excluded rather than silently scored) or is skipped at fetch time. Prefer the former; the project's pattern is visible status over silent state.
-- **A seventh call type for recurring account cadence — needs the rubric owner.** Six of 32 calls could only be labelled `Kick-off` and every one was flagged "Nth weekly, not a first project meeting"; 0 of 32 are an unambiguous `Pricing/Negotiation`. A seventh type needs a seventh gap rubric and a seventh scoring prompt, both business-team-owned, so this cannot be resolved on our side. It is the single change that would most improve `call_type`, `call_score` and gap relevance at once.
+- **~~A seventh call type~~ — RULED OUT by the user 2026-08-13, final. Do not propose it again.** The six types are fixed. Work the recurring-cadence problem inside them: route those calls to `Kick-off` (whose *scoring* categories already describe ongoing delivery governance) and widen `Kick-off`'s gap rubric, whose three themes are all anchored to a single moment and so saturate at 75-100% while saying nothing. See "call_type is measured now".
+- **Split gap themes into universal and stage-specific — the highest-value rubric change, and it needs no new type.** Of Demo's nine themes only three are demo-specific (`Slide Reading`, `Demo Not Customised`, `Irrelevant Content Shown`); the other six (`Unanswered Questions`, `Seller-Dominated`, `Wrong People on the Call`, `Competitive Intelligence Not Used`, `Imprecise Messaging`, `Missed Strategic Moments`) are true of any sales call. **Demo is the only rubric that has universal themes, and the only one that does not saturate** — the 3-theme rubrics contain nothing but narrow absence-claims, so a model that must report something reports those. This is a better-supported mechanism than the "rubric size" correlation recorded earlier. Giving every rubric the universal set plus its own specifics would: absorb mixed-stage calls (a discovery/demo call keeps most of what matters), relieve saturation, cut the duplication across six rubrics that currently copy-paste variants of the same theme, and reduce how much a wrong `call_type` costs. **Still a hypothesis** — it explains the saturation and mixed-call data but has not been measured, and mechanism claims have been wrong twice in this project.
 - **~~call_type prompt wording~~ — do not pursue.** Measured: 6/8 then 8/8 on identical held-out input, so no prompt change is verifiable at this sample size. Revisit only with more labelled calls.
 - **Whether to extend R2 to the four untouched rubrics** — adding precondition/disqualifier clauses to every theme improved discovery (8 surviving gaps vs 6–7, at higher precision) and *failed* on pricing. There is no general rule here, so each of demo, follow_up_demo, kickoff and technical_integration needs its own A/B before adopting. Kick-off is the most tempting (all three of its themes fire on 75–100% of its calls) and the least conclusive — only **4** kick-off calls exist in the corpus, so fetch more before measuring. See "Gap rubric versions".
 - **Two themes still need attention and neither has been touched.** `Wrong People on the Call` (demo) fired 4/8 and the verifier kept **4 of 4**, yet both hand-reviewed instances were wrong — one fired because a rep said "I'll have to check" and a colleague answered seven seconds later. It passes every downstream check, so nothing catches it. And three themes have **never fired in 46 calls** (`Slide Reading & Poor Storytelling`, `Irrelevant or Inaccurate Content Shown`, `Unclear Ownership of Action Items`) — either the behaviour is absent or the wording is unmatchable, and the data cannot tell which.
