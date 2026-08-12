@@ -8,7 +8,9 @@ from app.domain.call_type import classify_call_type
 from app.domain.card_type import classify_card_type
 from app.domain.errors import LLMOutputError
 from app.domain.gap_analysis import analyse_gaps
+from app.domain.gap_verification import DEFAULT_BATCH_SIZE
 from app.domain.scoring import score_call
+from app.domain.transcript import Transcript
 from app.domain.types import CallScore, CallType, CardType, CardTypeContext, Gap
 from app.db.models import STATUS_FAILED, STATUS_FAILED_PERMANENT, STATUS_PROCESSED
 from app.prompts.registry import PromptFile
@@ -22,6 +24,16 @@ class StepPrompts:
     scoring_for: Callable[[CallType], PromptFile]
     card_type: PromptFile
     gap_rubric_for: Callable[[CallType], PromptFile]
+    # Not call-type-scoped: the entailment check asks the same question of any
+    # gap regardless of which rubric produced it.
+    gap_verification_dialogue: PromptFile | None = None
+    gap_verification_explanation: PromptFile | None = None
+
+    @property
+    def gap_verification(self) -> tuple[PromptFile, PromptFile] | None:
+        if self.gap_verification_dialogue is None or self.gap_verification_explanation is None:
+            return None
+        return (self.gap_verification_dialogue, self.gap_verification_explanation)
 
     def by_content_hash(self, call_type: CallType | None) -> dict[str, PromptFile]:
         """Every PromptFile reachable for `call_type`, keyed by content hash.
@@ -35,6 +47,7 @@ class StepPrompts:
         prompts = [self.call_type, self.card_type]
         if call_type is not None:
             prompts += [self.scoring_for(call_type), self.gap_rubric_for(call_type)]
+        prompts += [p for p in self.gap_verification or () if p is not None]
         return {p.content_hash: p for p in prompts}
 
 
@@ -77,6 +90,11 @@ class AnalysisRecord:
     scoring_prompt_hash: str | None = None
     gap_rubric_hash: str | None = None
     card_type_prompt_hash: str | None = None
+    # The gap step runs two further prompts that decide which of its gaps
+    # survive, so they need provenance of their own. Each is None when that
+    # verifier had nothing of its kind to judge on this call.
+    gap_verification_dialogue_hash: str | None = None
+    gap_verification_explanation_hash: str | None = None
 
     @property
     def overall_status(self) -> str:
@@ -131,6 +149,13 @@ def _prompt_hash(result) -> str | None:
     skipped one all yield None. That makes this the single place enforcing
     "provenance only for output that actually exists"."""
     return result.prompt_content_hash if result is not None else None
+
+
+def _extra_hash(result, name: str) -> str | None:
+    """Same rule as `_prompt_hash` for a step's secondary prompts: absent when
+    the step didn't succeed, and absent when that particular prompt had nothing
+    to do (a call with no explanation gaps never ran the explanation verifier)."""
+    return result.extra_prompt_hashes.get(name) if result is not None else None
 
 
 def _failed_step(record: dict, retry_key: str, max_retries: int, *, spend_budget: bool):
@@ -219,12 +244,13 @@ async def _run_step(
 async def advance_analysis(
     *,
     llm_client,
-    transcript_text: str,
+    transcript: Transcript,
     call_metadata: dict,
     prompts: StepPrompts,
     record: dict,
     max_retries: int = 3,
     breaker=None,
+    verification_batch_size: int = DEFAULT_BATCH_SIZE,
 ) -> AnalysisRecord:
     """Runs one call's four analyser steps, awaiting them **in order**.
 
@@ -234,7 +260,11 @@ async def advance_analysis(
     per call (see app/services/batch/processor.py), not one per step — so this
     function is a straight line and each call still issues at most one request
     to the gateway at a time.
+
+    Takes the `Transcript` rather than rendered text because the gap step needs
+    the turns to verify its own citations — see app/domain/citation.py.
     """
+    transcript_text = transcript.render_for_prompt()
     call_type_status, call_type_error, call_type_result, call_type_retries = await _run_step(
         record,
         status_key="call_type_status",
@@ -277,8 +307,10 @@ async def advance_analysis(
             breaker=breaker,
             fn=lambda: analyse_gaps(
                 llm_client=llm_client,
-                transcript=transcript_text,
+                transcript=transcript,
                 prompt=prompts.gap_rubric_for(call_type_value),
+                verification_prompts=prompts.gap_verification,
+                verification_batch_size=verification_batch_size,
             ),
         )
         gap_value = gap_result.value if gap_result else _as_gaps(record["risk_gap_analysis"])
@@ -298,10 +330,15 @@ async def advance_analysis(
         scoring_retries = record["scoring_retry_count"]
         gap_retries = record["gap_retry_count"]
 
+    # gap_value carries the None/[] distinction from _as_gaps: None means no
+    # gap answer exists for this call (step failed, or was skipped because
+    # call_type is unknown), [] means the step ran and flagged nothing. Card
+    # Type must be able to tell those apart — see card_type.build_context_text.
     context = CardTypeContext(
         transcript=transcript_text,
         call_metadata=call_metadata or None,
         existing_score=call_score_value.value if call_score_value else None,
+        gaps=gap_value,
     )
     card_type_status, card_type_error, card_type_result, card_type_retries = await _run_step(
         record,
@@ -350,6 +387,8 @@ async def advance_analysis(
         scoring_prompt_hash=_prompt_hash(scoring_result),
         gap_rubric_hash=_prompt_hash(gap_result),
         card_type_prompt_hash=_prompt_hash(card_type_result),
+        gap_verification_dialogue_hash=_extra_hash(gap_result, "gap_verification_dialogue"),
+        gap_verification_explanation_hash=_extra_hash(gap_result, "gap_verification_explanation"),
     )
 
 

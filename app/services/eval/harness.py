@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 
 from app.domain.gap_analysis import analyse_gaps
+from app.domain.transcript import Transcript
 from app.domain.types import CallType, Gap
 from app.prompts.registry import PromptRegistry
 
@@ -22,7 +23,7 @@ class GapModeComparison:
 async def compare_gap_modes(
     *,
     llm_client,
-    transcripts: list[str],
+    transcripts: list[Transcript],
     call_type: CallType,
     registry: PromptRegistry,
 ) -> list[GapModeComparison]:

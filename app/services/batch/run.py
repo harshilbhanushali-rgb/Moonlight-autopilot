@@ -24,6 +24,8 @@ def build_step_prompts(registry: PromptRegistry, gap_rubric_mode: str) -> StepPr
         gap_rubric_for=lambda call_type: registry.latest(
             kind="gap_rubric", call_type=call_type.name.lower(), mode=gap_rubric_mode
         ),
+        gap_verification_dialogue=registry.latest(kind="gap_verification", mode="dialogue"),
+        gap_verification_explanation=registry.latest(kind="gap_verification", mode="explanation"),
     )
 
 
@@ -48,6 +50,7 @@ async def _run_batch() -> int:
             stale_claim_minutes=analyser_config.stale_claim_minutes,
             circuit_breaker_threshold=analyser_config.circuit_breaker_consecutive_failures,
             max_concurrency=analyser_config.max_concurrent_calls,
+            verification_batch_size=analyser_config.verification_batch_size,
         )
     finally:
         session.close()

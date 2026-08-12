@@ -31,6 +31,13 @@ analyser:
   gap_rubric_mode: descriptiononly
   batch_size: 10
   max_retries: 3
+  # How many gaps are judged per entailment-verification request. Every gap the
+  # rubric produces is re-checked against its own evidence before being stored,
+  # because measured over 46 real calls the dominant error was evidence that
+  # disproves its own claim. Observed max is 5 gaps on a single call (mean 1.9),
+  # so 5 means one verification request per kind of gap for nearly every call.
+  # Must be >= 1; 0 would skip verification while looking wired up.
+  verification_batch_size: 5
   # How many calls are analysed at once. Each call still runs its four steps
   # strictly in order (they depend on each other's output), so this is also the
   # ceiling on simultaneous requests to the LLM gateway.

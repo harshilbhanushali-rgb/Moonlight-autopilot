@@ -28,6 +28,12 @@ DEFAULT_CIRCUIT_BREAKER_CONSECUTIVE_FAILURES = 6
 # while watching for HTTP 429s, not speculatively.
 DEFAULT_MAX_CONCURRENT_CALLS = 4
 
+# How many gaps are judged in one entailment-verification request. The observed
+# maximum on a single call is 5 gaps (mean 1.9), so 5 means one verification
+# request per kind of gap for essentially every call. Raising it changes
+# nothing in practice; lowering it costs extra round trips. Must be >= 1.
+DEFAULT_VERIFICATION_BATCH_SIZE = 5
+
 
 @dataclass(frozen=True)
 class AnalyserConfig:
@@ -37,6 +43,7 @@ class AnalyserConfig:
     stale_claim_minutes: int = DEFAULT_STALE_CLAIM_MINUTES
     circuit_breaker_consecutive_failures: int = DEFAULT_CIRCUIT_BREAKER_CONSECUTIVE_FAILURES
     max_concurrent_calls: int = DEFAULT_MAX_CONCURRENT_CALLS
+    verification_batch_size: int = DEFAULT_VERIFICATION_BATCH_SIZE
 
 
 def load_analyser_config(path: Path | None = None) -> AnalyserConfig:
@@ -66,6 +73,17 @@ def load_analyser_config(path: Path | None = None) -> AnalyserConfig:
             f"got {max_concurrent_calls!r}"
         )
 
+    verification_batch_size = section.get(
+        "verification_batch_size", DEFAULT_VERIFICATION_BATCH_SIZE
+    )
+    # 0 would batch nothing and silently skip every gap's verification, which
+    # looks identical to verification being wired up and working.
+    if verification_batch_size < 1:
+        raise ValueError(
+            "analyser.verification_batch_size must be at least 1, "
+            f"got {verification_batch_size!r}"
+        )
+
     return AnalyserConfig(
         gap_rubric_mode=section["gap_rubric_mode"],
         batch_size=section["batch_size"],
@@ -73,4 +91,5 @@ def load_analyser_config(path: Path | None = None) -> AnalyserConfig:
         stale_claim_minutes=section.get("stale_claim_minutes", DEFAULT_STALE_CLAIM_MINUTES),
         circuit_breaker_consecutive_failures=breaker_threshold,
         max_concurrent_calls=max_concurrent_calls,
+        verification_batch_size=verification_batch_size,
     )

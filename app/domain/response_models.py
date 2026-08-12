@@ -20,7 +20,7 @@ from typing import Literal
 
 from pydantic import BaseModel
 
-from app.domain.types import CallScore, CallType, CardType
+from app.domain.types import CallScore, CallType, CardType, Verdict
 
 
 class CallTypeResponse(BaseModel):
@@ -45,6 +45,30 @@ class GapItem(BaseModel):
 
 class GapAnalysisResponse(BaseModel):
     gaps: list[GapItem]
+
+
+class GapVerdictItem(BaseModel):
+    """`index` is the gap's position in the batch as presented in the prompt.
+
+    Carried explicitly rather than relying on response order: a reordered list
+    would otherwise drop the wrong gap silently. app.domain.gap_verification
+    checks the returned indices are exactly the ones asked about.
+    """
+
+    index: int
+    verdict: Verdict
+    reason: str
+    # The words from the transcript that carry the verdict — what supports the
+    # claim, or what disproves it. Required because a verifier that only has to
+    # emit a label defaults to agreeing: measured over 86 real gaps it returned
+    # "supported" 71% of the time, including cases where the rebuttal sat one
+    # turn away. Having to produce the actual words makes that harder to fake.
+    # "none" is the expected value for an `irrelevant` verdict.
+    evidence_quote: str
+
+
+class GapVerificationResponse(BaseModel):
+    verdicts: list[GapVerdictItem]
 
 
 class GapFillResponse(BaseModel):

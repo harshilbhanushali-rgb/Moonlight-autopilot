@@ -8,6 +8,7 @@ from app.core.analyser_config import (
     DEFAULT_CIRCUIT_BREAKER_CONSECUTIVE_FAILURES,
     DEFAULT_MAX_CONCURRENT_CALLS,
     DEFAULT_STALE_CLAIM_MINUTES,
+    DEFAULT_VERIFICATION_BATCH_SIZE,
 )
 from app.services.batch import repository
 from app.services.batch.circuit_breaker import CircuitBreaker, GatewayUnavailableError
@@ -58,6 +59,7 @@ async def process_batch(
     stale_claim_minutes: int = DEFAULT_STALE_CLAIM_MINUTES,
     circuit_breaker_threshold: int = DEFAULT_CIRCUIT_BREAKER_CONSECUTIVE_FAILURES,
     max_concurrency: int = DEFAULT_MAX_CONCURRENT_CALLS,
+    verification_batch_size: int = DEFAULT_VERIFICATION_BATCH_SIZE,
 ) -> int:
     """Claims up to `limit` pending/retryable analysis rows and runs the AI
     Analyser on each. Returns how many rows were attempted this call.
@@ -140,12 +142,13 @@ async def process_batch(
             try:
                 record = await advance_analysis(
                     llm_client=llm_client,
-                    transcript_text=repository.render_transcript_text(row_input.transcript),
+                    transcript=repository.load_transcript(row_input.transcript),
                     call_metadata=row_input.call_metadata,
                     prompts=prompts,
                     record=row_input.record,
                     max_retries=max_retries,
                     breaker=breaker,
+                    verification_batch_size=verification_batch_size,
                 )
             except Exception as exc:
                 logger.exception(

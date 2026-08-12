@@ -1,7 +1,12 @@
+from app.domain.transcript import Transcript, TranscriptTurn
 from app.domain.types import CallType, Gap
 from app.services.eval.harness import GapModeComparison, compare_gap_modes
 from app.llm.client import StubLLMClient
 from app.prompts.registry import PromptRegistry
+
+
+def transcript(text):
+    return Transcript(turns=[TranscriptTurn(speaker="rep", text=text, start_s=0)])
 
 
 def make_registry(tmp_path):
@@ -25,7 +30,7 @@ async def test_compare_gap_modes_runs_both_modes_for_each_transcript(tmp_path):
 
     results = await compare_gap_modes(
         llm_client=llm,
-        transcripts=["transcript one", "transcript two"],
+        transcripts=[transcript("transcript one"), transcript("transcript two")],
         call_type=CallType.DEMO,
         registry=registry,
     )

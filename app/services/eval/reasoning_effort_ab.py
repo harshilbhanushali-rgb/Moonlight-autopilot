@@ -50,7 +50,8 @@ from app.domain.types import CallType, CardTypeContext
 from app.llm.client import OpenAICompatibleLLMClient
 from app.llm.gateway_config import load_llm_gateway_config
 from app.prompts.registry import PromptRegistry
-from app.services.batch.repository import render_transcript_text
+from app.domain.transcript import Transcript, TranscriptTurn
+from app.services.batch.repository import load_transcript
 from app.services.batch.run import _PROMPTS_ROOT, build_step_prompts
 
 logger = logging.getLogger("reasoning_effort_ab")
@@ -177,9 +178,19 @@ async def analyse_one(
     actually computed nothing. Both sides of a comparison must use the same nonce
     policy or the comparison is between a fresh run and a replay.
     """
-    transcript_text = render_transcript_text(transcript)
+    transcript_model = load_transcript(transcript)
     if nonce:
-        transcript_text = f"{transcript_text}\n\n[eval run {nonce}]"
+        # Appended as a real turn rather than loose text: analyse_gaps now takes
+        # the Transcript so it can verify citations against the turns, and the
+        # nonce has to be part of what the model sees to bust the response cache.
+        last = transcript_model.turns[-1].start_s if transcript_model.turns else 0.0
+        transcript_model = Transcript(
+            turns=[
+                *transcript_model.turns,
+                TranscriptTurn(speaker="eval", text=f"[eval run {nonce}]", start_s=last),
+            ]
+        )
+    transcript_text = transcript_model.render_for_prompt()
     recording_client = UsageRecordingClient(llm_client)
     started = time.monotonic()
     result: dict = {
@@ -217,7 +228,7 @@ async def analyse_one(
         try:
             gap_result = await analyse_gaps(
                 llm_client=recording_client,
-                transcript=transcript_text,
+                transcript=transcript_model,
                 prompt=prompts.gap_rubric_for(call_type_value),
             )
             result["gaps"] = [

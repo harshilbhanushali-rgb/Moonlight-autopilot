@@ -180,7 +180,7 @@ class FakeRepository:
     row->dict shaping are the real implementations, so the failure under
     test is a real pydantic ValidationError, not a synthetic one."""
 
-    render_transcript_text = staticmethod(real_repository.render_transcript_text)
+    load_transcript = staticmethod(real_repository.load_transcript)
     analysis_row_to_record_dict = staticmethod(real_repository.analysis_row_to_record_dict)
 
     def __init__(self, transcripts_by_id: dict, rows: list | None = None):

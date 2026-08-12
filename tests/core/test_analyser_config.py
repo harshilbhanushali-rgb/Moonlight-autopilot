@@ -125,9 +125,26 @@ def test_rejects_a_max_concurrent_calls_that_would_hang_the_batch(tmp_path, bad)
         load_analyser_config(path)
 
 
+def test_verification_batch_size_defaults_when_absent(tmp_path):
+    path = _write(tmp_path, "")
+
+    assert load_analyser_config(path).verification_batch_size == 5
+
+
+@pytest.mark.parametrize("bad", [0, -1])
+def test_rejects_a_verification_batch_size_that_would_skip_verification(tmp_path, bad):
+    # 0 batches nothing, so every gap would go unverified while the pipeline
+    # still looked wired up — the failure mode this whole check exists to stop.
+    path = _write(tmp_path, f"  verification_batch_size: {bad}\n")
+
+    with pytest.raises(ValueError, match="verification_batch_size"):
+        load_analyser_config(path)
+
+
 def test_the_checked_in_config_is_loadable():
     config = load_analyser_config()
 
     assert config.stale_claim_minutes > 0
     assert config.circuit_breaker_consecutive_failures > 4
     assert config.max_concurrent_calls >= 1
+    assert config.verification_batch_size >= 1

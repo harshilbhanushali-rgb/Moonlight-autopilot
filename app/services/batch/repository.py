@@ -149,16 +149,21 @@ def get_call_storage_map(session: Session, avoma_recording_ids: list[str]) -> di
     return {row.avoma_recording_id: row for row in rows}
 
 
-def render_transcript_text(transcript: dict) -> str:
-    """Validates call_storage.transcript against its contract and flattens it
-    to the text the LLM sees.
+def load_transcript(transcript: dict) -> Transcript:
+    """Validates call_storage.transcript against its contract.
 
     Validated rather than read with `.get()` defaults: a transcript missing
     turn timestamps used to render as timestamp-free text, which left the gap
     step guessing `mm:ss` values. A row that doesn't satisfy the contract now
     fails the step visibly instead.
     """
-    return Transcript.model_validate(transcript).render_for_prompt()
+    return Transcript.model_validate(transcript)
+
+
+def render_transcript_text(transcript: dict) -> str:
+    """The flattened text the LLM sees. Callers that need to check citations
+    against the turns want `load_transcript` instead."""
+    return load_transcript(transcript).render_for_prompt()
 
 
 def analysis_row_to_record_dict(row: Analysis) -> dict:
@@ -207,6 +212,8 @@ _PROMPT_VERSION_COLUMNS = (
     ("scoring_prompt_version_id", "scoring_prompt_hash"),
     ("gap_rubric_version_id", "gap_rubric_hash"),
     ("card_type_prompt_version_id", "card_type_prompt_hash"),
+    ("gap_verification_dialogue_version_id", "gap_verification_dialogue_hash"),
+    ("gap_verification_explanation_version_id", "gap_verification_explanation_hash"),
 )
 
 

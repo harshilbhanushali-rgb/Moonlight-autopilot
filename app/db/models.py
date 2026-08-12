@@ -93,6 +93,17 @@ class Analysis(Base):
     card_type_prompt_version_id: Mapped[int | None] = mapped_column(
         ForeignKey("prompt_versions.id"), nullable=True
     )
+    # The gap step runs two further prompts that decide which of its gaps
+    # survive the entailment check, so an edit to either changes the stored
+    # risk_gap_analysis just as much as an edit to the rubric does. NULL when
+    # that verifier had no gap of its kind to judge, or (for the rows written
+    # before verification existed) because it genuinely never ran.
+    gap_verification_dialogue_version_id: Mapped[int | None] = mapped_column(
+        ForeignKey("prompt_versions.id"), nullable=True
+    )
+    gap_verification_explanation_version_id: Mapped[int | None] = mapped_column(
+        ForeignKey("prompt_versions.id"), nullable=True
+    )
 
     call_type_status: Mapped[str] = mapped_column(String, nullable=False, default=STATUS_PENDING)
     scoring_status: Mapped[str] = mapped_column(String, nullable=False, default=STATUS_PENDING)
