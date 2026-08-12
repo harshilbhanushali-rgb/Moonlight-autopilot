@@ -326,9 +326,24 @@ indistinguishable from churn.
 Six calls could only be labelled `Kick-off`, and three reviewers working
 independently each flagged the same doubt: *it is the Nth weekly cadence call,
 not a first project meeting*. Not one call in 32 is an unambiguous
-`Pricing/Negotiation`. The six types describe stages of a linear NB funnel, and
-recurring account-onboarding cadence — roughly 40% of the corpus — is not a stage
-in one. **This needs a rubric-owner decision (a seventh type), not a prompt fix.**
+`Pricing/Negotiation`.
+
+**Two structural causes — and do not describe these six as a linear funnel, which
+is wrong.** The prompt never claims an ordering (only `Kick-off` references a
+signed contract), and the business does not follow one:
+
+1. **They are kinds of activity, not positions in a sequence, and they overlap.**
+   `Technical Integration` does **not** follow signature. On the Paychex call the
+   rep says the SOW is unsigned and *"it's common that we kind of just put the cart
+   in front of the horse sometimes and just get this going"* while exchanging API
+   credentials and scheduling go-live; Discovery Senior Living has MSA and SOW
+   unsigned with the integration already in a sandbox. So forcing exactly one
+   label on a call carrying several concurrent activities is lossy by construction
+   — a seventh type would not fix this half.
+2. **Recurring account-management cadence is not among the six at all** — roughly
+   40% of the corpus. A weekly project-tracker review is not Discovery, either
+   Demo, a negotiation, a first project meeting, or a specific technical fix.
+   **This half needs a rubric-owner decision, not a prompt fix.**
 
 **The cascade is measured, not inferred.** One recurring meeting series (11 RTX
 recordings) was spread across **5 call types**, and within `Kick-off` alone the

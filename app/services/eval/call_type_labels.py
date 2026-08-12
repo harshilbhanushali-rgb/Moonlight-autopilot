@@ -41,9 +41,24 @@ None of the calls below appear in `Call_examples.md`.
   `call_type`, so a label is not an endorsement of the model's answer.
 - **Read in full**, not sampled, so a mid-call pivot cannot have been missed.
 - **`ambiguous=True` means a second reviewer could reasonably differ** — excluded
-  from any strict score. Recurring account-cadence calls dominate this group,
-  because the six types describe stages of a linear new-business funnel and a
-  weekly onboarding call is not a stage in one.
+  from any strict score.
+
+Two structural reasons the ambiguous group is so large, and neither is a prompt
+defect:
+
+1. **The six types are kinds of activity, not positions in a sequence.** They
+   overlap and run concurrently. Technical Integration in particular does **not**
+   follow signature: on the Paychex call the rep says the SOW is unsigned and
+   "it's common that we kind of just put the cart in front of the horse sometimes
+   and just get this going", while exchanging API credentials and scheduling
+   go-live. Discovery Senior Living is the same — MSA and SOW unsigned with the
+   integration already in a sandbox. So "which stage is this" is the wrong
+   question, and forcing exactly one label on a call carrying several activities
+   is lossy by construction. (The prompt itself never claims an ordering; only
+   Kick-off references a signed contract.)
+2. **Recurring account-management cadence is not among the six at all.** A weekly
+   project-tracker review with an existing customer is not Discovery, either Demo,
+   a negotiation, a first project meeting, or a specific technical fix.
 
 Scored by `app/services/eval/call_type_accuracy.py`.
 """
