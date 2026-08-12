@@ -328,22 +328,29 @@ independently each flagged the same doubt: *it is the Nth weekly cadence call,
 not a first project meeting*. Not one call in 32 is an unambiguous
 `Pricing/Negotiation`.
 
-**Two structural causes — and do not describe these six as a linear funnel, which
-is wrong.** The prompt never claims an ordering (only `Kick-off` references a
-signed contract), and the business does not follow one:
+**The six types are a sequence, and the deal is signed between
+`Pricing/Negotiation` and `Kick-off`** (confirmed with the user 2026-08-13):
 
-1. **They are kinds of activity, not positions in a sequence, and they overlap.**
-   `Technical Integration` does **not** follow signature. On the Paychex call the
-   rep says the SOW is unsigned and *"it's common that we kind of just put the cart
-   in front of the horse sometimes and just get this going"* while exchanging API
-   credentials and scheduling go-live; Discovery Senior Living has MSA and SOW
-   unsigned with the integration already in a sandbox. So forcing exactly one
-   label on a call carrying several concurrent activities is lossy by construction
-   — a seventh type would not fix this half.
-2. **Recurring account-management cadence is not among the six at all** — roughly
-   40% of the corpus. A weekly project-tracker review is not Discovery, either
-   Demo, a negotiation, a first project meeting, or a specific technical fix.
-   **This half needs a rubric-owner decision, not a prompt fix.**
+```text
+Discovery -> Demo -> Follow-up Demo -> Pricing/Negotiation -> [signed] -> Kick-off -> Technical Integration
+```
+
+**What is missing is a type for calls that are not on that line at all.** Roughly
+40% of the corpus is recurring account-management cadence — a weekly
+project-tracker review with an existing customer, repeating indefinitely. That is
+not Discovery, either Demo, a negotiation, a first project meeting, or a specific
+technical fix. Six calls were forced into `Kick-off` for want of anywhere else,
+and every one was flagged "Nth weekly, not a first project meeting". **This needs
+a rubric-owner decision — a seventh type with its own gap rubric and scoring
+prompt — not a prompt fix on our side.**
+
+One observed exception to the ordering, worth knowing but not a refutation of it:
+integration work sometimes starts before the paperwork closes. On the Paychex call
+the rep says the SOW is unsigned and *"it's common that we kind of just put the
+cart in front of the horse sometimes and just get this going"*, while exchanging
+API credentials and scheduling go-live; Discovery Senior Living likewise has MSA
+and SOW unsigned with the integration already in a sandbox. So signature status
+is a weaker signal than the stage names imply — judge by activity.
 
 **The cascade is measured, not inferred.** One recurring meeting series (11 RTX
 recordings) was spread across **5 call types**, and within `Kick-off` alone the

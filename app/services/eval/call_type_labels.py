@@ -43,22 +43,25 @@ None of the calls below appear in `Call_examples.md`.
 - **`ambiguous=True` means a second reviewer could reasonably differ** — excluded
   from any strict score.
 
-Two structural reasons the ambiguous group is so large, and neither is a prompt
-defect:
+The six types are a sequence, with the deal signed between `Pricing/Negotiation`
+and `Kick-off` (confirmed with the user):
 
-1. **The six types are kinds of activity, not positions in a sequence.** They
-   overlap and run concurrently. Technical Integration in particular does **not**
-   follow signature: on the Paychex call the rep says the SOW is unsigned and
-   "it's common that we kind of just put the cart in front of the horse sometimes
-   and just get this going", while exchanging API credentials and scheduling
-   go-live. Discovery Senior Living is the same — MSA and SOW unsigned with the
-   integration already in a sandbox. So "which stage is this" is the wrong
-   question, and forcing exactly one label on a call carrying several activities
-   is lossy by construction. (The prompt itself never claims an ordering; only
-   Kick-off references a signed contract.)
-2. **Recurring account-management cadence is not among the six at all.** A weekly
-   project-tracker review with an existing customer is not Discovery, either Demo,
-   a negotiation, a first project meeting, or a specific technical fix.
+    Discovery -> Demo -> Follow-up Demo -> Pricing/Negotiation
+        -> [signed] -> Kick-off -> Technical Integration
+
+**The ambiguous group is large because ~40% of the corpus is not on that line at
+all**: recurring account-management cadence, a weekly project-tracker review with
+an existing customer, repeating indefinitely. It is not Discovery, either Demo, a
+negotiation, a first project meeting, or a specific technical fix. Six calls were
+forced into `Kick-off` for want of anywhere else and every one was flagged "Nth
+weekly, not a first project meeting".
+
+One exception to the ordering, worth knowing when labelling: integration work
+sometimes begins before the paperwork closes. On the Paychex call the rep says the
+SOW is unsigned and "it's common that we kind of just put the cart in front of the
+horse sometimes and just get this going"; Discovery Senior Living has MSA and SOW
+unsigned with the integration already in a sandbox. So signature status is a
+weaker signal than the stage names suggest — judge by activity.
 
 Scored by `app/services/eval/call_type_accuracy.py`.
 """
