@@ -22,7 +22,7 @@ There's no separate cron infra (no k8s CronJob, no GitHub Actions schedule) — 
 - No vector-based selling/account-relationship scoring — that's Phase 2.
 - No account-level risk rollup (aggregating risk across an account's calls) — currently unscoped. If work seems to require this, flag it explicitly rather than building a workaround or silently skipping it.
 - Gap detection is **purely LLM-based reasoning** — no deterministic/rule-based checks (no hand-coded talk-time-ratio calculators, keyword matching, etc.). No code path may independently re-derive or corroborate a gap call from the transcript text. **Confirmed with the user 2026-08-12:** an *LLM* second pass that only ever drops gaps whose evidence contradicts their claim is within this boundary — it is still LLM reasoning and it never invents a gap. See "Gap entailment verification" below. Deterministic corroboration remains banned.
-- The scoring prompt and gap-theme rubric are owned/provided by the business team — treated as pluggable, versioned files under `app/prompts/`. Real content so far: `scoring/<call_type>/v1.txt` and `gap_rubric/<call_type>/*-descriptiononly.yaml` (both call-type-scoped, mirroring `gap_rubric/`'s layout, since the business rubric differs per Call Type); `card_type/v1.txt`; `call_type/v1.txt`. Still **placeholder content** pending the real prompts from Anantu's team: `gap_rubric/*-fewshot.yaml` (the annotated-example counterpart to the descriptiononly rubrics) and `gap_fill/v1.txt`.
+- The scoring prompt and gap-theme rubric are owned/provided by the business team — treated as pluggable, versioned files under `app/prompts/`. **Two `descriptiononly` rubrics have since been edited on our side** (discovery, pricing_negotiation) after an audit found themes firing on evidence that disproved them; the edits are measured and the originals are retained as `v1`. See "Gap rubric versions" below. Anantu's team should see those diffs rather than discover them — `docs/gap-rubric-review-2026-08-12.md` is the drafted, unsent recommendation. Real content so far: `scoring/<call_type>/v1.txt` and `gap_rubric/<call_type>/*-descriptiononly.yaml` (both call-type-scoped, mirroring `gap_rubric/`'s layout, since the business rubric differs per Call Type); `card_type/v1.txt`; `call_type/v1.txt`. Still **placeholder content** pending the real prompts from Anantu's team: `gap_rubric/*-fewshot.yaml` (the annotated-example counterpart to the descriptiononly rubrics) and `gap_fill/v1.txt`.
   - `scoring/<call_type>/v1.txt` reasons over a rich 10-category rubric internally but must respond with only `{"call_score": "High"|"Medium"|"Low"}` — the category breakdown and qualitative coaching text the business team's prompt also produces are intentionally not parsed or persisted (`analysis.call_score` is a single `String` column); revisit if that richer output needs to be stored.
   - `card_type/v1.txt` classifies Risk vs. Coaching by *where the problem originates* — a deal/client-side fact (Risk) vs. rep execution/skill (Coaching) — not by severity. Risk is meant to be the minority case; if a mix of both is present, Risk wins.
   - `call_type/v1.txt` was built from 6 real labeled transcripts (one per Call Type) in `Call_examples.md` (repo root) — keep that file if the prompt needs revisiting. Classifies by dominant activity/purpose, not keywords, since technical jargon overlaps between Kick-off and Technical Integration, and product-walkthrough content overlaps between Demo and Follow-up Demo.
@@ -221,6 +221,60 @@ or was skipped) and `[]` (ran, flagged nothing) are rendered differently and
 must stay distinct: rendering a failed step as "no gaps" would let a gateway
 error read as a clean call.
 
+## Gap rubric versions — what we edited, and what it measured
+
+**The rubrics are no longer all `v1`, and the live version differs per call
+type.** Check `PromptRegistry.latest()` before assuming; as of 2026-08-12:
+
+| rubric (`descriptiononly`) | files | live |
+|---|---|---|
+| discovery | v1, v2, v3 | **v3** |
+| pricing_negotiation | v1, v2 | **v2** |
+| demo, follow_up_demo, kickoff, technical_integration | v1 | v1 |
+
+All six `fewshot` files remain untouched v1 placeholders.
+
+Two edits, both from `docs/gap-rubric-review-2026-08-12.md`, both measured with
+`app/services/eval/rubric_version_ab.py` (added for this; takes `--nonce` and
+`--verify-all`):
+
+- **R1** (`v2`, both rubrics): rewrote the one theme per rubric that fired on
+  evidence *disproving* it — discovery's `No Pre-Call Research` →
+  `Incumbent Vendor Not Probed`, pricing's `No Competitive Framing` →
+  `Switching Case Not Made`. Both had a 0% survival rate over 46 calls. Each
+  now states its precondition and what disproves it.
+- **R2** (`v3`, discovery only): gave the *other* three discovery themes the
+  same precondition/disqualifier shape. **Tried on pricing and rejected** — it
+  made `IC-Level Only` *less* reliable, not merely less frequent (v2 kept 8/9
+  and 8/8; the attempt kept 4/5 and 3/6), and zeroed `Reactive Pricing` in both
+  runs. Pricing stays on v2, which measures 9/10 and 11/11 surviving — the best
+  precision of anything tested.
+
+Outcome on discovery, 13 calls, two runs, as *gaps surviving verification*:
+`v1` 9/19 and 9/18 → `v3` **8/11 and 8/9**. Nearly all of v1's useful output
+from half the raw volume.
+
+**Three things not to re-derive:**
+
+- **"Asymmetric rubrics suppress their loose themes" is NOT supported** — it was
+  asserted mid-session and the data contradicts it. Pricing has run asymmetric
+  since R1 and `IC-Level` was unmoved across three runs (9, 9, 8 vs v1's
+  9, 9, 9, 9, 8). On discovery the suppression appeared in two runs of three and
+  vanished in the third. Real but intermittent, not a mechanism — so **extending
+  R2 to the remaining four rubrics must be justified per rubric by measurement,
+  not by symmetry.** Pricing already shows the same edit can backfire.
+- **Comments in a prompt file ARE the prompt.** `load_prompt_file` does
+  `read_text()` and the whole string becomes the system message, so a `#` line is
+  sent to the model. A rationale block added to the v2 rubrics put 882–952 bytes
+  explaining "this theme over-fired and was rejected" above every theme. Effect
+  on totals was undetectable (8 vs 8) though `Swim Lanes` read 0,0,0 with it and
+  1,1,3 without — weak, not nothing. Keep rationale in commit messages until
+  `docs/superpowers/specs/2026-08-12-prompt-storage-design.md` lands a strippable
+  header.
+- **Survival ≠ correctness.** Every R1/R2 figure is the entailment verifier's
+  judgement, and that verifier keeps 90% of good gaps but removes only 67% of bad
+  ones. **No R2 output has been hand-reviewed.** Do not quote these as accuracy.
+
 ## The async boundary — async LLM, sync DB, and the line between them
 
 The LLM path is `async` end to end: `OpenAICompatibleLLMClient` wraps `AsyncOpenAI`, all four domain steps and `advance_analysis`/`process_batch` are `async def`, and `StubLLMClient.complete_structured` is `async` too so it stays substitutable. **The database layer is deliberately still sync SQLAlchemy** — no `AsyncSession`, no asyncpg. That mixture is the whole design, and the two rules below are what keep it safe.
@@ -361,10 +415,13 @@ The fetcher and analyser are triggered by an in-process `BackgroundScheduler` (A
 - **`CardTableClient`** (writing Type/Gap into Koushik's external manual-card table) — still a `NotImplementedError` in `app/api/deps.py`. Blocked on that table's schema, which hasn't been shared yet.
 - **Account-level risk rollup** — surface this if a task seems to need it; not in this build's scope.
 - **Partial completion is deliberately NOT pursued** — confirmed with the user: once any step exhausts its own budget the **whole call dies** (`overall_status` → `failed_permanent`, which `claim_rows` no longer picks up), even if other steps still had retries left. A call that can't be fully analysed shouldn't become a moderator's card. The row still physically holds whatever succeeded before that point, marked `failed_permanent` so nothing treats it as complete — don't "fix" this into chasing 3-of-4 rows without asking again.
+- **Whether to extend R2 to the four untouched rubrics** — adding precondition/disqualifier clauses to every theme improved discovery (8 surviving gaps vs 6–7, at higher precision) and *failed* on pricing. There is no general rule here, so each of demo, follow_up_demo, kickoff and technical_integration needs its own A/B before adopting. Kick-off is the most tempting (all three of its themes fire on 75–100% of its calls) and the least conclusive — only **4** kick-off calls exist in the corpus, so fetch more before measuring. See "Gap rubric versions".
+- **Two themes still need attention and neither has been touched.** `Wrong People on the Call` (demo) fired 4/8 and the verifier kept **4 of 4**, yet both hand-reviewed instances were wrong — one fired because a rep said "I'll have to check" and a colleague answered seven seconds later. It passes every downstream check, so nothing catches it. And three themes have **never fired in 46 calls** (`Slide Reading & Poor Storytelling`, `Irrelevant or Inaccurate Content Shown`, `Unclear Ownership of Action Items`) — either the behaviour is absent or the wording is unmatchable, and the data cannot tell which.
+- **Nothing produced by R1/R2 has been hand-reviewed**, so the pipeline's gap quality is now measured against the entailment verifier rather than against a human. That verifier keeps 90% of good gaps and removes 67% of bad ones, so it is a proxy, and it is currently the binding constraint on knowing whether changes help. Getting ~50 calls labelled by a real Moonlight auditor would be worth more than any further prompt work.
 - **Remaining placeholder prompts** — `gap_rubric/*-fewshot.yaml` and `gap_fill/v1.txt` are still placeholder files under `app/prompts/`; must be swapped for the business team's real versions before any output relying on them is trustworthy. (`scoring/`, `gap_rubric/*-descriptiononly.yaml`, `card_type/`, and `call_type/` now have real content — see "Hard scope boundaries" above.)
 - **Thin-content gate** — 3 of 26 sampled calls had under 300 words of actual conversation (one had 30) and were all scored `Low` with 0 gaps, which reads as "bad rep" when it means "nobody said anything". Not an Avoma or data-integrity issue — see the transcript-contract section. Undecided: whether to skip such calls, mark them a distinct status, or analyse them with a caveat, and where the word-count floor sits.
 - **Full historical backfill** — the Call Fetcher has been run against 46 of 245 real calls (`--limit`) for validation, not the full `moonlight_calls` backlog. Confirm scope before running it unbounded. **Measured 2026-08-11:** per-call latency is **64.7s** at `reasoning_effort: high` (not the ~82s previously recorded here), and 46 calls take **346s wall-clock at `max_concurrent_calls: 10`**. So the remaining ~199 calls is roughly **25 minutes**, down from ~4.5h serial. `medium` would not help — it is 61.3s/call, ~5% faster. Note the daily-throughput cap below applies to a scheduled run, not to a manual `python -m app.services.batch.run`.
-- **`max_concurrent_calls: 10` runs clean but has not been pushed to a limit** — 92 real calls' worth of traffic (two full 46-call A/B sides) produced **zero HTTP 429s and zero step errors** at 10, so 10 is validated as safe rather than merely assumed. Whether more headroom exists is untested. If you raise it, watch for 429s: they surface as `APIStatusError`, which the breaker counts as a transport failure, so throttling presents as an outage rather than as backpressure. A separate probe confirmed 10 simultaneous requests are fine even with 16–25KB transcript bodies.
+- **`max_concurrent_calls: 10` is safe for a batch, but the gateway's ceiling has now been found.** 92 real calls' worth of traffic (two full 46-call A/B sides) produced zero HTTP 429s and zero step errors at 10. **However, on 2026-08-12 a 429 did appear** — `litellm.RateLimitError` wrapping a Vertex AI `RESOURCE_EXHAUSTED`, with no fallback model group configured for `gemini-3.5-flash`, so it surfaced rather than being absorbed. It hit during eval traffic (three rubric versions per call plus per-gap verification at `--concurrency 6`), not during a batch run — so the limit is on *total concurrent requests to the gateway*, which the eval harnesses add to independently of `max_concurrent_calls`. Don't run a batch and an eval sweep at once, and space repeat A/B runs. If you raise it, watch for 429s: they surface as `APIStatusError`, which the breaker counts as a transport failure, so throttling presents as an outage rather than as backpressure. A separate probe confirmed 10 simultaneous requests are fine even with 16–25KB transcript bodies.
 - **The analyser processes at most `batch_size` calls per scheduled day** — `run_daily_pipeline` calls `batch_run.main()` exactly once, and `main()` calls `process_batch` once with `limit=batch_size` (currently 10). Concurrency made each batch ~4x faster in wall-clock but did **not** change this cap, so it is now the binding constraint: with 245 calls in `moonlight_calls` the backlog drains at 10/day, and if daily NB volume ever exceeds 10 it grows without bound. Surfaced, deliberately not changed — the fix is either looping `process_batch` until it returns 0 or sizing `batch_size` to real volume, and which one is right depends on how much LLM spend per night is acceptable. Ask before changing it.
 
 ## Agent workflow preferences
