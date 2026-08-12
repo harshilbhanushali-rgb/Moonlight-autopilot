@@ -21,7 +21,7 @@ There's no separate cron infra (no k8s CronJob, no GitHub Actions schedule) — 
 - No frontend/UI work — Moonlight's UI is owned by a separate team (Koushik's). This build's responsibility ends at writing correct, complete rows into the **Analysis Table**; nothing here pushes data into Moonlight's PM sheet/UI directly.
 - No vector-based selling/account-relationship scoring — that's Phase 2.
 - No account-level risk rollup (aggregating risk across an account's calls) — currently unscoped. If work seems to require this, flag it explicitly rather than building a workaround or silently skipping it.
-- Gap detection is **purely LLM-based reasoning** — no deterministic/rule-based checks (no hand-coded talk-time-ratio calculators, keyword matching, etc.). No code path may independently re-derive or corroborate a gap call from the transcript text.
+- Gap detection is **purely LLM-based reasoning** — no deterministic/rule-based checks (no hand-coded talk-time-ratio calculators, keyword matching, etc.). No code path may independently re-derive or corroborate a gap call from the transcript text. **Confirmed with the user 2026-08-12:** an *LLM* second pass that only ever drops gaps whose evidence contradicts their claim is within this boundary — it is still LLM reasoning and it never invents a gap. See "Gap entailment verification" below. Deterministic corroboration remains banned.
 - The scoring prompt and gap-theme rubric are owned/provided by the business team — treated as pluggable, versioned files under `app/prompts/`. Real content so far: `scoring/<call_type>/v1.txt` and `gap_rubric/<call_type>/*-descriptiononly.yaml` (both call-type-scoped, mirroring `gap_rubric/`'s layout, since the business rubric differs per Call Type); `card_type/v1.txt`; `call_type/v1.txt`. Still **placeholder content** pending the real prompts from Anantu's team: `gap_rubric/*-fewshot.yaml` (the annotated-example counterpart to the descriptiononly rubrics) and `gap_fill/v1.txt`.
   - `scoring/<call_type>/v1.txt` reasons over a rich 10-category rubric internally but must respond with only `{"call_score": "High"|"Medium"|"Low"}` — the category breakdown and qualitative coaching text the business team's prompt also produces are intentionally not parsed or persisted (`analysis.call_score` is a single `String` column); revisit if that richer output needs to be stored.
   - `card_type/v1.txt` classifies Risk vs. Coaching by *where the problem originates* — a deal/client-side fact (Risk) vs. rep execution/skill (Coaching) — not by severity. Risk is meant to be the minority case; if a mix of both is present, Risk wins.
@@ -107,7 +107,119 @@ Every LLM call goes through `OpenAICompatibleLLMClient.complete_structured(respo
 Two things the schema can't do, so they stay in code:
 
 - The gap timestamp invariant (`dialogue` requires a timestamp, `explanation` must not have one) is a *conditional* constraint no schema subset the gateway accepts can express — `app/domain/gap_analysis.py` enforces it.
+- Whether the cited quote is *in the transcript at all*, and whether its timestamp points at the moment it was said — `app/domain/citation.py`, see below.
 - Truncation (token limit), content-filter stops, and refusals raise `StructuredOutputError` from `app/llm/client.py`, which the domain translates to `LLMOutputError` so the step fails visibly and follows the normal retry/dead-letter path. `app/llm` must never import `app/domain` — domain already imports llm, so that direction would be circular.
+
+## Citation validation — checks the citation, never the judgement
+
+`app/domain/citation.py::verify_citations` runs inside `analyse_gaps` on every
+`dialogue` gap. It answers two questions a moderator would otherwise have to
+answer by hand: are these words in the transcript, and is the timestamp the
+moment they were said. It does **not** decide whether the gap is real — that
+stays purely LLM reasoning, so the "no code path may re-derive a gap call"
+boundary is intact.
+
+- **`analyse_gaps` and `advance_analysis` take a `Transcript`, not rendered
+  text**, and render internally. That is deliberate: a caller holding only a
+  string cannot verify citations, so the typed input is what makes the check
+  unbypassable. `repository.load_transcript` returns the model;
+  `render_transcript_text` remains for the three steps that only need text.
+- **Matching is on word runs, not exact substrings.** Measured over 46 real
+  calls, 12 of 58 citations failed a verbatim match — and *not one was
+  fabricated*. Every case was real speech carrying `Speaker:` labels the model
+  invented, stitched across turns, or elided with `...`. Rejecting those would
+  have failed 9 of 46 gap steps for pure formatting. So a quote is accepted
+  when ≥60% of its words appear in runs of ≥4 (the whole quote, for quotes
+  shorter than that). Genuine fabrication shares no long run and is rejected;
+  a "quote" that is mostly the model's own prose fails on coverage.
+- **The timestamp is overwritten, not merely checked** — anchored to the turn
+  the earliest matched run starts in. Replaying the 46 calls corrects 13 of 58
+  and rejects 0. Do not "fix" a wrong timestamp by failing the step; the quote
+  is real, only the anchor was wrong.
+- A quote that genuinely isn't there raises `LLMOutputError`, so it takes the
+  normal per-step retry/dead-letter path rather than reaching a moderator as an
+  uncheckable card.
+
+## Gap entailment verification — the second pass that drops unsupported gaps
+
+`app/domain/gap_verification.py::verify_gap_claims` runs inside `analyse_gaps`,
+after citation validation, and removes gaps whose evidence does not bear out
+their claim. It only ever *removes* gaps — it never invents one, and no
+rule-based code re-derives a gap call, so the "gap detection is purely LLM
+reasoning" boundary holds. Confirmed with the user before building.
+
+Why it exists: measured over 46 real calls, only about a third of gaps survived
+manual review, and the dominant failure was **evidence that disproves its own
+claim** — "No Pre-Call Research" cited to *"I saw you're using Symphony on your
+career site"*, "No Committed Timeline" cited to *"I'll send the plan within two
+days"*, "Demo Not Customised" cited to the presenter's own honesty disclaimer.
+Citation validation cannot see any of this: those quotes are all real speech.
+
+- **Two prompts, because there are two questions.** `dialogue` gaps get the
+  quote plus `DEFAULT_WINDOW_TURNS` either side and are asked "does this
+  support the claim?". `explanation` gaps get the **entire transcript** and are
+  asked "is there a counter-example anywhere?".
+- **The narrow window for `dialogue` is load-bearing, not a cost saving.**
+  Several real errors were only visible because a colleague resolved the issue
+  in the very next turn (id 260: answered 7 seconds later). Handing the whole
+  transcript to a dialogue check reintroduces exactly the haystack problem that
+  caused these errors.
+- **The full transcript for `explanation` is equally load-bearing.** Those gaps
+  are almost always absence claims, and an absence cannot be disproved from an
+  excerpt. This is where the worst measured error lived (id 274: "no case
+  studies" on a call that named Uber and Banfield/Mars with figures). 28 of 86
+  gaps are `explanation`, and the saturated boilerplate themes are 83–100%
+  explanation-typed, so skipping them would skip the worst bucket.
+- **Order matters:** citation validation must run first, because it re-anchors
+  each timestamp to the turn its quote starts in and verification locates its
+  window by that timestamp. Verifying first would window on the model's own
+  wrong anchor.
+- **Verdicts are matched by index, not list position**, and the returned index
+  set must exactly equal the batch's. A missing verdict would let an unjudged
+  gap through as if verified; an unexpected one means the response isn't
+  describing the batch we sent. Either raises `LLMOutputError`.
+- `analyser.verification_batch_size` (default 5) gaps per request. Observed max
+  on one call is 5 (mean 1.9), so this is effectively one request per kind of
+  gap per call. Verification runs inside the gap step, so its failures are
+  `gap_status` failures and follow the normal retry/dead-letter path — no fifth
+  step, no new status columns, no circuit-breaker changes.
+- **Both verification prompts get their own provenance columns**
+  (`gap_verification_dialogue_version_id`, `..._explanation_version_id`,
+  migration `7f1c9a2b4de3`), carried out of the domain on
+  `ClassificationResult.extra_prompt_hashes`. They decide which gaps survive,
+  so an edit to either changes `risk_gap_analysis` as much as an edit to the
+  rubric. Each is NULL when that verifier had no gap of its kind to judge.
+- `verification_prompts=None` skips the whole pass. That exists **only** for
+  `app/services/eval/harness.py`, which compares rubric wording and must see
+  the rubric's raw output — filtering it would measure the verifier instead.
+- **Measured, and prompt tuning is exhausted.** Replayed over the 86 stored
+  gaps and scored against `app/services/eval/gap_audit_labels.py`: **90% of
+  good gaps retained, 67% of bad gaps removed, 98% reproducible run-to-run**
+  (verification is a 3-way classification over fixed input, so unlike the
+  generator's 43% its numbers can be trusted). Two attempts to improve it by
+  prompt means have both failed and **should not be retried**: hardening the
+  wording moved 2 of 86 gaps in opposite directions (`problems-and-fixes.md`
+  8.7), and reframing the question from "does this quote support this claim?"
+  to the neutral "does this call exhibit theme X?" fixed 0 labelled gaps and
+  broke 8 (8.13 — the leading question turns out to be load-bearing, because it
+  aims the model at the span where the contradiction lives). The remaining
+  leverage is in the saturated rubric themes, not the checker.
+- **The neutral arm is kept for future comparisons** —
+  `app/services/eval/neutral_framing.py` and `verification_replay --framing
+  neutral`. Its prompts are Python constants, *not* files under
+  `app/prompts/gap_verification/`, because `PromptRegistry.latest()` takes the
+  highest version label and a `v2-*.txt` dropped in there would silently
+  repoint the production verifier at an unvalidated prompt.
+
+## Card Type sees the gaps
+
+`CardTypeContext.gaps` carries the gaps found on this pass. Before this,
+card_type saw only transcript/metadata/score and so contradicted its own row —
+one real example scored `Risk` while all three of its gaps were rep-coaching
+observations, another returned `Risk` with no gaps at all. `None` (step failed
+or was skipped) and `[]` (ran, flagged nothing) are rendered differently and
+must stay distinct: rendering a failed step as "no gaps" would let a gateway
+error read as a clean call.
 
 ## The async boundary — async LLM, sync DB, and the line between them
 
