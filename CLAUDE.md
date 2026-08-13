@@ -687,6 +687,7 @@ The fetcher and analyser are triggered by an in-process `BackgroundScheduler` (A
 ## Per-call outputs (Analysis Table row)
 
 1. **Call Score** — High/Medium/Low (categorical — NOT numeric; `analysis.call_score` is a `String` column, fixed after an earlier modeling mistake). The model scores the prompt's ten rubric categories `1`–`5` or `N/A` with an evidence quote each; the mean over the non-N/A ones is taken **in code** and mapped to a tier. The breakdown is stored on `analysis.call_score_categories`. See "Call Score is scored by category" below.
+   - **How it must be read, measured over 43 hand-graded calls: `Low` is a trustworthy flag, `Medium` is the default, `High` is not usable.** Low precision is **6/6 (100%)** — a call it flags is always worth opening — but Low recall is only **6/12 (50%)**, so *silence is not evidence a call was fine*. High is **1/4 recall, 1/2 precision** on a tiny sample. And the base rate matters: "always say Medium" scores **63%** on this corpus, so the headline 77% is +14 points over guessing, less on holdout. **Quote the per-class numbers, never the aggregate** — and this is worth telling Koushik's side explicitly, because a column named `call_score` will be read as a performance grade unless someone says otherwise. Nobody should be ranked on it.
 2. **Call Type** — one of: Discovery, Demo, Follow-up Demo, Pricing/Negotiation, Technical Integration, Kick-off.
 3. **Risk/Gap Analysis** — transcript checked against the call-type-specific gap-theme rubric. Each reported gap carries `evidence_type` (`"dialogue"` or `"explanation"`), `evidence`, an optional `timestamp`, and a `confidence` level. Enforced by `app/domain/gap_analysis.py`: `evidence_type: "dialogue"` requires a `timestamp`; `evidence_type: "explanation"` must not have one — never fabricate a timestamp for a whole-call pattern.
 4. **Card Type** — Coaching or Risk, via `app/domain/card_type.py::classify_card_type` — the one shared classifier, structurally reused by both the batch pipeline and Manual Card Auto-Fill (an optional-fields `CardTypeContext` DTO, not two implementations).
@@ -752,12 +753,22 @@ uv run python -m app.services.eval.input_gate_report [--scope all] [--out F.json
 uv run python -m app.services.fetcher.backfill [--dry-run] [--limit N]   # re-fetch transcripts, re-stamp exclusions
 uv run python -m app.services.batch.mark_excluded [--dry-run]            # status='excluded' on pre-existing rows
 
-# Call score. --nonce is mandatory (gateway response cache); neither writes to
-# `analysis`. The band sweep costs nothing — it re-derives tiers from the
-# subscores already saved in the A/B's JSON.
+# Call score. --nonce is mandatory (gateway response cache); none of these write
+# to `analysis`. Only call_score_ab costs gateway requests — the other three are
+# arithmetic over its saved JSON, so they are free to re-run.
 uv run python -m app.services.eval.call_score_ab --versions v2,v3 --nonce X --repeats 2 --out F.json
-uv run python -m app.services.eval.call_score_bands F.json [--version v3]
+uv run python -m app.services.eval.call_score_accuracy F.json      # vs the 47 hand labels
+uv run python -m app.services.eval.call_score_bands F.json --labels # threshold sweep + holdout
+uv run python -m app.services.eval.score_evidence_audit F.json      # are the subscore quotes real
 ```
+
+**Use `--concurrency 4` or lower for `call_score_ab`.** Both arms return ten
+categories with evidence, roughly twice the token throughput of a v1-vs-v2 run,
+and two attempts at concurrency 8 lost 80 and 33 of 188 requests to Vertex
+`RESOURCE_EXHAUSTED`. The harness retries 429s now, but the losses are **not
+random** — throttling builds up as a run progresses, so the surviving calls are
+the ones scored early and the subset is biased. A run that loses requests must be
+discarded, not analysed.
 
 **Two environment gotchas that will cost an hour.** Neon's hostname does not
 resolve on this machine: resolve it via `8.8.8.8` and append `&hostaddr=<ip>` to
