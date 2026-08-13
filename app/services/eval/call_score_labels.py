@@ -185,6 +185,47 @@ LABELS: list[Label] = [
         "on. Roughly eleven of forty-two minutes are the two reps waiting before the "
         "client joined.",
     ),
+    Label(
+        52,
+        UNGRADABLE,
+        "Joveo is the buyer again - Talroo's account manager advises Joveo staff on bids, "
+        "budget pacing and campaign setup for the Uber account they resell. Second such "
+        "call in the corpus after id 58. Speaker attribution is badly wrong here too: "
+        "three of four speakers are tagged CLIENT, including two Joveo people who are "
+        "plainly buying.",
+    ),
+    Label(
+        264,
+        "Medium",
+        "Strong demo craft: showed the manual flow first then the AI version so the "
+        "contrast landed, answered a live silver-medalist question inside the product, "
+        "and met the client's real pain - eight nursing homes within fifteen miles and "
+        "the same RN applying to all of them - with a specific implementation from an "
+        "analogous retail customer rather than a promise, while saying plainly 'I'm "
+        "leery to solution on a call'. Deliberately stopped presenting to go back to "
+        "discovery, and was honest about not knowing the UKG onboarding integration "
+        "status rather than guessing. Left with a named introduction. Coaching points: "
+        "disparaged a partner on a recorded call ('UKG can be difficult to work with... "
+        "hopefully you can edit it out'), and a long knowledge-graph/Wikidata tangent "
+        "near the end pulled the call away from the close. "
+        "NOTE: most client speech comes from unresolved speaker-0/speaker-1 ids - this is "
+        "the NHS call CLAUDE.md cites as the input gate's R2 abstention case.",
+    ),
+    Label(
+        381,
+        "High",
+        "Advanced account management. Raised a full system audit ticket before the call, "
+        "explained the Indeed single-source-feed deprecation, and owned the "
+        "communication miss outright ('I figured you knew about the Indeed switch. "
+        "That's on me'). The standout is the weekly deck built explicitly so the client "
+        "can take it to HER client - 'you don't have to do anything in here, just take "
+        "the deck and show it to them' - with competitor analysis and JD audits she said "
+        "BMS 'will eat up'. Arming the champion with an asset for their own stakeholder "
+        "is the behaviour to showcase. Also asked whether the campaign structure still "
+        "serves her rather than order-taking, and adapted the cadence to her preference. "
+        "Borderline only because credentials he supplied had expired, costing live time.",
+        borderline=True,
+    ),
 ]
 
 
