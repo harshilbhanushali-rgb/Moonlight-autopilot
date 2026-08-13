@@ -99,9 +99,21 @@ class Analysis(Base):
     # two runs cannot be attributed to anything, which is what made the
     # measured 22% flip rate undiagnosable. NULL on the rows analysed before
     # this existed — they genuinely have no breakdown and are not backfilled.
-    call_score_categories: Mapped[list | None] = mapped_column(JSONB, nullable=True)
+    # none_as_null: without it SQLAlchemy stores Python None as the JSON value
+    # `null`, so `WHERE call_score_categories IS NULL` is false for a row that
+    # has no breakdown — "which calls lack subscores" then answers wrongly.
+    call_score_categories: Mapped[list | None] = mapped_column(
+        JSONB(none_as_null=True), nullable=True
+    )
     call_type: Mapped[str | None] = mapped_column(String, nullable=True)
-    risk_gap_analysis: Mapped[list | None] = mapped_column(JSONB, nullable=True)
+    # none_as_null for the same reason, and it matters more here: None ("the gap
+    # step produced no answer") and [] ("it ran and flagged nothing") are a
+    # distinction the pipeline depends on — see CardTypeContext.gaps. Stored as
+    # the JSON value `null`, a None row answers `IS NULL` with false and reads
+    # as neither.
+    risk_gap_analysis: Mapped[list | None] = mapped_column(
+        JSONB(none_as_null=True), nullable=True
+    )
     card_type: Mapped[str | None] = mapped_column(String, nullable=True)
 
     # Provenance: which exact prompt/rubric content produced each field above.
