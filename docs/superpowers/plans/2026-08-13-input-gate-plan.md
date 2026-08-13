@@ -1,0 +1,279 @@
+# Implementation plan — input gate
+
+**Design**: `docs/superpowers/specs/2026-08-13-input-gate-design.md` (approved)
+**Date**: 2026-08-13
+
+Seven phases. Phase 0 is a read-only probe that can invalidate the design before
+any code is written, so it runs first and its result is recorded here. Phases 1–3
+are TDD. Phase 5 is the measurement gate — the gate does not enforce until it
+passes.
+
+Do not run an eval sweep or a batch while the backfill (phase 4) is running: the
+gateway's ceiling is on *total* concurrent requests and a 429 surfaces as an
+`APIStatusError`, which the circuit breaker reads as an outage.
+
+---
+
+## Phase 0 — Avoma probe (read-only, throwaway)
+
+The whole design rests on three unverified assumptions about Avoma's payload.
+Answer them before writing anything that depends on them.
+
+Write a scratchpad script (**not committed**) that, for every
+`call_storage.avoma_recording_id`, calls
+`AvomaClient.get_transcript_by_meeting_uuid` and reports:
+
+1. **Does the transcript still return?** Especially for the 19 calls no longer in
+   `moonlight_calls`. If some do not, the required-`speakers` decision reopens.
+2. **Do `speakers[].email` values exist, and how often are they populated?** R2 is
+   unbuildable if Avoma rarely resolves emails.
+3. **Does every `turns[].speaker_id` resolve to an entry in `speakers`?** R2's
+   presence check depends on this linkage.
+
+Also print, per call: the account's `moonlight_accounts.domain`, the set of
+speaker domains, and which of those have turns. This is a preview of phase 5's
+report using pre-contract data and will show immediately whether the four known
+bad calls separate from the other 28.
+
+**Stop and reconsider if:** emails are populated on under ~80% of calls, or
+`speaker_id` linkage is unreliable. Either finding means R2 needs a different
+mechanism and phases 1–6 change shape.
+
+**Done when:** the three questions have numbers, recorded in
+`problems-and-fixes.md`.
+
+---
+
+## Phase 1 — Transcript contract carries identity (TDD)
+
+**Files:** `app/domain/transcript.py`, `app/services/fetcher/transform.py`,
+`tests/domain/test_transcript.py`, `tests/services/fetcher/test_transform.py`
+
+Tests first:
+
+- a `Transcript` without `speakers` fails validation
+- a `TranscriptTurn` without `speaker_id` fails validation
+- `render_for_prompt()` output is **unchanged** — assert the exact expected string
+  for a fixture that has speakers and ids. This is the regression guard for "no
+  prompt text moves"; write it before touching the model.
+- `transcript_to_storage_shape` carries `id` / `name` / `email` / `is_rep` per
+  speaker and `speaker_id` per turn
+- `transcript_to_storage_shape` raises `TranscriptShapeError` when Avoma returns
+  an empty `speakers` list, with a message naming the meeting uuid (mirroring the
+  existing no-timestamps error)
+
+Then implement: `TranscriptSpeaker`, `Transcript.speakers`,
+`TranscriptTurn.speaker_id`. Keep `TranscriptTurn.speaker` and
+`render_for_prompt()` exactly as they are.
+
+**Expected churn:** 17 files construct `Transcript` / `TranscriptTurn` or a
+`{"turns": ...}` dict. Every fixture needs `speaker_id` and a `speakers` list.
+Heaviest: `tests/services/fetcher/test_transform.py`, `tests/domain/test_transcript.py`,
+`tests/domain/test_gap_verification.py`, `tests/domain/test_citation.py`. Update
+fixtures mechanically — do not weaken the model to spare them.
+
+**Note:** from this commit until phase 4 completes, the analyser and the eval
+harnesses cannot read stored transcripts (`Transcript.model_validate` rejects
+them). That is intended and temporary. Do not start a batch run in between.
+
+**Done when:** `uv run pytest` is green.
+
+---
+
+## Phase 2 — The gate itself (TDD)
+
+**Files:** `app/domain/input_gate.py`, `app/domain/types.py`,
+`app/core/input_gate_config.py`, `config.yaml`,
+`tests/domain/test_input_gate.py`, `tests/core/test_input_gate_config.py`
+
+`ExclusionReason` enum in `types.py`: `NO_CONVERSATION`, `NO_CLIENT_SPEECH`.
+
+```python
+@dataclass(frozen=True)
+class GateVerdict:
+    accepted: bool
+    reason: ExclusionReason | None
+    detail: str | None            # human-readable evidence, stored as excluded_detail
+    client_speech_skipped: bool   # R2 could not judge — for the phase 5 report
+```
+
+`evaluate_input_gate(transcript, account_domain, config) -> GateVerdict`. Pure, no
+I/O.
+
+Tests — one per row, all against hand-built transcripts:
+
+| case | expected |
+|---|---|
+| 299 words | rejected `no_conversation` |
+| 300 words | accepted (boundary is inclusive-pass) |
+| 1200 words, client spoke | accepted |
+| client speaker has ≥1 attributed turn | accepted |
+| client speaker present in `speakers` but **zero** turns | rejected `no_client_speech` |
+| every speaker with turns is `@joveo.com` | rejected `no_client_speech` (no-show shape) |
+| speakers with turns are joveo.com + a third-party domain, account is neither | rejected `no_client_speech` (HelloWork shape) |
+| client speaks from `us.collins.com`, account `collins.com` | accepted (subdomain) |
+| client speaks from `COLLINS.COM` | accepted (case-insensitive) |
+| `account_domain` is `None` | accepted, `client_speech_skipped=True` |
+| speakers have turns but no emails | accepted, `client_speech_skipped=True` |
+| `require_client_speech=False`, no client speech | accepted — R2 off, R1 still applies |
+| `enabled=False` | accepted unconditionally |
+
+R1 is evaluated before R2, so a call that fails both reports `no_conversation` —
+the more specific and more actionable reason.
+
+`config.yaml`:
+
+```yaml
+input_gate:
+  enabled: false
+  min_words: 300
+  require_client_speech: true
+```
+
+`min_words` validated `>= 0` at load, matching how `max_concurrent_calls` and
+`circuit_breaker_consecutive_failures` are validated — a bad value must fail at
+startup, not mid-run.
+
+**Done when:** `uv run pytest tests/domain/test_input_gate.py` green, full suite green.
+
+---
+
+## Phase 3 — Persist the verdict and skip excluded calls (TDD)
+
+**Files:** `app/db/models.py`, a new Alembic migration,
+`app/services/fetcher/fetcher.py`, `app/services/batch/repository.py`,
+`tests/services/fetcher/test_fetcher.py`, `tests/services/batch/test_repository.py`
+
+1. Two nullable `String` columns on `CallStorage`: `excluded_reason`,
+   `excluded_detail`. Then
+   `uv run alembic revision --autogenerate -m "call_storage exclusion columns"`
+   and check the generated migration touches **only** `call_storage` — never
+   `moonlight_calls` / `moonlight_accounts`.
+2. `fetch_and_store_call` evaluates the gate and writes both columns. The call is
+   stored either way. `FetchSummary` gains `excluded: int`; log one line per
+   exclusion with the reason and detail.
+3. `seed_missing_analysis_rows` gains `AND cs.excluded_reason IS NULL`.
+
+Tests:
+
+- a rejected call is still written to `call_storage`, with reason and detail set
+- an accepted call has both columns `NULL`
+- `FetchSummary.excluded` counts rejections and `fetched` still counts the row
+- `seed_missing_analysis_rows` creates no `analysis` row for an excluded call, and
+  **does** create one for an accepted call in the same batch (guards a broken
+  `WHERE`)
+- integration: round-trip against real Neon, both columns persist, no `analysis`
+  row appears. Clean up own rows per the existing fixture convention.
+
+**Done when:** `uv run pytest` and `uv run pytest -m integration` green, no schema
+drift.
+
+---
+
+## Phase 4 — Backfill stored transcripts
+
+**File:** `app/services/fetcher/backfill.py`, run as
+`uv run python -m app.services.fetcher.backfill [--limit N] [--dry-run]`
+
+Iterates `call_storage` rows and re-fetches each transcript by its stored
+`avoma_recording_id`. Keyed on our table, **not** `moonlight_calls` — that is what
+lets the 19 orphaned calls be recovered, since Avoma is unaffected by Koushik's
+table churn.
+
+Per row: fetch, transform to the new shape, `UPDATE call_storage SET transcript`,
+and re-evaluate the gate so `excluded_reason` / `excluded_detail` are filled in for
+history too. Commit per row so a mid-run failure leaves the rows already done.
+
+Handle three outcomes explicitly and count each: updated, Avoma returned nothing,
+`TranscriptShapeError`. A row that cannot be recovered is **left untouched** —
+never overwritten with a partial transcript — and named in the summary.
+
+Run it. Then confirm no stored transcript fails validation:
+
+```bash
+uv run python -c "from app.db.session import ...; validate every call_storage.transcript"
+```
+
+**Done when:** every `call_storage` row validates against the new contract, or the
+exceptions are listed and understood.
+
+---
+
+## Phase 5 — Measure before enforcing
+
+**File:** `app/services/eval/input_gate_report.py`, run as
+`uv run python -m app.services.eval.input_gate_report [--out report.json]`
+
+Report-only. Runs the gate over stored transcripts with `enabled` forced on,
+**writing nothing**. One row per call: `avoma_recording_id`, title, total words,
+`account_domain`, domains that spoke, client-side word count, verdict, reason,
+`client_speech_skipped`.
+
+Restrict to the 32 in-scope calls — those present in `moonlight_calls`. Print the
+19 orphans separately so the scope rule stays visible rather than silently
+applied.
+
+**Success criterion, fixed now: exactly the four calls in
+`call_type_labels.py::UNCLASSIFIABLE` are rejected, and nothing else.**
+
+Judge the rules separately:
+
+- **R1 clean, R2 clean** → proceed to phase 6 with both on.
+- **R2 rejects anything else** (the `rtx.com` / `prattwhitney.com` shape is the
+  known risk) → ship R1 only, `require_client_speech: false`, and record the
+  false positives here. Do not tune the domain match and re-measure on the same
+  32 calls more than once without writing down what changed — that is how the two
+  recorded prompt-tuning dead ends happened.
+- **R1 misses the Zoom-artifact call** → it clears 300 words, so the assumption in
+  the design was wrong and a third rule is needed. Do not raise `min_words` to
+  cover it; that is how a threshold starts eating legitimate calls.
+
+Also read the client-word-count column: if there is a cluster of calls where the
+client barely spoke, that is the evidence for a minimum-client-speech threshold.
+Record the distribution; do not add the threshold in this build.
+
+**Done when:** the report is committed under `docs/eval/` and the criterion is
+either met or the fallback above is chosen explicitly.
+
+---
+
+## Phase 6 — Enable, mark the legacy rows, document
+
+1. Flip `input_gate.enabled: true` in `config.yaml` (and
+   `require_client_speech` per phase 5's outcome).
+2. One-off script: set `status = 'excluded'` on the `analysis` rows for the four
+   rejected calls. Leave `call_type`, `call_score`, `risk_gap_analysis`,
+   `card_type` untouched — they are the A/B baseline. Print before/after per row;
+   support `--dry-run`.
+3. `CLAUDE.md`: new "Input gate" section covering the two rules, the fail-open
+   cases, why rejected calls are stored rather than dropped, and that this does not
+   breach the LLM-only gap boundary. Update the "input hygiene: F" line and resolve
+   the input-gate open decision. Cross-reference the thin-content open decision,
+   which the 300-word floor partly answers.
+4. `problems-and-fixes.md`: phase 0's numbers and phase 5's report.
+
+**Done when:** full suite green, `enabled: true`, and a fresh fetcher run over a
+handful of calls shows the expected exclusions in the summary.
+
+---
+
+## Phase 7 — Tell Koushik's side
+
+Excluded calls produce no `analysis` row, so nothing new appears for new work. The
+exception is the four legacy rows now carrying `status = 'excluded'`, a value their
+code has never seen. **This is the only part of the change that touches a contract
+we do not own** — send it rather than let them find it.
+
+Worth combining with the two other outstanding messages: the rubric review doc
+(`docs/gap-rubric-review-2026-08-12.md`, still unsent) and the question about
+`moonlight_calls` dropping from 296 rows to 197 in a day.
+
+---
+
+## Out of scope
+
+- the ambiguous ~1000–2000 word band
+- a minimum-client-speech threshold (measured in phase 5, not built)
+- EB detection
+- re-gating any `analysis` rows beyond the four
+- surfacing exclusions in Moonlight's UI — Koushik's side owns that
