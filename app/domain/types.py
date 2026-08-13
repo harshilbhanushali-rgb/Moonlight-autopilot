@@ -23,6 +23,48 @@ class CardType(str, Enum):
     RISK = "Risk"
 
 
+@dataclass(frozen=True)
+class ScoredCategory:
+    """One rubric category's outcome on one call.
+
+    `score is None` means N/A — the call never created an occasion for the
+    behaviour, which is different from doing it badly and is excluded from the
+    mean. `evidence` is the transcript words the model says decided the score;
+    it is carried for the moderator and is deliberately NOT verified against the
+    transcript the way gap citations are (app/domain/citation.py) — that check
+    exists because a fabricated gap quote reaches a moderator as an uncheckable
+    card, whereas a subscore is only ever read alongside the tier it explains.
+    """
+
+    name: str
+    score: int | None
+    evidence: str
+
+
+@dataclass(frozen=True)
+class ScoreBreakdown:
+    """A call score and the arithmetic that produced it.
+
+    Before this, the scoring step returned only the tier, so a score that
+    flipped between two identical runs could not be attributed to anything. The
+    mean is computed in code from the model's own category scores — arithmetic
+    on an LLM judgement, not a re-derivation from the transcript, so the
+    "no deterministic checks" boundary (which is about gap detection) is intact.
+    """
+
+    tier: CallScore
+    categories: list[ScoredCategory]
+    mean: float
+
+    @property
+    def scored_count(self) -> int:
+        return sum(1 for c in self.categories if c.score is not None)
+
+    @property
+    def na_count(self) -> int:
+        return sum(1 for c in self.categories if c.score is None)
+
+
 class ExclusionReason(str, Enum):
     """Why the input gate refused to analyse a call.
 

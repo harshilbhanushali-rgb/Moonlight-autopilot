@@ -31,6 +31,36 @@ class CallScoreResponse(BaseModel):
     call_score: CallScore
 
 
+class CategoryScoreItem(BaseModel):
+    """One rubric category's score.
+
+    `score` is a string enum rather than an int so that "N/A" is a first-class
+    value the gateway constrains generation to, instead of a nullable int the
+    model can fill with 0 or 1 when a category didn't apply. Scoring an occasion
+    that never arose as a 1 is what sank 8 of 9 Pricing calls to Low.
+
+    `evidence` is required for the same reason GapVerdictItem.evidence_quote is:
+    a step that only has to emit a label defaults to the agreeable answer —
+    measured at 71% "supported" on the gap verifier — and having to produce the
+    words that decided it makes that harder to fake.
+    """
+
+    name: str
+    score: Literal["1", "2", "3", "4", "5", "N/A"]
+    evidence: str
+
+
+class CallScoreBreakdownResponse(BaseModel):
+    """The scoring step's Phase A contract: the subscores, not the tier.
+
+    The tier is arithmetic over these and is computed in app/domain/scoring.py,
+    so the model is no longer asked to average ten numbers in its head and
+    return only the answer.
+    """
+
+    categories: list[CategoryScoreItem]
+
+
 class CardTypeResponse(BaseModel):
     card_type: CardType
 
