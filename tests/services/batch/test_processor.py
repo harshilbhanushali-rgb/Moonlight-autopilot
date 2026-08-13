@@ -38,6 +38,7 @@ from app.services.batch import repository as real_repository
 from app.services.batch.circuit_breaker import GatewayUnavailableError
 from app.services.batch.orchestrator import StepPrompts
 from app.services.batch.processor import process_batch
+from tests.canned import HIGH_SCORE_RESPONSE
 
 _REQUEST = httpx.Request("POST", "http://gateway.internal/v1/chat/completions")
 
@@ -127,7 +128,7 @@ def marked_transcript(marker: str) -> dict:
 
 ALL_GOOD_RESPONSES = {
     "call_type": '{"call_type": "Demo"}',
-    "scoring": '{"call_score": "High"}',
+    "scoring": HIGH_SCORE_RESPONSE,
     "gap_analysis": '{"gaps": []}',
     "card_type": '{"card_type": "Coaching"}',
 }

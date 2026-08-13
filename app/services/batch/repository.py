@@ -267,11 +267,22 @@ def persist_analysis_result(
 
     prompt_version_values = _prompt_version_values(session, record, prompts_by_hash or {})
 
+    # Omitted from the UPDATE when None, never written as NULL — same rule as
+    # the prompt version ids above, and for the same reason: a partial re-run
+    # would otherwise erase the breakdown behind a `call_score` that an earlier
+    # pass computed and that this pass did not recompute.
+    breakdown_values = (
+        {"call_score_categories": record.call_score_categories}
+        if record.call_score_categories is not None
+        else {}
+    )
+
     session.execute(
         update(Analysis)
         .where(Analysis.avoma_recording_id == record.avoma_recording_id)
         .values(
             **prompt_version_values,
+            **breakdown_values,
             call_type=record.call_type.value if record.call_type else None,
             call_score=record.call_score.value if record.call_score else None,
             risk_gap_analysis=_serialize_gaps(record.risk_gap_analysis),

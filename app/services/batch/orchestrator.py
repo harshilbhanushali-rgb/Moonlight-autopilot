@@ -9,7 +9,7 @@ from app.domain.card_type import classify_card_type
 from app.domain.errors import LLMOutputError
 from app.domain.gap_analysis import analyse_gaps
 from app.domain.gap_verification import DEFAULT_BATCH_SIZE
-from app.domain.scoring import score_call
+from app.domain.scoring import score_call_by_category
 from app.domain.transcript import Transcript
 from app.domain.types import CallScore, CallType, CardType, CardTypeContext, Gap
 from app.db.models import STATUS_FAILED, STATUS_FAILED_PERMANENT, STATUS_PROCESSED
@@ -68,6 +68,12 @@ class AnalysisRecord:
     card_type_error: str | None
     retry_count: int
     dead_letter_at: object | None
+    # The ten rubric categories behind `call_score`, as plain dicts ready for
+    # the JSONB column. None means this pass has nothing to say about them —
+    # scoring failed, was skipped, or had already succeeded on an earlier pass —
+    # and persistence must then leave the column alone rather than write NULL,
+    # for the same reason the prompt-hash fields below do.
+    call_score_categories: list[dict] | None = None
     # Per-step retry budget. `retry_count` above is row-level and kept only as
     # "how many passes has this row had" for observability — escalation to
     # failed_permanent is driven by these, because a single shared counter meant
@@ -127,6 +133,16 @@ def _as_card_type(value) -> CardType | None:
     if value is None or isinstance(value, CardType):
         return value
     return CardType(value)
+
+
+def _serialize_categories(categories) -> list[dict]:
+    """Flattens ScoredCategory into the shape the JSONB column stores.
+
+    `score` stays None for an N/A category rather than being dropped: the
+    denominator the tier was computed over is only readable if the categories
+    that did *not* contribute are still visible.
+    """
+    return [{"name": c.name, "score": c.score, "evidence": c.evidence} for c in categories]
 
 
 def _as_gaps(value) -> list[Gap] | None:
@@ -288,14 +304,20 @@ async def advance_analysis(
             retry_key="scoring_retry_count",
             max_retries=max_retries,
             breaker=breaker,
-            fn=lambda: score_call(
+            fn=lambda: score_call_by_category(
                 llm_client=llm_client,
                 transcript=transcript_text,
                 prompt=prompts.scoring_for(call_type_value),
             ),
         )
+        # The step now returns a ScoreBreakdown — the tier plus the categories
+        # it was computed from. Only the tier goes on `call_score`; downstream
+        # (card_type, Koushik's side) still sees exactly the String it always did.
         call_score_value = (
-            scoring_result.value if scoring_result else _as_call_score(record["call_score"])
+            scoring_result.value.tier if scoring_result else _as_call_score(record["call_score"])
+        )
+        call_score_categories = (
+            _serialize_categories(scoring_result.value.categories) if scoring_result else None
         )
 
         gap_status, gap_error, gap_result, gap_retries = await _run_step(
@@ -326,6 +348,7 @@ async def advance_analysis(
             _as_gaps(record["risk_gap_analysis"]),
         )
         scoring_result = gap_result = None
+        call_score_categories = None
         # Never ran, so they spend nothing.
         scoring_retries = record["scoring_retry_count"]
         gap_retries = record["gap_retry_count"]
@@ -369,6 +392,7 @@ async def advance_analysis(
         call_score=call_score_value,
         risk_gap_analysis=gap_value,
         card_type=card_type_value,
+        call_score_categories=call_score_categories,
         call_type_status=call_type_status,
         scoring_status=scoring_status,
         gap_status=gap_status,

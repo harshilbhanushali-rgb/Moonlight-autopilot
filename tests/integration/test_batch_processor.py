@@ -13,12 +13,13 @@ from app.prompts.registry import PromptFile, PromptRegistry
 from app.services.batch.orchestrator import StepPrompts
 from app.services.batch.processor import process_batch
 from app.services.batch.run import _PROMPTS_ROOT, build_step_prompts
+from tests.canned import HIGH_SCORE_RESPONSE
 
 pytestmark = pytest.mark.integration
 
 GOOD_RESPONSES = {
     "call_type": '{"call_type": "Demo"}',
-    "scoring": '{"call_score": "High"}',
+    "scoring": HIGH_SCORE_RESPONSE,
     "gap_analysis": '{"gaps": []}',
     "card_type": '{"card_type": "Coaching"}',
 }

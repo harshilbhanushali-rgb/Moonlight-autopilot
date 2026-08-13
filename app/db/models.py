@@ -93,6 +93,13 @@ class Analysis(Base):
     avoma_recording_id: Mapped[str] = mapped_column(String, unique=True, nullable=False, index=True)
 
     call_score: Mapped[str | None] = mapped_column(String, nullable=True)
+    # The rubric categories `call_score` was computed from: a list of
+    # {name, score, evidence}, where score is null for a category the call
+    # never created an occasion for. Without these a score that flips between
+    # two runs cannot be attributed to anything, which is what made the
+    # measured 22% flip rate undiagnosable. NULL on the rows analysed before
+    # this existed — they genuinely have no breakdown and are not backfilled.
+    call_score_categories: Mapped[list | None] = mapped_column(JSONB, nullable=True)
     call_type: Mapped[str | None] = mapped_column(String, nullable=True)
     risk_gap_analysis: Mapped[list | None] = mapped_column(JSONB, nullable=True)
     card_type: Mapped[str | None] = mapped_column(String, nullable=True)

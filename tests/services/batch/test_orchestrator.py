@@ -13,6 +13,7 @@ from app.db.models import (
 from app.domain.transcript import Transcript, TranscriptSpeaker, TranscriptTurn
 from app.llm.client import StubLLMClient
 from app.prompts.registry import PromptFile
+from tests.canned import HIGH_SCORE_RESPONSE
 
 
 # advance_analysis takes the Transcript, not rendered text, so the gap step can
@@ -80,7 +81,7 @@ def fresh_record(avoma_recording_id="rec-1"):
 
 ALL_GOOD_RESPONSES = {
     "call_type": '{"call_type": "Demo"}',
-    "scoring": '{"call_score": "High"}',
+    "scoring": HIGH_SCORE_RESPONSE,
     "gap_analysis": '{"gaps": []}',
     "card_type": '{"card_type": "Coaching"}',
 }
