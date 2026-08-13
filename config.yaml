@@ -83,3 +83,35 @@ analyser:
   # (max_retries + 1) = 240s, so 6 trips in ~24min instead of grinding through
   # the full batch's ~2.7h worst case.
   circuit_breaker_consecutive_failures: 6
+
+# Refuses calls that carry no assessable NB sales conversation, evaluated in the
+# fetcher before any analysis row exists — so a rejected call costs no gateway
+# request. Rejected calls are still STORED, carrying excluded_reason: dedup
+# decides novelty by absence from call_storage, so a call we declined to store
+# would be re-fetched from Avoma every run forever with no record of the
+# rejection.
+#
+# Both rules were measured over 51 real calls before being written
+# (problems-and-fixes.md 8.17). Together they reject 4: the 30-word call, the
+# platform-switch artifact, the client no-show, and a 183-word call — with zero
+# false positives.
+input_gate:
+  # Starts off deliberately. The gate reports (app.services.eval.input_gate_report)
+  # before it enforces, and an absent or unset section must never silently begin
+  # excluding calls.
+  enabled: false
+  # Total words below which there is no conversation to judge. The three
+  # provably-empty calls sit at 30, 183 and 271; the next-thinnest is 1120,
+  # whose Low score may well be legitimate. 300 sits in that 4x gap with nothing
+  # near it. Do NOT raise this to catch a call the rule misses — that is how a
+  # threshold starts eating real work; add a rule instead.
+  min_words: 300
+  # Requires that somebody Avoma marks is_rep=False actually had turns, not
+  # merely that they were invited. Separately switchable so the word floor can
+  # ship if this one ever measures badly.
+  #
+  # is_rep rather than matching speaker email domains against the account's
+  # domain: that mechanism rejected 27 of 51 calls, 24 of them good, because
+  # account domains carry www./about. prefixes and subsidiaries mail from the
+  # parent. is_rep agreed with joveo.com membership on every speaker of all 51.
+  require_client_speech: true

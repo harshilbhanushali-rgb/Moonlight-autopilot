@@ -23,6 +23,21 @@ class CardType(str, Enum):
     RISK = "Risk"
 
 
+class ExclusionReason(str, Enum):
+    """Why the input gate refused to analyse a call.
+
+    Stored on `call_storage.excluded_reason`, so these strings are a persisted
+    contract — renaming one orphans the rows already carrying it.
+
+    NO_CONVERSATION is reported in preference to NO_CLIENT_SPEECH when a call
+    fails both: "there was nothing said" is more specific and more actionable
+    than "the client said nothing".
+    """
+
+    NO_CONVERSATION = "no_conversation"
+    NO_CLIENT_SPEECH = "no_client_speech"
+
+
 class Verdict(str, Enum):
     """Whether a gap's evidence actually bears out its claim.
 
