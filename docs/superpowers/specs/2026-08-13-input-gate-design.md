@@ -49,8 +49,10 @@ the honest scope.
 ## Constraints from discussion
 
 - **Scope is both failure shapes**: empty/artifact calls *and* calls where the
-  wrong parties are present. Rejecting only the empty ones would leave the
-  HelloWork case producing a Risk card.
+  client was never actually in the conversation. The third shape — the right
+  *kind* of party is absent, i.e. the counterparty is a supplier rather than a
+  buyer — turned out not to be detectable from a transcript at all, and is
+  explicitly out of scope (see "The HelloWork call is out of reach").
 - **The gate runs in the fetcher**, before an `analysis` row exists, so a
   rejected call costs no LLM spend.
 - **Rejected calls are still stored** in `call_storage`, carrying the reason.
@@ -82,46 +84,72 @@ the honest scope.
 
 ### The two rules
 
-`app/domain/input_gate.py::evaluate_input_gate(transcript, account_domain,
-config) -> GateVerdict` — pure, zero I/O, unit-tested like the four existing
-domain steps.
+`app/domain/input_gate.py::evaluate_input_gate(transcript, config) ->
+GateVerdict` — pure, zero I/O, unit-tested like the four existing domain steps.
+It needs no account data: everything both rules read is in the transcript.
 
 **R1 — no assessable conversation.** Total words across all turn texts
 (whitespace-split) below `min_words` → reject, reason `no_conversation`.
 
-**R2 — no client speech.** At least one speaker whose email domain matches the
-account's domain must have **attributed turns** in the transcript. If none
-does → reject, reason `no_client_speech`.
+**R2 — no client speech.** At least one speaker Avoma marks `is_rep=False` must
+have **attributed turns** in the transcript. If none does → reject, reason
+`no_client_speech`.
 
 R2 deliberately checks speech, not attendance. A speakers entry only records
 who Avoma *associated* with the meeting — an invitee resolved from the
 calendar — which does not establish that they were on the call or said
 anything. Every turn carries a `speaker_id`, so presence is answerable exactly:
-collect the ids that have turns, resolve those speakers' emails, compare
-domains. Matching on ids rather than name strings avoids the fragility of
+collect the ids that have turns, look up those speakers, ask whether any is not
+a rep. Matching on ids rather than name strings avoids the fragility of
 "Marie" / "Marie D." / "Marie Dubois" / a mis-diarized "Speaker 2" all being
 one person.
 
-Domain matching is case-insensitive and accepts subdomains, so
-`us.collins.com` matches `collins.com`.
-
-**Two rules cover all four bad calls.** The no-show and HelloWork cases collapse
-into R2: in one, every speaker who spoke is a Joveo employee; in the other,
-Joveo plus a job board, while the account is the hiring employer. Neither has a
-speaker on the account's domain.
+**`is_rep`, not account-domain matching.** The original design compared speaker
+email domains against `moonlight_accounts.domain`. Measured over 51 real calls
+that rejects **27, of which 24 are good calls** — account domains carry `www.`
+and `about.` prefixes, the subdomain sits on the account side rather than the
+speaker side, and subsidiaries mail from the parent (account `prattwhitney.com`,
+speakers on `rtx.com`). `is_rep` agrees with "is this person on a `joveo.com`
+address" on **every speaker of all 51 calls, zero disagreements**, and needs no
+normalisation, no subdomain logic and no account data at all. Full measurement:
+`problems-and-fixes.md` 8.17. **Do not reintroduce domain matching** without
+re-measuring it.
 
 ### Fail-open cases
 
-R2 does not reject when it cannot judge. Each is recorded as a *skip*, not a
+R2 does not reject when it cannot judge. This is recorded as a *skip*, not a
 pass:
 
-- the account has no `domain` on record (`moonlight_accounts.domain` is
-  nullable) — nothing to compare against
-- a speaker has turns but Avoma never resolved their email — they spoke, we
-  just cannot tell whose side they are on
+- **speech from an unlinked speaker.** On 3 of 51 calls some `turns[].speaker_id`
+  has no entry in `speakers` — on one, 3,141 of 6,319 words. Those words cannot
+  be attributed to either side, so R2 abstains. This single rule removes its only
+  measured false positive (`e8bfc3fb`, an NHS demo where the client spoke 2,502
+  words through unresolved ids).
 
 Excluding on missing data would silently drop good calls, which is worse than
 the problem being fixed.
+
+### The HelloWork call is out of reach — accepted
+
+Three of the four bad calls are caught. The fourth cannot be:
+
+```text
+0bbe93f1  "Joveo <> Hellowork <> RTX"   account_domain = hellowork.com
+  Laetitia BOERI   hellowork.com   is_rep=False   29 turns   1898 words
+  Nargis Roohi     joveo.com       is_rep=True    13 turns    381 words
+```
+
+A genuine non-rep spoke 1,898 words, and the account's own registered domain *is*
+`hellowork.com`. By every structural signal this is an ordinary client call.
+Distinguishing a supplier from a buyer requires account-level classification —
+Koushik's data, not ours. An earlier version of this spec claimed all four were
+mechanically detectable; that was wrong.
+
+**Decided with the user 2026-08-13: ignore it for this build and document it.**
+The durable fix is a buyer/supplier distinction on `moonlight_accounts`; a
+hand-maintained denylist of job-board domains was considered and rejected as a
+judgement call dressed as a rule, unvalidatable in the way the other two rules
+are.
 
 ### Not included, and why
 
@@ -142,7 +170,7 @@ the problem being fixed.
 moonlight_calls ──► fetcher ──► Avoma transcript (turns + speakers)
                        │
                        ▼
-              evaluate_input_gate(transcript, account_domain, config)
+                    evaluate_input_gate(transcript, config)
                        │
         ┌──────────────┴──────────────┐
      accepted                      rejected
@@ -151,7 +179,7 @@ moonlight_calls ──► fetcher ──► Avoma transcript (turns + speakers)
   call_storage row              call_storage row
   excluded_reason = NULL        excluded_reason = 'no_conversation' | 'no_client_speech'
         │                       excluded_detail = '271 words'
-        │                                       | 'no speaker on collins.com; spoke: joveo.com, hellowork.com'
+        │                                       | 'no non-rep speaker had turns; 2 rep speakers spoke'
         ▼                              │
   seed_missing_analysis_rows ◄─────────┘   (WHERE excluded_reason IS NULL — skipped)
         ▼
@@ -260,32 +288,39 @@ touches a contract we do not own.
 
 Measure before enforcing. Order matters.
 
+Phase 0 already did this against Avoma directly, before any code existed
+(`problems-and-fixes.md` 8.17) — which is what killed the account-domain rule.
+The steps below re-confirm it through the real code path.
+
 1. Run the transcript backfill; confirm all 51 transcripts return, now carrying
-   speakers and `speaker_id`.
+   speakers, `speaker_id` and `is_rep`.
 2. `app/services/eval/input_gate_report.py` runs the gate in **report-only** mode
-   over the 32 in-scope calls, printing per call: total word count, account
-   domain, domains that actually spoke, client-side word count, verdict, reason,
-   and whether R2 was skipped.
-3. **Success criterion, fixed now: exactly the four known-bad calls are rejected,
-   and nothing else.**
-4. R1 and R2 are judged separately. If R2 wrongly rejects a call — the
-   `rtx.com` / `prattwhitney.com` shape is the known risk — R1 still ships and
-   `require_client_speech` stays `false` until the matching rule is fixed and
-   re-measured.
+   over the 32 in-scope calls, printing per call: total word count, rep and
+   non-rep word counts, unlinked-speaker words, verdict, reason, and whether R2
+   abstained.
+3. **Success criterion, fixed now: the gate rejects exactly these four and
+   nothing else** — the 30-word call, the platform-switch artifact, the client
+   no-show, and `b026da73` at 183 words. That last one is not in the labelled bad
+   set but is one of the three sub-300-word calls Part 5 of
+   `problems-and-fixes.md` already identifies as having no conversation in them,
+   so it is a correct rejection. The HelloWork call is expected to pass — see
+   above.
+4. R1 and R2 are judged separately, so one can ship without the other.
 5. Only then does `input_gate.enabled` flip to `true`.
 6. Run the legacy row marker.
 
-Step 2's client-word-count column is also the evidence for whether a
+Step 2's non-rep word count is also the evidence for whether a
 minimum-client-speech threshold is needed.
 
 ## Testing
 
 **Unit** (`tests/domain/test_input_gate.py`) — below, at, and above the word
-floor; a client speaker with turns accepted; a client invitee with **zero** turns
-rejected; all-Joveo speech rejected; third-party-domain speech rejected (the
-HelloWork shape); subdomain match accepted; case-insensitive match; both
-fail-open cases skipping rather than rejecting; `require_client_speech: false`
-disabling R2 alone.
+floor; a non-rep speaker with turns accepted; a non-rep **invitee with zero
+turns** rejected (the attendance-vs-speech distinction); all-rep speech rejected
+(the no-show shape); speech from an unlinked `speaker_id` causing R2 to abstain
+rather than reject; a non-rep who spoke *plus* unlinked speech still accepted;
+`require_client_speech: false` disabling R2 while R1 still applies;
+`enabled: false` accepting unconditionally.
 
 **Fetcher** (`tests/services/fetcher/`) — a rejected call is still written to
 `call_storage` with reason and detail; `FetchSummary.excluded` counts it;
@@ -302,12 +337,17 @@ its own rows, per the existing fixture convention. Never writes to
 
 ## Risks
 
-- **R2 false positives** are the main one. An account registered as `rtx.com`
-  whose attendees mail from `prattwhitney.com` would be wrongly rejected. Held
-  off by the separate config switch and the step-3 criterion.
-- **The word floor is corpus-specific.** 300 is right for the 32 calls measured;
-  a genuinely short but complete call below it would be wrongly excluded. The
-  reason and detail are stored, so such a case is findable rather than silent.
-- **Backfill depends on Avoma's retention.** Unknown until run; costs nothing to
-  find out, and it is step 1 precisely so it fails before any gate code is
-  written.
+- **`is_rep` is Avoma's flag, not ours.** It agrees with `joveo.com` membership on
+  all 51 calls today, but if a client user were ever added to Joveo's Avoma
+  workspace they would read as a rep and their call could be excluded. The reason
+  and detail are stored, so such a case is findable.
+- **The word floor is corpus-specific.** 300 is right for the 51 calls measured;
+  a genuinely short but complete call below it would be wrongly excluded. Again
+  visible in `excluded_reason` rather than silent.
+- **Supplier and partner calls still get analysed** — the HelloWork case above.
+  Accepted for this build.
+- **~~Backfill depends on Avoma's retention~~** — resolved in phase 0: all 51
+  transcripts returned, including the 19 no longer in `moonlight_calls`.
+- **~~R2 false positives from domain matching~~** — resolved by dropping domain
+  matching entirely. Zero false positives measured with `is_rep` plus the
+  unlinked-speaker abstention.

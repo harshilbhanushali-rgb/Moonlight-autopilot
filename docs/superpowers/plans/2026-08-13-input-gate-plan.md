@@ -14,7 +14,31 @@ gateway's ceiling is on *total* concurrent requests and a 429 surfaces as an
 
 ---
 
-## Phase 0 — Avoma probe (read-only, throwaway)
+## Phase 0 — Avoma probe (read-only, throwaway) — **DONE 2026-08-13**
+
+**Result: it killed R2's original mechanism.** Full writeup in
+`problems-and-fixes.md` 8.17. Summary:
+
+| question | answer |
+|---|---|
+| transcripts still return for the 19 dropped calls? | **yes, 51/51** — backfill is safe, eval baseline recoverable |
+| `speakers[].email` populated? | **yes, 51/51 calls, every speaker** |
+| every `turns[].speaker_id` resolves to a `speakers` entry? | **no — 3 of 51 calls fail**, up to 3,141 of 6,319 words unattributable |
+
+- **Account-domain matching rejects 27/51 calls, 24 of them good.** Causes: `www.`
+  and `about.` prefixes on the account domain, the subdomain sitting on the
+  account side, and subsidiaries mailing from the parent. Not salvageable —
+  normalising both directions still leaves 8 false positives.
+- **Replaced by Avoma's `is_rep`**, which agrees with `joveo.com` membership on
+  every speaker of all 51 calls. With R2 abstaining when any speech comes from an
+  unlinked speaker_id, it has **zero false positives**.
+- **The HelloWork call cannot be caught** and is accepted as out of scope.
+- The gate rejects **4 of 51**: the 30-word call, the platform-switch artifact,
+  the no-show, and `b026da73` at 183 words.
+
+Below is the original phase 0 brief, kept for the record.
+
+---
 
 The whole design rests on three unverified assumptions about Avoma's payload.
 Answer them before writing anything that depends on them.
@@ -94,11 +118,11 @@ class GateVerdict:
     accepted: bool
     reason: ExclusionReason | None
     detail: str | None            # human-readable evidence, stored as excluded_detail
-    client_speech_skipped: bool   # R2 could not judge — for the phase 5 report
+    client_speech_skipped: bool   # R2 abstained — for the phase 5 report
 ```
 
-`evaluate_input_gate(transcript, account_domain, config) -> GateVerdict`. Pure, no
-I/O.
+`evaluate_input_gate(transcript, config) -> GateVerdict`. Pure, no I/O, and needs
+no account data — both rules read only the transcript.
 
 Tests — one per row, all against hand-built transcripts:
 
@@ -106,17 +130,17 @@ Tests — one per row, all against hand-built transcripts:
 |---|---|
 | 299 words | rejected `no_conversation` |
 | 300 words | accepted (boundary is inclusive-pass) |
-| 1200 words, client spoke | accepted |
-| client speaker has ≥1 attributed turn | accepted |
-| client speaker present in `speakers` but **zero** turns | rejected `no_client_speech` |
-| every speaker with turns is `@joveo.com` | rejected `no_client_speech` (no-show shape) |
-| speakers with turns are joveo.com + a third-party domain, account is neither | rejected `no_client_speech` (HelloWork shape) |
-| client speaks from `us.collins.com`, account `collins.com` | accepted (subdomain) |
-| client speaks from `COLLINS.COM` | accepted (case-insensitive) |
-| `account_domain` is `None` | accepted, `client_speech_skipped=True` |
-| speakers have turns but no emails | accepted, `client_speech_skipped=True` |
+| a non-rep speaker has ≥1 attributed turn | accepted |
+| a non-rep speaker is in `speakers` but has **zero** turns | rejected `no_client_speech` — attendance is not speech |
+| every speaker with turns has `is_rep=True` | rejected `no_client_speech` (the no-show shape) |
+| all speech is from `speaker_id`s absent from `speakers` | accepted, `client_speech_skipped=True` |
+| a non-rep spoke **and** some speech is unlinked | accepted, not skipped — R2 has its answer |
+| only reps linked, plus unlinked speech | accepted, `client_speech_skipped=True` (the `e8bfc3fb` shape) |
 | `require_client_speech=False`, no client speech | accepted — R2 off, R1 still applies |
-| `enabled=False` | accepted unconditionally |
+| `enabled=False`, 10 words | accepted unconditionally |
+
+No domain-matching tests: phase 0 measured that mechanism at 24 false positives
+and it is not in the design. Do not add it back without re-measuring.
 
 R1 is evaluated before R2, so a call that fails both reports `no_conversation` —
 the more specific and more actionable reason.
@@ -206,31 +230,40 @@ exceptions are listed and understood.
 
 Report-only. Runs the gate over stored transcripts with `enabled` forced on,
 **writing nothing**. One row per call: `avoma_recording_id`, title, total words,
-`account_domain`, domains that spoke, client-side word count, verdict, reason,
+rep words, non-rep words, unlinked-speaker words, verdict, reason,
 `client_speech_skipped`.
 
 Restrict to the 32 in-scope calls — those present in `moonlight_calls`. Print the
 19 orphans separately so the scope rule stays visible rather than silently
-applied.
+applied. **Needs Tailscale up**, since the scope split reads Koushik's RDS.
 
-**Success criterion, fixed now: exactly the four calls in
-`call_type_labels.py::UNCLASSIFIABLE` are rejected, and nothing else.**
+**Success criterion, fixed now: exactly these four are rejected, nothing else** —
+`35f28528` (30 words), `7cf8dcfb` (271 words, platform-switch artifact),
+`4ac4eea2` (client no-show), and `b026da73` (183 words). The last is not in
+`call_type_labels.py::UNCLASSIFIABLE` but is one of the three sub-300-word calls
+Part 5 of `problems-and-fixes.md` names as having no conversation in them, so it
+is a correct rejection. **`0bbe93f1` (HelloWork) is expected to pass** — it is
+undetectable and out of scope, not a miss.
+
+This is a re-confirmation, not a discovery: phase 0 already measured these exact
+four against Avoma directly. A different answer here means the code path diverges
+from the probe, not that the corpus changed.
 
 Judge the rules separately:
 
 - **R1 clean, R2 clean** → proceed to phase 6 with both on.
-- **R2 rejects anything else** (the `rtx.com` / `prattwhitney.com` shape is the
-  known risk) → ship R1 only, `require_client_speech: false`, and record the
-  false positives here. Do not tune the domain match and re-measure on the same
-  32 calls more than once without writing down what changed — that is how the two
-  recorded prompt-tuning dead ends happened.
-- **R1 misses the Zoom-artifact call** → it clears 300 words, so the assumption in
-  the design was wrong and a third rule is needed. Do not raise `min_words` to
-  cover it; that is how a threshold starts eating legitimate calls.
+- **R2 rejects anything else** → ship R1 only, `require_client_speech: false`, and
+  record the false positive here. Phase 0 measured zero, so a new one means the
+  code disagrees with the probe — find out which is wrong before changing either.
+  The likely candidate is the unlinked-speaker abstention, which is the whole
+  reason R2 has no false positives.
+- **R1 misses `7cf8dcfb`** → it measured 271 words in phase 0, so a miss means the
+  word count is computed differently in code than in the probe. Do not raise
+  `min_words` to cover it; that is how a threshold starts eating legitimate calls.
 
-Also read the client-word-count column: if there is a cluster of calls where the
-client barely spoke, that is the evidence for a minimum-client-speech threshold.
-Record the distribution; do not add the threshold in this build.
+Also read the non-rep word column: if there is a cluster of calls where the client
+barely spoke, that is the evidence for a minimum-client-speech threshold. Record
+the distribution; do not add the threshold in this build.
 
 **Done when:** the report is committed under `docs/eval/` and the criterion is
 either met or the fallback above is chosen explicitly.
@@ -241,16 +274,22 @@ either met or the fallback above is chosen explicitly.
 
 1. Flip `input_gate.enabled: true` in `config.yaml` (and
    `require_client_speech` per phase 5's outcome).
-2. One-off script: set `status = 'excluded'` on the `analysis` rows for the four
-   rejected calls. Leave `call_type`, `call_score`, `risk_gap_analysis`,
-   `card_type` untouched — they are the A/B baseline. Print before/after per row;
-   support `--dry-run`.
+2. One-off script: set `status = 'excluded'` on the `analysis` rows of whichever
+   calls the gate rejected (four, per phase 5). Leave `call_type`, `call_score`,
+   `risk_gap_analysis`, `card_type` untouched — they are the A/B baseline. Print
+   before/after per row; support `--dry-run`. Note `0bbe93f1` is **not** among them
+   and keeps its Medium/Risk row.
 3. `CLAUDE.md`: new "Input gate" section covering the two rules, the fail-open
    cases, why rejected calls are stored rather than dropped, and that this does not
    breach the LLM-only gap boundary. Update the "input hygiene: F" line and resolve
    the input-gate open decision. Cross-reference the thin-content open decision,
    which the 300-word floor partly answers.
-4. `problems-and-fixes.md`: phase 0's numbers and phase 5's report.
+4. `problems-and-fixes.md`: phase 5's report (phase 0's numbers are already in
+   8.17).
+5. New open decision in `CLAUDE.md`: **supplier/partner calls are analysed as
+   sales calls and cannot be detected from the transcript.** The durable fix is a
+   buyer/supplier distinction on `moonlight_accounts` — Koushik's schema. Record
+   that a hand-maintained job-board denylist was considered and rejected.
 
 **Done when:** full suite green, `enabled: true`, and a fresh fetcher run over a
 handful of calls shows the expected exclusions in the summary.
@@ -274,6 +313,8 @@ Worth combining with the two other outstanding messages: the rubric review doc
 
 - the ambiguous ~1000–2000 word band
 - a minimum-client-speech threshold (measured in phase 5, not built)
+- **supplier/partner calls** — measured as undetectable from the transcript
+  (phase 0); needs account-level classification we do not own
 - EB detection
-- re-gating any `analysis` rows beyond the four
+- re-gating any `analysis` rows beyond the four the gate rejects
 - surfacing exclusions in Moonlight's UI — Koushik's side owns that
