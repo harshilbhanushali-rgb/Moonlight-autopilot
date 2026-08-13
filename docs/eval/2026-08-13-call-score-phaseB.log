@@ -1,1 +1,654 @@
 47 calls x 2 versions x 2 repeats = 188 scoring requests
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: call 31 v2 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: call 35 v2 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: call 34 v3 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: call 32 v3 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: call 35 v3 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: call 43 v2 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 36 v3 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: call 48 v3 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: call 49 v2 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: call 49 v3 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: call 52 v3 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: call 54 v2 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: call 53 v3 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: call 57 v2 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: call 55 v3 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: call 59 v2 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: call 58 v3 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: call 55 v3 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: call 59 v3 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: call 259 v2 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: call 263 v2 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: call 263 v3 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: call 268 v2 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: call 267 v3 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 269 v2 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: call 271 v2 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: call 271 v2 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: call 272 v3 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: call 271 v3 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: call 378 v2 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: call 381 v2 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: 429 from the gateway, retrying in 20s
+WARNING __main__: 429 from the gateway, retrying in 40s
+WARNING __main__: call 380 v3 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: 429 from the gateway, retrying in 60s
+WARNING __main__: call 381 v3 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+
+==============================================================================
+TIER DISTRIBUTION  (first repeat of each arm)
+==============================================================================
+call type                                       v2                        v3
+  Demo                               H4   M3   L0              H6   M1   L0 
+  Discovery                          H0   M5   L3              H1   M5   L4 
+  Follow-up Demo                     H4   M4   L0              H4   M3   L0 
+  Kick-off                           H2   M1   L0              H1   M1   L0 
+  Pricing/Negotiation                H0   M3   L3              H0   M5   L3 
+  Technical Integration              H5   M1   L0              H1   M4   L0 
+  ALL                                H15  M17  L6              H13  M19  L7 
+
+  H/M/L counts.  Key question: can every call type reach every tier?
+
+==============================================================================
+A-3  TIER REACHABILITY  (call types that never produce a given tier)
+==============================================================================
+  v2: 5 of 6 call types
+      Demo (no Low, n=8)
+      Follow-up Demo (no Low, n=9)
+      Kick-off (no Low, n=4)
+      Pricing/Negotiation (no High, n=9)
+      Technical Integration (no Low, n=7)
+  v3: 4 of 6 call types
+      Demo (no Low, n=8)
+      Kick-off (no Low, n=4)
+      Pricing/Negotiation (no High, n=9)
+      Technical Integration (no Low, n=7)
+
+==============================================================================
+A-1  REPRODUCIBILITY  (same prompt, same settings, two fresh runs)
+==============================================================================
+  v2: 23/33 calls gave the same tier twice (70%)
+      High <-> Medium         8
+      Low <-> Medium          2
+  v3: 26/30 calls gave the same tier twice (87%)
+      High <-> Medium         2
+      Low <-> Medium          2
+
+==============================================================================
+A-2  PRICING/NEGOTIATION LOW RATE  (baseline 8/9 = 89%)
+==============================================================================
+  v2: 9/13 runs Low (69%)
+  v3: 5/16 runs Low (31%)
+
+==============================================================================
+A-5  SCORING-STEP LATENCY  (wall-clock under this run's concurrency)
+==============================================================================
+  v2: median 54.8s   p90 161.8s   max 182.9s
+  v3: median 59.3s   p90 150.6s   max 186.0s
+
+==============================================================================
+A-4  PER-CATEGORY BREAKDOWN  (v2)
+==============================================================================
+
+  Demo
+    category                                                     n/a   mean   spread
+    Discovery Validation (Re-confirming known pains upfront)    23%   3.00      2-4
+    Storytelling & Contextual Demo (Not feature dumping)         8%   4.50      3-5
+    Tailored Feature-to-Pain Mapping                             0%   4.79      4-5
+    Engagement & Check-ins (Interactive vs. lecture)             0%   4.77      4-5
+    Business Value & ROI Framing                                 0%   4.29      3-5
+    Handling Feature/Product Objections                         14%   4.83      4-5
+    Buying Committee Engagement                                  0%   4.57      3-5
+    Agenda & Time Management                                     0%   3.29      2-5
+    Competitive Positioning                                      0%   4.71      4-5
+    Next Steps & Mutual Action Plan Setup                        0%   4.29      2-5
+    Discovery Validation                                       100%      -        -
+    Storytelling & Contextual Demo                             100%      -        -
+    Engagement & Check-ins                                     100%      -        -
+
+  Discovery
+    category                                                     n/a   mean   spread
+    Preparation & Account/ATS Research                           0%   3.59      2-5
+    Agenda Setting & Control                                     0%   1.88      1-4
+    Credibility & Advisor Positioning                            0%   3.88      2-5
+    Active Listening & Probing                                   0%   3.65      1-5
+    Surface Pain vs. Business Impact Discovery (2-3 levels d     0%   2.59      1-5
+    Root Cause Identification                                    0%   2.71      1-5
+    Adaptability & Script Flexibility                            0%   3.82      2-5
+    PASTOR Usage (Problem & Amplify focus)                       0%   2.29      1-5
+    Value-Driven Elevator Pitch (Contextual)                    12%   3.13      2-5
+    Talk Time Balance (Target: Prospect 55–70%)                  0%   3.82      2-5
+
+  Follow-up Demo
+    category                                                     n/a   mean   spread
+    Recap of Previous Meetings & Unresolved Items                0%   4.38      3-5
+    Deep-Dive Use Case Execution (Tailored to specific stake     0%   4.56      4-5
+    Addressing New/Expanded Buying Committee Members            75%   4.50      4-5
+    Proof Concept / Validation Framing                          31%   3.55      3-4
+    Probing for Hidden Dynamic Changes or Blockers               0%   3.38      2-5
+    Value Defense Against Competing Solutions                    6%   3.93      2-5
+    Adaptability to Unexpected Technical/Business Questions      0%   4.44      3-5
+    Engagement of Secondary Stakeholders                        56%   5.00      5-5
+    Commercial/Timeline Alignment Check                         12%   4.21      3-5
+    Securing Hard Next Steps                                    12%   4.93      4-5
+
+  Kick-off
+    category                                                     n/a   mean   spread
+    Executive Reassurance & Value Realization Setup             33%   3.00      2-4
+    Goal & KPI Alignment (Defining success metrics clearly)      0%   2.83      2-4
+    Roles, Responsibilities & Governance Framework               0%   4.17      4-5
+    Onboarding Timeline & Milestone Review                       0%   4.17      3-5
+    Change Management & Adoption Risk Identification             0%   3.67      2-5
+    Mutual Accountability Establishment                          0%   4.83      4-5
+    Communication Rhythm & Cadence Setting                       0%   3.83      3-5
+    Stakeholder Engagement (Sponsors vs. Operational Team)       0%   4.50      4-5
+    Active Listening & Addressing Onboarding Anxiety             0%   3.67      2-5
+    Immediate First Action Item Alignment                        0%   4.83      4-5
+
+  Pricing/Negotiation
+    category                                                     n/a   mean   spread
+    Preparation on Decision Criteria & Procurement Process      23%   2.30      1-3
+    Value Anchor Defense (Defending price with ROI/Business     54%   1.67      1-2
+    Control of Commercial Dynamics (Avoiding premature disco    23%   2.20      1-4
+    Give-Get Discipline (Trading value for concessions)         54%   1.50      1-2
+    Handling Price Objections & Commercial Pushback             62%   1.80      1-2
+    Stakeholder Alignment (Procurement, Legal, Champion)         0%   2.92      2-5
+    Urgency & Deal Momentum Creation                             0%   2.54      1-4
+    Executive Presence under Pressure                           23%   2.80      1-5
+    Clarity on Approval & Contracting Timelines                 38%   2.12      2-3
+    Securing Closing Commitments                                 0%   2.77      1-4
+
+  Technical Integration
+    category                                                     n/a   mean   spread
+    Technical Preparation & Architecture Understanding          15%   4.27      4-5
+    Technical Credibility & Expert Positioning                   0%   4.08      3-5
+    Requirement Scoping & Boundary Enforcement                   0%   3.85      2-5
+    Risk Identification & Mitigation Strategy                    0%   4.23      3-5
+    Feasibility Alignment (ATS/Data flow limitations)           15%   4.55      4-5
+    Clear Technical Workflow Explanation (Simplifying comple     0%   4.15      4-5
+    Security/Compliance/Data Governance Control                 54%   2.83      2-3
+    Active Problem Solving with Technical Teams                  0%   4.31      3-5
+    Timeline & Resource Allocation Clarity                       0%   4.31      3-5
+    Technical Next Steps & Ownership Setup                       0%   4.23      2-5
+
+  MEAN DISTRIBUTION (v2) — where the band edges 2.8 / 4.2 fall
+    min/p25/median/p75/max: 1.56  3.30  4.00  4.40  5.00
+    within 0.15 of a band edge: 19/79 (24%)  <- these are the coin flips
+
+  CATEGORY VOLATILITY (v2) — same call, two identical runs
+    Stakeholder Alignment (Procurement, Legal, Champion)        25% identical   0 N/A flips of 4
+    Value-Driven Elevator Pitch (Contextual)                    29% identical   0 N/A flips of 7
+    Active Problem Solving with Technical Teams                 33% identical   0 N/A flips of 6
+    Agenda Setting & Control                                    43% identical   0 N/A flips of 7
+    Preparation & Account/ATS Research                          43% identical   0 N/A flips of 7
+    Probing for Hidden Dynamic Changes or Blockers              43% identical   0 N/A flips of 7
+    Change Management & Adoption Risk Identification            50% identical   0 N/A flips of 2
+    Control of Commercial Dynamics (Avoiding premature disco    50% identical   0 N/A flips of 4
+    Feasibility Alignment (ATS/Data flow limitations)           50% identical   0 N/A flips of 6
+    Mutual Accountability Establishment                         50% identical   0 N/A flips of 2
+    Requirement Scoping & Boundary Enforcement                  50% identical   0 N/A flips of 6
+    Roles, Responsibilities & Governance Framework              50% identical   0 N/A flips of 2
+    Technical Credibility & Expert Positioning                  50% identical   0 N/A flips of 6
+    Urgency & Deal Momentum Creation                            50% identical   0 N/A flips of 4
+    Agenda & Time Management                                    57% identical   0 N/A flips of 7
+    Proof Concept / Validation Framing                          57% identical   2 N/A flips of 7
+    Root Cause Identification                                   57% identical   0 N/A flips of 7
+    Surface Pain vs. Business Impact Discovery (2-3 levels d    57% identical   0 N/A flips of 7
+    Value Defense Against Competing Solutions                   57% identical   1 N/A flips of 7
+    Discovery Validation (Re-confirming known pains upfront)    67% identical   0 N/A flips of 6
+    Engagement & Check-ins (Interactive vs. lecture)            67% identical   0 N/A flips of 6
+    Risk Identification & Mitigation Strategy                   67% identical   0 N/A flips of 6
+    Security/Compliance/Data Governance Control                 67% identical   2 N/A flips of 6
+    Storytelling & Contextual Demo (Not feature dumping)        67% identical   0 N/A flips of 6
+    Technical Next Steps & Ownership Setup                      67% identical   0 N/A flips of 6
+    Active Listening & Probing                                  71% identical   0 N/A flips of 7
+    Adaptability & Script Flexibility                           71% identical   0 N/A flips of 7
+    Adaptability to Unexpected Technical/Business Questions     71% identical   0 N/A flips of 7
+    Buying Committee Engagement                                 71% identical   0 N/A flips of 7
+    Credibility & Advisor Positioning                           71% identical   0 N/A flips of 7
+    Next Steps & Mutual Action Plan Setup                       71% identical   0 N/A flips of 7
+    Talk Time Balance (Target: Prospect 55–70%)                 71% identical   0 N/A flips of 7
+    Executive Presence under Pressure                           75% identical   1 N/A flips of 4
+    Give-Get Discipline (Trading value for concessions)         75% identical   0 N/A flips of 4
+    Handling Price Objections & Commercial Pushback             75% identical   0 N/A flips of 4
+    Preparation on Decision Criteria & Procurement Process      75% identical   0 N/A flips of 4
+    Value Anchor Defense (Defending price with ROI/Business     75% identical   1 N/A flips of 4
+    Clear Technical Workflow Explanation (Simplifying comple    83% identical   0 N/A flips of 6
+    Technical Preparation & Architecture Understanding          83% identical   0 N/A flips of 6
+    Timeline & Resource Allocation Clarity                      83% identical   0 N/A flips of 6
+    Addressing New/Expanded Buying Committee Members            86% identical   1 N/A flips of 7
+    Commercial/Timeline Alignment Check                         86% identical   0 N/A flips of 7
+    Engagement of Secondary Stakeholders                        86% identical   1 N/A flips of 7
+    PASTOR Usage (Problem & Amplify focus)                      86% identical   0 N/A flips of 7
+    Recap of Previous Meetings & Unresolved Items               86% identical   0 N/A flips of 7
+    Securing Hard Next Steps                                    86% identical   0 N/A flips of 7
+    Tailored Feature-to-Pain Mapping                            86% identical   0 N/A flips of 7
+    Active Listening & Addressing Onboarding Anxiety           100% identical   0 N/A flips of 2
+    Business Value & ROI Framing                               100% identical   0 N/A flips of 7
+    Clarity on Approval & Contracting Timelines                100% identical   0 N/A flips of 4
+    Communication Rhythm & Cadence Setting                     100% identical   0 N/A flips of 2
+    Competitive Positioning                                    100% identical   0 N/A flips of 7
+    Deep-Dive Use Case Execution (Tailored to specific stake   100% identical   0 N/A flips of 7
+    Executive Reassurance & Value Realization Setup            100% identical   0 N/A flips of 2
+    Goal & KPI Alignment (Defining success metrics clearly)    100% identical   0 N/A flips of 2
+    Handling Feature/Product Objections                        100% identical   0 N/A flips of 7
+    Immediate First Action Item Alignment                      100% identical   0 N/A flips of 2
+    Onboarding Timeline & Milestone Review                     100% identical   0 N/A flips of 2
+    Securing Closing Commitments                               100% identical   0 N/A flips of 4
+    Stakeholder Engagement (Sponsors vs. Operational Team)     100% identical   0 N/A flips of 2
+
+==============================================================================
+A-4  PER-CATEGORY BREAKDOWN  (v3)
+==============================================================================
+
+  Demo
+    category                                                     n/a   mean   spread
+    Preparation & Pre-Call Research                              0%   4.79      4-5
+    Agenda Setting & Call Control                                7%   3.92      3-5
+    Active Listening & Probing                                   0%   4.79      4-5
+    Handling Objections & Hard Questions                         7%   4.54      3-5
+    Business Value & Outcome Framing                             0%   4.64      4-5
+    Next Steps & Mutual Commitment                               0%   4.21      2-5
+    Storytelling & Contextual Demo (Not feature dumping)         7%   4.69      4-5
+    Tailored Feature-to-Pain Mapping                             0%   4.71      4-5
+    Engagement & Check-ins (Interactive vs. lecture)             0%   4.79      3-5
+    Competitive Positioning                                      0%   4.71      4-5
+
+  Discovery
+    category                                                     n/a   mean   spread
+    Preparation & Pre-Call Research                              0%   3.37      1-5
+    Agenda Setting & Call Control                                0%   2.16      1-3
+    Active Listening & Probing                                   0%   3.32      1-5
+    Handling Objections & Hard Questions                         0%   3.42      1-5
+    Business Value & Outcome Framing                             0%   3.11      2-5
+    Next Steps & Mutual Commitment                               0%   3.37      1-5
+    Credibility & Advisor Positioning                            0%   3.79      1-5
+    Surface Pain vs. Business Impact Discovery (2-3 levels d     0%   2.53      1-5
+    Root Cause Identification                                    0%   2.74      1-5
+    PASTOR Usage (Problem & Amplify focus)                       0%   1.95      1-5
+
+  Follow-up Demo
+    category                                                     n/a   mean   spread
+    Preparation & Pre-Call Research                              0%   3.67      1-5
+    Agenda Setting & Call Control                                0%   3.58      2-5
+    Active Listening & Probing                                   0%   4.17      2-5
+    Handling Objections & Hard Questions                         8%   4.27      3-5
+    Business Value & Outcome Framing                             0%   4.17      2-5
+    Next Steps & Mutual Commitment                               0%   4.58      4-5
+    Recap of Previous Meetings & Unresolved Items                0%   4.42      3-5
+    Deep-Dive Use Case Execution (Tailored to specific stake     0%   4.08      2-5
+    Proof Concept / Validation Framing                          25%   3.67      2-5
+    Probing for Hidden Dynamic Changes or Blockers               0%   3.33      2-5
+
+  Kick-off
+    category                                                     n/a   mean   spread
+    Preparation & Pre-Call Research                              0%   2.80      2-5
+    Agenda Setting & Call Control                                0%   2.60      2-4
+    Active Listening & Probing                                   0%   4.20      3-5
+    Handling Objections & Hard Questions                         0%   3.80      2-5
+    Business Value & Outcome Framing                             0%   3.80      2-5
+    Next Steps & Mutual Commitment                               0%   5.00      5-5
+    Goal & KPI Alignment (Defining success metrics clearly)      0%   2.80      2-4
+    Roles, Responsibilities & Governance Framework               0%   4.80      4-5
+    Onboarding Timeline & Milestone Review                       0%   4.40      4-5
+    Communication Rhythm & Cadence Setting                       0%   4.20      3-5
+
+  Pricing/Negotiation
+    category                                                     n/a   mean   spread
+    Preparation & Pre-Call Research                              0%   3.69      2-5
+    Agenda Setting & Call Control                                0%   2.88      1-5
+    Active Listening & Probing                                   0%   3.69      2-5
+    Handling Objections & Hard Questions                         6%   3.33      2-4
+    Business Value & Outcome Framing                             0%   3.38      2-5
+    Next Steps & Mutual Commitment                               0%   3.31      2-5
+    Value Anchor Defense (Defending price with ROI/Business     56%   3.00      1-4
+    Control of Commercial Dynamics (Avoiding premature disco    38%   2.60      1-5
+    Urgency & Deal Momentum Creation                             0%   2.81      1-4
+    Clarity on Approval & Contracting Timelines                 31%   2.73      2-4
+
+  Technical Integration
+    category                                                     n/a   mean   spread
+    Preparation & Pre-Call Research                              0%   3.80      2-5
+    Agenda Setting & Call Control                               10%   2.44      1-5
+    Active Listening & Probing                                   0%   4.00      3-5
+    Handling Objections & Hard Questions                         0%   3.70      2-5
+    Business Value & Outcome Framing                             0%   3.60      2-5
+    Next Steps & Mutual Commitment                               0%   3.80      2-5
+    Technical Credibility & Expert Positioning                   0%   4.60      4-5
+    Requirement Scoping & Boundary Enforcement                   0%   4.20      4-5
+    Risk Identification & Mitigation Strategy                    0%   4.30      4-5
+    Feasibility Alignment (ATS/Data flow limitations)           20%   4.62      4-5
+
+  MEAN DISTRIBUTION (v3) — where the band edges 2.8 / 4.2 fall
+    min/p25/median/p75/max: 1.30  3.22  3.70  4.30  5.00
+    within 0.15 of a band edge: 8/76 (11%)  <- these are the coin flips
+
+  CATEGORY VOLATILITY (v3) — same call, two identical runs
+    Goal & KPI Alignment (Defining success metrics clearly)      0% identical   0 N/A flips of 1
+    Onboarding Timeline & Milestone Review                       0% identical   0 N/A flips of 1
+    Proof Concept / Validation Framing                          25% identical   1 N/A flips of 4
+    Root Cause Identification                                   33% identical   0 N/A flips of 9
+    Urgency & Deal Momentum Creation                            43% identical   0 N/A flips of 7
+    Credibility & Advisor Positioning                           44% identical   0 N/A flips of 9
+    PASTOR Usage (Problem & Amplify focus)                      44% identical   0 N/A flips of 9
+    Deep-Dive Use Case Execution (Tailored to specific stake    50% identical   0 N/A flips of 4
+    Probing for Hidden Dynamic Changes or Blockers              50% identical   0 N/A flips of 4
+    Recap of Previous Meetings & Unresolved Items               50% identical   0 N/A flips of 4
+    Handling Objections & Hard Questions                        57% identical   1 N/A flips of 30
+    Value Anchor Defense (Defending price with ROI/Business     57% identical   1 N/A flips of 7
+    Business Value & Outcome Framing                            67% identical   0 N/A flips of 30
+    Next Steps & Mutual Commitment                              67% identical   0 N/A flips of 30
+    Risk Identification & Mitigation Strategy                   67% identical   0 N/A flips of 3
+    Surface Pain vs. Business Impact Discovery (2-3 levels d    67% identical   0 N/A flips of 9
+    Agenda Setting & Call Control                               77% identical   2 N/A flips of 30
+    Preparation & Pre-Call Research                             77% identical   0 N/A flips of 30
+    Active Listening & Probing                                  80% identical   0 N/A flips of 30
+    Engagement & Check-ins (Interactive vs. lecture)            83% identical   0 N/A flips of 6
+    Tailored Feature-to-Pain Mapping                            83% identical   0 N/A flips of 6
+    Clarity on Approval & Contracting Timelines                 86% identical   0 N/A flips of 7
+    Control of Commercial Dynamics (Avoiding premature disco    86% identical   0 N/A flips of 7
+    Communication Rhythm & Cadence Setting                     100% identical   0 N/A flips of 1
+    Competitive Positioning                                    100% identical   0 N/A flips of 6
+    Feasibility Alignment (ATS/Data flow limitations)          100% identical   0 N/A flips of 3
+    Requirement Scoping & Boundary Enforcement                 100% identical   0 N/A flips of 3
+    Roles, Responsibilities & Governance Framework             100% identical   0 N/A flips of 1
+    Storytelling & Contextual Demo (Not feature dumping)       100% identical   0 N/A flips of 6
+    Technical Credibility & Expert Positioning                 100% identical   0 N/A flips of 3
+
+==============================================================================
+ERRORS
+==============================================================================
+  v2: 15
+      id=31 RateLimitError: Error code: 429 - {'error': {'message': "No deployments available for selected model
+      id=35 RateLimitError: Error code: 429 - {'error': {'message': "No deployments available for selected model
+      id=43 RateLimitError: Error code: 429 - {'error': {'message': "No deployments available for selected model
+      id=49 RateLimitError: Error code: 429 - {'error': {'message': "No deployments available for selected model
+      id=54 RateLimitError: Error code: 429 - {'error': {'message': "No deployments available for selected model
+      id=57 RateLimitError: Error code: 429 - {'error': {'message': "No deployments available for selected model
+      id=59 RateLimitError: Error code: 429 - {'error': {'message': "No deployments available for selected model
+      id=259 RateLimitError: Error code: 429 - {'error': {'message': "No deployments available for selected model
+      id=263 RateLimitError: Error code: 429 - {'error': {'message': "No deployments available for selected model
+      id=268 RateLimitError: Error code: 429 - {'error': {'message': "No deployments available for selected model
+  v3: 18
+      id=32 RateLimitError: Error code: 429 - {'error': {'message': "No deployments available for selected model
+      id=34 RateLimitError: Error code: 429 - {'error': {'message': "No deployments available for selected model
+      id=35 RateLimitError: Error code: 429 - {'error': {'message': "No deployments available for selected model
+      id=36 RateLimitError: Error code: 429 - {'error': {'message': "No deployments available for selected model
+      id=48 RateLimitError: Error code: 429 - {'error': {'message': "No deployments available for selected model
+      id=49 RateLimitError: Error code: 429 - {'error': {'message': "No deployments available for selected model
+      id=52 RateLimitError: Error code: 429 - {'error': {'message': "No deployments available for selected model
+      id=53 RateLimitError: Error code: 429 - {'error': {'message': "No deployments available for selected model
+      id=55 RateLimitError: Error code: 429 - {'error': {'message': "No deployments available for selected model
+      id=55 RateLimitError: Error code: 429 - {'error': {'message': "No deployments available for selected model
+
+wrote docs/eval/2026-08-13-call-score-phaseB.json
