@@ -432,15 +432,24 @@ Four things not to re-derive (all measured over 51 real calls,
 
 **Measured, and the criterion was fixed in writing before the run**
 (`app/services/eval/input_gate_report.py`, report in
-`docs/eval/2026-08-13-input-gate-report.json`): exactly four rejections — 30, 183
-and 271 words plus the client no-show — and **zero false positives**. The
-183-word call is not in `call_type_labels.py::UNCLASSIFIABLE` but is one of the
-three sub-300-word calls Part 5 of `problems-and-fixes.md` already identified.
+`docs/eval/2026-08-13-input-gate-report.json`): four rejections across all 51
+stored calls, **zero false positives**. Split by scope:
 
-**No minimum-client-speech threshold, deliberately.** Across accepted calls the
-client speaks a median of **2,101 words** and only one falls under 200 (the
-abstention case). There is no cluster of near-silent clients, so the number would
-have been invented.
+```text
+in scope (in moonlight_calls)  32 calls -> 3 rejected, all 3 labelled bad, 1 R2 abstention
+orphans  (out of scope)        19 calls -> 1 rejected (b026da73, 183 words)
+```
+
+So **on the in-scope corpus the gate rejects only calls already labelled as not
+sales calls** — nothing unlabelled is touched. `b026da73` is not in
+`call_type_labels.py::UNCLASSIFIABLE`, but it is out of scope *and* one of the
+three sub-300-word calls Part 5 of `problems-and-fixes.md` already identified, so
+it is a correct rejection either way.
+
+**No minimum-client-speech threshold, deliberately.** Across the 29 accepted
+in-scope calls the client speaks a median of **2,681 words**, and only one falls
+under 200 — the abstention case, not a thin client. There is no cluster of
+near-silent clients, so the number would have been invented.
 
 Two one-off scripts, neither scheduled: `app/services/fetcher/backfill.py`
 re-fetches transcripts (keyed on `call_storage`, **not** `moonlight_calls`, so
