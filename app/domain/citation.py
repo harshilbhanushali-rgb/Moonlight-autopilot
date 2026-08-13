@@ -79,6 +79,34 @@ def _match_runs(quote: list[str], hay: list[str], index: dict[str, list[int]]):
     return matched, first
 
 
+def quote_coverage(quote_text: str, transcript: Transcript) -> float:
+    """Fraction of `quote_text`'s words found in the transcript in runs of >= 4.
+
+    The same measure `verify_citations` thresholds at `_MIN_COVERAGE`, exposed
+    without the raise so it can be *reported* rather than enforced. Scoring's
+    per-category evidence is audited with this (see
+    app/services/eval/score_evidence_audit.py) but deliberately not rejected on
+    it: a fabricated gap quote reaches a moderator as an uncheckable card,
+    whereas a subscore is only ever read beside the tier it explains.
+
+    Returns 0.0 for an empty quote, which is what "none" on an N/A category
+    renders to — callers skip those rather than counting them as failures.
+    """
+    quote = _words(quote_text or "")
+    if not quote:
+        return 0.0
+
+    hay: list[str] = []
+    for turn in transcript.turns:
+        hay.extend(_words(turn.text))
+    index: dict[str, list[int]] = {}
+    for position, word in enumerate(hay):
+        index.setdefault(word, []).append(position)
+
+    matched, _ = _match_runs(quote, hay, index)
+    return matched / len(quote)
+
+
 def verify_citations(gaps: list[Gap], transcript: Transcript, *, raw_content: str) -> list[Gap]:
     """Returns `gaps` with each `dialogue` timestamp anchored to the turn its
     quote begins in. Raises `LLMOutputError` if a quote's words are not in the
