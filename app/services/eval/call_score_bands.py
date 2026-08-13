@@ -110,12 +110,84 @@ def sweep(results, version):
               f"min {flat[0]:.2f}  median {flat[len(flat) // 2]:.2f}  max {flat[-1]:.2f}")
 
 
+def sweep_against_labels(results, version):
+    """Which thresholds best reproduce the hand labels.
+
+    This is the sweep the module header says is NOT safe to do on
+    self-consistency alone — and it becomes safe here, because agreement with an
+    independent human grade cannot be gamed by collapsing everything into one
+    tier the way re-run agreement can. A threshold that calls every call Medium
+    scores at most the Medium base rate against labels, and badly.
+
+    Still a fit to 47 calls at most, so treat the winner as a hypothesis to
+    confirm on the next batch of labelled calls, not as a setting to ship blind.
+    """
+    from app.services.eval.call_score_labels import gradable
+
+    by_id = {row["id"]: row for row in results}
+    pairs = []
+    for label in gradable():
+        row = by_id.get(label.analysis_id)
+        if row is None:
+            continue
+        runs = row["arms"].get(version) or []
+        means = [run.get("mean") for run in runs if run.get("mean") is not None]
+        if means:
+            pairs.append((label, means))
+
+    if not pairs:
+        print(f"\nno labelled calls with stored means for {version}")
+        return
+
+    print(f"\n=== THRESHOLDS vs HAND LABELS ({version}, n={len(pairs)}) ===")
+    print(f"{'medium/high edge':<22}{'agrees (1st run)':>18}{'too harsh':>11}{'too kind':>10}")
+
+    # A wider grid than CANDIDATES: with labels there is a real objective to
+    # optimise, so it is worth seeing the shape rather than a few guesses.
+    grid = [(m / 100, h / 100) for m in range(250, 400, 10) for h in range(380, 490, 10) if h > m]
+    scored = []
+    for medium_edge, high_edge in grid:
+        hits = harsh = kind = 0
+        for label, means in pairs:
+            predicted = _tier(means[0], medium_edge, high_edge)
+            if predicted == label.tier:
+                hits += 1
+            elif TIERS.index(predicted) > TIERS.index(label.tier):
+                harsh += 1  # TIERS is High,Medium,Low so a higher index is lower
+            else:
+                kind += 1
+        scored.append((hits, medium_edge, high_edge, harsh, kind))
+
+    scored.sort(reverse=True)
+    for hits, medium_edge, high_edge, harsh, kind in scored[:8]:
+        shipped = "  <- shipped" if (medium_edge, high_edge) == (MEDIUM_THRESHOLD, HIGH_THRESHOLD) else ""
+        print(f"  {medium_edge:.2f} / {high_edge:.2f}        "
+              f"{hits}/{len(pairs)} ({hits / len(pairs):>3.0%})".rjust(16)
+              + f"{harsh:>11}{kind:>10}{shipped}")
+
+    current = sum(
+        1 for label, means in pairs
+        if _tier(means[0], MEDIUM_THRESHOLD, HIGH_THRESHOLD) == label.tier
+    )
+    print(f"\n  shipped {MEDIUM_THRESHOLD} / {HIGH_THRESHOLD}: "
+          f"{current}/{len(pairs)} ({current / len(pairs):.0%})")
+    print("  Best-on-this-sample is an upper bound - it is fitted to these calls.")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("run_json", help="output of call_score_ab.py")
     parser.add_argument("--version", default="v2")
+    parser.add_argument(
+        "--labels",
+        action="store_true",
+        help="also sweep thresholds against the hand labels in call_score_labels",
+    )
     args = parser.parse_args()
-    sweep(json.loads(Path(args.run_json).read_text(encoding="utf-8")), args.version)
+    results = json.loads(Path(args.run_json).read_text(encoding="utf-8"))
+    sweep(results, args.version)
+    if args.labels:
+        sweep_against_labels(results, args.version)
 
 
 if __name__ == "__main__":
