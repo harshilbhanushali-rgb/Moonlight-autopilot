@@ -1,0 +1,331 @@
+47 calls x 2 versions x 2 repeats = 188 scoring requests
+WARNING __main__: call 379 v3 r0 failed: Error code: 500 - {'error': {'message': "litellm.APIConnectionError: Vertex_aiException - Server disconnectedNo fallback model group found for original model_group=gemini-3.5-flash. Fallbacks=[{'ai-studio-gemini-2.0-flash': ['ai-studio-gemini-3.5-flash']}, {'ai-studio-gemini-2.5-flash': ['ai-studio-gemini-3.5-flash']}, {'ai-studio-gemini-2.5-flash-lite': ['ai-studio-gemini-3.1-flash-lite']}, {'ai-studio-gemini-3.1-flash-lite-preview': ['ai-studio-gemini-3.1-flash-lite']}, {'ai-studio-gemini-2.5-pro': ['ai-studio-gemini-3.1-pro-preview']}]. Received Model Group=gemini-3.5-flash\nAvailable Model Group Fallbacks=None\nError doing the fallback: litellm.APIConnectionError: Vertex_aiException - Server disconnectedNo fallback model group found for original model_group=gemini-3.5-flash. Fallbacks=[{'ai-studio-gemini-2.0-flash': ['ai-studio-gemini-3.5-flash']}, {'ai-studio-gemini-2.5-flash': ['ai-studio-gemini-3.5-flash']}, {'ai-studio-gemini-2.5-flash-lite': ['ai-studio-gemini-3.1-flash-lite']}, {'ai-studio-gemini-3.1-flash-lite-preview': ['ai-studio-gemini-3.1-flash-lite']}, {'ai-studio-gemini-2.5-pro': ['ai-studio-gemini-3.1-pro-preview']}]", 'type': None, 'param': None, 'code': '500'}}
+
+==============================================================================
+TIER DISTRIBUTION  (first repeat of each arm)
+==============================================================================
+call type                                       v2                        v3
+  Demo                               H1   M7   L0              H5   M3   L0 
+  Discovery                          H0   M7   L3              H0   M6   L4 
+  Follow-up Demo                     H0   M9   L0              H1   M8   L0 
+  Kick-off                           H0   M4   L0              H0   M4   L0 
+  Pricing/Negotiation                H0   M5   L4              H0   M5   L3 
+  Technical Integration              H0   M7   L0              H1   M6   L0 
+  ALL                                H1   M39  L7              H7   M32  L7 
+
+  H/M/L counts.  Key question: can every call type reach every tier?
+
+==============================================================================
+A-3  TIER REACHABILITY  (call types that never produce a given tier)
+==============================================================================
+  v2: 6 of 6 call types
+      Demo (no Low, n=8)
+      Discovery (no High, n=10)
+      Follow-up Demo (no Low, n=9)
+      Kick-off (no High/Low, n=4)
+      Pricing/Negotiation (no High, n=9)
+      Technical Integration (no Low, n=7)
+  v3: 5 of 6 call types
+      Demo (no Low, n=8)
+      Discovery (no High, n=10)
+      Kick-off (no High, n=4)
+      Pricing/Negotiation (no High, n=9)
+      Technical Integration (no Low, n=7)
+
+==============================================================================
+A-1  REPRODUCIBILITY  (same prompt, same settings, two fresh runs)
+==============================================================================
+  v2: 40/47 calls gave the same tier twice (85%)
+      High <-> Medium         4
+      Low <-> Medium          3
+  v3: 40/46 calls gave the same tier twice (87%)
+      High <-> Medium         3
+      Low <-> Medium          3
+
+==============================================================================
+A-2  PRICING/NEGOTIATION LOW RATE  (baseline 8/9 = 89%)
+==============================================================================
+  v2: 9/18 runs Low (50%)
+  v3: 6/17 runs Low (35%)
+
+==============================================================================
+A-5  SCORING-STEP LATENCY  (wall-clock under this run's concurrency)
+==============================================================================
+  v2: median 35.5s   p90 48.8s   max 122.3s
+  v3: median 32.2s   p90 43.8s   max 54.7s
+
+==============================================================================
+A-4  PER-CATEGORY BREAKDOWN  (v2)
+==============================================================================
+
+  Demo
+    category                                                     n/a   mean   spread
+    Discovery Validation (Re-confirming known pains upfront)    19%   3.08      2-4
+    Storytelling & Contextual Demo (Not feature dumping)         6%   4.60      3-5
+    Tailored Feature-to-Pain Mapping                             0%   4.62      4-5
+    Engagement & Check-ins (Interactive vs. lecture)             6%   4.60      3-5
+    Business Value & ROI Framing                                 0%   4.19      3-5
+    Handling Feature/Product Objections                         12%   4.86      4-5
+    Buying Committee Engagement                                  0%   4.69      4-5
+    Agenda & Time Management                                     0%   3.56      2-5
+    Competitive Positioning                                      0%   4.75      4-5
+    Next Steps & Mutual Action Plan Setup                        0%   4.44      3-5
+
+  Discovery
+    category                                                     n/a   mean   spread
+    Preparation & Account/ATS Research                           0%   3.30      1-5
+    Agenda Setting & Control                                     0%   1.85      1-4
+    Credibility & Advisor Positioning                            0%   3.60      2-5
+    Active Listening & Probing                                   0%   3.25      1-5
+    Surface Pain vs. Business Impact Discovery (2-3 levels d     0%   2.25      1-5
+    Root Cause Identification                                    0%   2.65      1-4
+    Adaptability & Script Flexibility                            0%   3.65      1-5
+    PASTOR Usage (Problem & Amplify focus)                       0%   2.05      1-4
+    Value-Driven Elevator Pitch (Contextual)                    10%   2.72      2-4
+    Talk Time Balance (Target: Prospect 55–70%)                  0%   3.70      2-5
+
+  Follow-up Demo
+    category                                                     n/a   mean   spread
+    Recap of Previous Meetings & Unresolved Items                0%   4.17      3-5
+    Deep-Dive Use Case Execution (Tailored to specific stake     0%   4.56      3-5
+    Addressing New/Expanded Buying Committee Members            78%   4.75      4-5
+    Proof Concept / Validation Framing                          44%   3.70      3-5
+    Probing for Hidden Dynamic Changes or Blockers               0%   3.56      2-5
+    Value Defense Against Competing Solutions                    0%   3.89      2-5
+    Adaptability to Unexpected Technical/Business Questions     11%   4.38      2-5
+    Engagement of Secondary Stakeholders                        67%   5.00      5-5
+    Commercial/Timeline Alignment Check                         11%   4.25      3-5
+    Securing Hard Next Steps                                    11%   4.81      4-5
+
+  Kick-off
+    category                                                     n/a   mean   spread
+    Executive Reassurance & Value Realization Setup             12%   3.71      2-5
+    Goal & KPI Alignment (Defining success metrics clearly)      0%   3.00      2-4
+    Roles, Responsibilities & Governance Framework               0%   4.12      3-5
+    Onboarding Timeline & Milestone Review                       0%   4.12      3-5
+    Change Management & Adoption Risk Identification             0%   3.62      2-5
+    Mutual Accountability Establishment                          0%   4.75      4-5
+    Communication Rhythm & Cadence Setting                       0%   3.88      3-5
+    Stakeholder Engagement (Sponsors vs. Operational Team)       0%   4.62      3-5
+    Active Listening & Addressing Onboarding Anxiety             0%   4.38      2-5
+    Immediate First Action Item Alignment                        0%   4.38      3-5
+
+  Pricing/Negotiation
+    category                                                     n/a   mean   spread
+    Preparation on Decision Criteria & Procurement Process      28%   2.46      2-3
+    Value Anchor Defense (Defending price with ROI/Business     78%   1.50      1-2
+    Control of Commercial Dynamics (Avoiding premature disco    39%   2.64      1-4
+    Give-Get Discipline (Trading value for concessions)         78%   1.25      1-2
+    Handling Price Objections & Commercial Pushback             83%   2.67      2-4
+    Stakeholder Alignment (Procurement, Legal, Champion)         0%   3.17      2-5
+    Urgency & Deal Momentum Creation                             0%   2.61      1-4
+    Executive Presence under Pressure                           28%   3.15      2-5
+    Clarity on Approval & Contracting Timelines                 33%   2.25      1-4
+    Securing Closing Commitments                                11%   2.81      1-5
+
+  Technical Integration
+    category                                                     n/a   mean   spread
+    Technical Preparation & Architecture Understanding          14%   4.17      4-5
+    Technical Credibility & Expert Positioning                   0%   4.29      3-5
+    Requirement Scoping & Boundary Enforcement                   0%   3.93      3-5
+    Risk Identification & Mitigation Strategy                    0%   4.14      4-5
+    Feasibility Alignment (ATS/Data flow limitations)           14%   4.58      4-5
+    Clear Technical Workflow Explanation (Simplifying comple     0%   4.21      3-5
+    Security/Compliance/Data Governance Control                 64%   3.00      2-4
+    Active Problem Solving with Technical Teams                  0%   4.14      4-5
+    Timeline & Resource Allocation Clarity                       0%   4.57      3-5
+    Technical Next Steps & Ownership Setup                       0%   4.36      3-5
+
+  MEAN DISTRIBUTION (v2) — where the band edges 2.8 / 4.2 fall
+    min/p25/median/p75/max: 1.50  3.20  4.00  4.33  4.90
+    within 0.15 of a band edge: 23/94 (24%)  <- these are the coin flips
+
+  CATEGORY VOLATILITY (v2) — same call, two identical runs
+    Executive Presence under Pressure                           11% identical   3 N/A flips of 9
+    Change Management & Adoption Risk Identification            25% identical   0 N/A flips of 4
+    Immediate First Action Item Alignment                       25% identical   0 N/A flips of 4
+    Proof Concept / Validation Framing                          33% identical   2 N/A flips of 9
+    Urgency & Deal Momentum Creation                            33% identical   0 N/A flips of 9
+    Agenda & Time Management                                    38% identical   0 N/A flips of 8
+    Technical Credibility & Expert Positioning                  43% identical   0 N/A flips of 7
+    Securing Closing Commitments                                44% identical   0 N/A flips of 9
+    Agenda Setting & Control                                    50% identical   0 N/A flips of 10
+    Engagement & Check-ins (Interactive vs. lecture)            50% identical   1 N/A flips of 8
+    Executive Reassurance & Value Realization Setup             50% identical   1 N/A flips of 4
+    Goal & KPI Alignment (Defining success metrics clearly)     50% identical   0 N/A flips of 4
+    Surface Pain vs. Business Impact Discovery (2-3 levels d    50% identical   0 N/A flips of 10
+    Clarity on Approval & Contracting Timelines                 56% identical   0 N/A flips of 9
+    Commercial/Timeline Alignment Check                         56% identical   0 N/A flips of 9
+    Probing for Hidden Dynamic Changes or Blockers              56% identical   0 N/A flips of 9
+    Stakeholder Alignment (Procurement, Legal, Champion)        56% identical   0 N/A flips of 9
+    Value Defense Against Competing Solutions                   56% identical   0 N/A flips of 9
+    Clear Technical Workflow Explanation (Simplifying comple    57% identical   0 N/A flips of 7
+    Credibility & Advisor Positioning                           60% identical   0 N/A flips of 10
+    Preparation & Account/ATS Research                          60% identical   0 N/A flips of 10
+    Buying Committee Engagement                                 62% identical   0 N/A flips of 8
+    Discovery Validation (Re-confirming known pains upfront)    62% identical   1 N/A flips of 8
+    Next Steps & Mutual Action Plan Setup                       62% identical   0 N/A flips of 8
+    Adaptability to Unexpected Technical/Business Questions     67% identical   0 N/A flips of 9
+    Control of Commercial Dynamics (Avoiding premature disco    67% identical   1 N/A flips of 9
+    Recap of Previous Meetings & Unresolved Items               67% identical   0 N/A flips of 9
+    Active Listening & Probing                                  70% identical   0 N/A flips of 10
+    Adaptability & Script Flexibility                           70% identical   0 N/A flips of 10
+    Root Cause Identification                                   70% identical   0 N/A flips of 10
+    Value-Driven Elevator Pitch (Contextual)                    70% identical   0 N/A flips of 10
+    Security/Compliance/Data Governance Control                 71% identical   1 N/A flips of 7
+    Technical Preparation & Architecture Understanding          71% identical   0 N/A flips of 7
+    Timeline & Resource Allocation Clarity                      71% identical   0 N/A flips of 7
+    Active Listening & Addressing Onboarding Anxiety            75% identical   0 N/A flips of 4
+    Communication Rhythm & Cadence Setting                      75% identical   0 N/A flips of 4
+    Handling Feature/Product Objections                         75% identical   0 N/A flips of 8
+    Onboarding Timeline & Milestone Review                      75% identical   0 N/A flips of 4
+    Roles, Responsibilities & Governance Framework              75% identical   0 N/A flips of 4
+    Stakeholder Engagement (Sponsors vs. Operational Team)      75% identical   0 N/A flips of 4
+    Storytelling & Contextual Demo (Not feature dumping)        75% identical   1 N/A flips of 8
+    Tailored Feature-to-Pain Mapping                            75% identical   0 N/A flips of 8
+    Deep-Dive Use Case Execution (Tailored to specific stake    78% identical   0 N/A flips of 9
+    Preparation on Decision Criteria & Procurement Process      78% identical   1 N/A flips of 9
+    Talk Time Balance (Target: Prospect 55–70%)                 80% identical   0 N/A flips of 10
+    Feasibility Alignment (ATS/Data flow limitations)           86% identical   0 N/A flips of 7
+    Requirement Scoping & Boundary Enforcement                  86% identical   0 N/A flips of 7
+    Technical Next Steps & Ownership Setup                      86% identical   0 N/A flips of 7
+    Business Value & ROI Framing                                88% identical   0 N/A flips of 8
+    Addressing New/Expanded Buying Committee Members            89% identical   0 N/A flips of 9
+    Give-Get Discipline (Trading value for concessions)         89% identical   0 N/A flips of 9
+    Handling Price Objections & Commercial Pushback             89% identical   1 N/A flips of 9
+    Securing Hard Next Steps                                    89% identical   0 N/A flips of 9
+    PASTOR Usage (Problem & Amplify focus)                      90% identical   0 N/A flips of 10
+    Active Problem Solving with Technical Teams                100% identical   0 N/A flips of 7
+    Competitive Positioning                                    100% identical   0 N/A flips of 8
+    Engagement of Secondary Stakeholders                       100% identical   0 N/A flips of 9
+    Mutual Accountability Establishment                        100% identical   0 N/A flips of 4
+    Risk Identification & Mitigation Strategy                  100% identical   0 N/A flips of 7
+    Value Anchor Defense (Defending price with ROI/Business    100% identical   0 N/A flips of 9
+
+==============================================================================
+A-4  PER-CATEGORY BREAKDOWN  (v3)
+==============================================================================
+
+  Demo
+    category                                                     n/a   mean   spread
+    Preparation & Pre-Call Research                              0%   4.81      4-5
+    Agenda Setting & Call Control                                0%   3.69      1-5
+    Active Listening & Probing                                   0%   4.81      4-5
+    Handling Objections & Hard Questions                         0%   4.69      3-5
+    Business Value & Outcome Framing                             0%   4.50      4-5
+    Next Steps & Mutual Commitment                               0%   4.50      2-5
+    Storytelling & Contextual Demo (Not feature dumping)         6%   4.60      3-5
+    Tailored Feature-to-Pain Mapping                             0%   4.88      4-5
+    Engagement & Check-ins (Interactive vs. lecture)             6%   4.80      4-5
+    Competitive Positioning                                      0%   4.75      4-5
+
+  Discovery
+    category                                                     n/a   mean   spread
+    Preparation & Pre-Call Research                              0%   3.55      1-5
+    Agenda Setting & Call Control                                0%   2.40      1-4
+    Active Listening & Probing                                   0%   3.65      1-5
+    Handling Objections & Hard Questions                         0%   3.80      2-5
+    Business Value & Outcome Framing                             0%   3.15      2-5
+    Next Steps & Mutual Commitment                               0%   3.10      1-5
+    Credibility & Advisor Positioning                            0%   3.95      2-5
+    Surface Pain vs. Business Impact Discovery (2-3 levels d     0%   2.68      1-5
+    Root Cause Identification                                    0%   2.75      1-5
+    PASTOR Usage (Problem & Amplify focus)                       0%   2.05      1-4
+    Surface Pain & Business Impact Discovery (2-3 levels dee     0%   2.00      2-2
+
+  Follow-up Demo
+    category                                                     n/a   mean   spread
+    Preparation & Pre-Call Research                              0%   4.06      1-5
+    Agenda Setting & Call Control                                0%   3.39      2-5
+    Active Listening & Probing                                   0%   4.39      3-5
+    Handling Objections & Hard Questions                        11%   4.06      2-5
+    Business Value & Outcome Framing                             0%   4.28      1-5
+    Next Steps & Mutual Commitment                               0%   4.39      2-5
+    Recap of Previous Meetings & Unresolved Items                0%   4.28      3-5
+    Deep-Dive Use Case Execution (Tailored to specific stake    11%   4.62      2-5
+    Proof Concept / Validation Framing                          39%   3.82      2-5
+    Probing for Hidden Dynamic Changes or Blockers               0%   3.67      2-5
+
+  Kick-off
+    category                                                     n/a   mean   spread
+    Preparation & Pre-Call Research                              0%   2.75      2-5
+    Agenda Setting & Call Control                                0%   2.62      2-4
+    Active Listening & Probing                                   0%   3.88      2-5
+    Handling Objections & Hard Questions                         0%   3.50      1-5
+    Business Value & Outcome Framing                             0%   3.75      3-5
+    Next Steps & Mutual Commitment                               0%   4.62      4-5
+    Goal & KPI Alignment (Defining success metrics clearly)      0%   2.75      2-4
+    Roles, Responsibilities & Governance Framework               0%   4.38      4-5
+    Onboarding Timeline & Milestone Review                       0%   4.12      4-5
+    Communication Rhythm & Cadence Setting                       0%   3.75      3-5
+
+  Pricing/Negotiation
+    category                                                     n/a   mean   spread
+    Preparation & Pre-Call Research                              0%   3.47      2-5
+    Agenda Setting & Call Control                                0%   2.82      1-5
+    Active Listening & Probing                                   0%   3.65      2-5
+    Handling Objections & Hard Questions                         6%   3.25      2-4
+    Business Value & Outcome Framing                             0%   3.24      2-4
+    Next Steps & Mutual Commitment                               6%   3.19      2-5
+    Value Anchor Defense (Defending price with ROI/Business     65%   2.17      1-4
+    Control of Commercial Dynamics (Avoiding premature disco    29%   2.50      1-4
+    Urgency & Deal Momentum Creation                             0%   2.94      2-4
+    Clarity on Approval & Contracting Timelines                 29%   2.67      2-4
+
+  Technical Integration
+    category                                                     n/a   mean   spread
+    Preparation & Pre-Call Research                              0%   3.93      2-5
+    Agenda Setting & Call Control                                7%   2.62      2-4
+    Active Listening & Probing                                   0%   3.93      3-5
+    Handling Objections & Hard Questions                         7%   3.62      2-5
+    Business Value & Outcome Framing                             0%   3.43      2-5
+    Next Steps & Mutual Commitment                               0%   4.00      2-5
+    Technical Credibility & Expert Positioning                   0%   4.43      3-5
+    Requirement Scoping & Boundary Enforcement                   0%   4.14      2-5
+    Risk Identification & Mitigation Strategy                    0%   4.14      3-5
+    Feasibility Alignment (ATS/Data flow limitations)            7%   4.62      3-5
+
+  MEAN DISTRIBUTION (v3) — where the band edges 2.8 / 4.2 fall
+    min/p25/median/p75/max: 1.60  3.33  3.80  4.30  5.00
+    within 0.15 of a band edge: 21/93 (23%)  <- these are the coin flips
+
+  CATEGORY VOLATILITY (v3) — same call, two identical runs
+    Roles, Responsibilities & Governance Framework              25% identical   0 N/A flips of 4
+    Feasibility Alignment (ATS/Data flow limitations)           43% identical   1 N/A flips of 7
+    Recap of Previous Meetings & Unresolved Items               44% identical   0 N/A flips of 9
+    Goal & KPI Alignment (Defining success metrics clearly)     50% identical   0 N/A flips of 4
+    Handling Objections & Hard Questions                        50% identical   2 N/A flips of 46
+    Agenda Setting & Call Control                               52% identical   1 N/A flips of 46
+    Probing for Hidden Dynamic Changes or Blockers              56% identical   0 N/A flips of 9
+    Surface Pain vs. Business Impact Discovery (2-3 levels d    56% identical   0 N/A flips of 9
+    Requirement Scoping & Boundary Enforcement                  57% identical   0 N/A flips of 7
+    Technical Credibility & Expert Positioning                  57% identical   0 N/A flips of 7
+    Next Steps & Mutual Commitment                              61% identical   1 N/A flips of 46
+    Engagement & Check-ins (Interactive vs. lecture)            62% identical   1 N/A flips of 8
+    Urgency & Deal Momentum Creation                            62% identical   0 N/A flips of 8
+    Preparation & Pre-Call Research                             65% identical   0 N/A flips of 46
+    Proof Concept / Validation Framing                          67% identical   1 N/A flips of 9
+    Active Listening & Probing                                  67% identical   0 N/A flips of 46
+    Credibility & Advisor Positioning                           70% identical   0 N/A flips of 10
+    PASTOR Usage (Problem & Amplify focus)                      70% identical   0 N/A flips of 10
+    Root Cause Identification                                   70% identical   0 N/A flips of 10
+    Onboarding Timeline & Milestone Review                      75% identical   0 N/A flips of 4
+    Storytelling & Contextual Demo (Not feature dumping)        75% identical   1 N/A flips of 8
+    Business Value & Outcome Framing                            76% identical   0 N/A flips of 46
+    Clarity on Approval & Contracting Timelines                 88% identical   0 N/A flips of 8
+    Control of Commercial Dynamics (Avoiding premature disco    88% identical   1 N/A flips of 8
+    Value Anchor Defense (Defending price with ROI/Business     88% identical   0 N/A flips of 8
+    Deep-Dive Use Case Execution (Tailored to specific stake    89% identical   0 N/A flips of 9
+    Communication Rhythm & Cadence Setting                     100% identical   0 N/A flips of 4
+    Competitive Positioning                                    100% identical   0 N/A flips of 8
+    Risk Identification & Mitigation Strategy                  100% identical   0 N/A flips of 7
+    Tailored Feature-to-Pain Mapping                           100% identical   0 N/A flips of 8
+
+==============================================================================
+ERRORS
+==============================================================================
+  v2: 0
+  v3: 1
+      id=379 InternalServerError: Error code: 500 - {'error': {'message': "litellm.APIConnectionError: Vertex_aiE
+
+wrote docs/eval/2026-08-14-call-score-phaseB-clean.json
