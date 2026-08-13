@@ -340,7 +340,11 @@ async def test_a_row_that_cannot_be_rendered_fails_alone_and_the_batch_carries_o
     with SessionLocal() as session:
         attempted = await process_batch(session=session, llm_client=llm, prompts=prompts, limit=100)
 
-    assert attempted == 2
+    # `>=`, not `==`: process_batch claims every claimable row, and `analysis`
+    # is shared with the real backlog, so the exact count is not this test's to
+    # predict. Both of its own rows reaching a terminal state below is the
+    # actual claim. (test_a_concurrent_batch... already asserts this way.)
+    assert attempted >= 2
 
     with SessionLocal() as session:
         legacy = session.query(Analysis).filter_by(avoma_recording_id=legacy_id).one()
