@@ -12,7 +12,7 @@ import json
 import pytest
 
 from app.domain.errors import LLMOutputError
-from app.domain.transcript import Transcript, TranscriptTurn
+from app.domain.transcript import Transcript, TranscriptSpeaker, TranscriptTurn
 from app.domain.types import Gap
 from app.services.eval.neutral_framing import (
     NEUTRAL_DIALOGUE_PROMPT,
@@ -25,13 +25,34 @@ from app.services.eval.neutral_framing import (
 )
 
 TRANSCRIPT = Transcript(
+    speakers=[
+        TranscriptSpeaker(id=0, name="Scott", email="scott@joveo.com", is_rep=True),
+        TranscriptSpeaker(id=1, name="Keisha", email="keisha@acme.com", is_rep=False),
+    ],
     turns=[
-        TranscriptTurn(speaker="Scott", text="I saw you're using Symphony on your career site.", start_s=83),
-        TranscriptTurn(speaker="Keisha", text="Yes, we are auditing our stack right now.", start_s=120),
-        TranscriptTurn(speaker="Scott", text="Makes sense, plenty of teams are.", start_s=158),
+        TranscriptTurn(
+            speaker="Scott",
+            speaker_id=0,
+            text="I saw you're using Symphony on your career site.",
+            start_s=83,
+        ),
+        TranscriptTurn(
+            speaker="Keisha",
+            speaker_id=1,
+            text="Yes, we are auditing our stack right now.",
+            start_s=120,
+        ),
+        TranscriptTurn(
+            speaker="Scott", speaker_id=0, text="Makes sense, plenty of teams are.", start_s=158
+        ),
         # Far enough from the quote to fall outside a 1-turn window.
-        TranscriptTurn(speaker="Keisha", text="Tenet has been really successful with us.", start_s=400),
-    ]
+        TranscriptTurn(
+            speaker="Keisha",
+            speaker_id=1,
+            text="Tenet has been really successful with us.",
+            start_s=400,
+        ),
+    ],
 )
 
 DIALOGUE_GAP = Gap(

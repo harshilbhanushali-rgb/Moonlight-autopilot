@@ -11,7 +11,7 @@ import pytest
 
 from app.domain.errors import LLMOutputError
 from app.domain.gap_verification import verify_gap_claims
-from app.domain.transcript import Transcript, TranscriptTurn
+from app.domain.transcript import Transcript, TranscriptSpeaker, TranscriptTurn
 from app.domain.types import Gap, Verdict
 from app.prompts.registry import PromptFile
 
@@ -26,15 +26,38 @@ EXPLANATION_PROMPT = PromptFile(
 )
 
 TRANSCRIPT = Transcript(
+    speakers=[
+        TranscriptSpeaker(id=0, name="Scott", email="scott@joveo.com", is_rep=True),
+        TranscriptSpeaker(id=1, name="Keisha", email="keisha@acme.com", is_rep=False),
+    ],
     turns=[
-        TranscriptTurn(speaker="Scott", text="I saw you're using Symphony on your career site.", start_s=83),
-        TranscriptTurn(speaker="Keisha", text="Yes, we are auditing our stack right now.", start_s=120),
-        TranscriptTurn(speaker="Scott", text="Makes sense, plenty of teams are.", start_s=158),
-        TranscriptTurn(speaker="Keisha", text="It is overdue honestly.", start_s=180),
+        TranscriptTurn(
+            speaker="Scott",
+            speaker_id=0,
+            text="I saw you're using Symphony on your career site.",
+            start_s=83,
+        ),
+        TranscriptTurn(
+            speaker="Keisha",
+            speaker_id=1,
+            text="Yes, we are auditing our stack right now.",
+            start_s=120,
+        ),
+        TranscriptTurn(
+            speaker="Scott", speaker_id=0, text="Makes sense, plenty of teams are.", start_s=158
+        ),
+        TranscriptTurn(
+            speaker="Keisha", speaker_id=1, text="It is overdue honestly.", start_s=180
+        ),
         # Far enough from the quote above to fall outside a 3-turn window.
-        TranscriptTurn(speaker="Scott", text="Tenet has been really successful with us.", start_s=400),
-        TranscriptTurn(speaker="Keisha", text="Good to know.", start_s=430),
-    ]
+        TranscriptTurn(
+            speaker="Scott",
+            speaker_id=0,
+            text="Tenet has been really successful with us.",
+            start_s=400,
+        ),
+        TranscriptTurn(speaker="Keisha", speaker_id=1, text="Good to know.", start_s=430),
+    ],
 )
 
 

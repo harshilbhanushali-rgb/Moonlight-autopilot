@@ -44,7 +44,7 @@ from app.db.models import Analysis, CallStorage
 from app.db.session import SessionLocal
 from app.domain.gap_analysis import analyse_gaps
 from app.domain.gap_verification import verify_gap_claims
-from app.domain.transcript import Transcript, TranscriptTurn
+from app.domain.transcript import Transcript, TranscriptSpeaker, TranscriptTurn
 from app.domain.types import Verdict
 from app.llm.factory import build_llm_client
 from app.llm.gateway_config import load_llm_gateway_config
@@ -85,8 +85,21 @@ def _with_nonce(transcript: Transcript, nonce: str | None) -> Transcript:
     if not nonce:
         return transcript
     last = transcript.turns[-1].start_s if transcript.turns else 0.0
+    # The synthetic speaker is marked is_rep so that if this transcript is ever
+    # passed through the input gate, the nonce cannot be mistaken for client
+    # speech.
+    eval_id = max((s.id for s in transcript.speakers), default=-1) + 1
     return Transcript(
-        turns=[*transcript.turns, TranscriptTurn(speaker="eval", text=f"[ab {nonce}]", start_s=last)]
+        speakers=[
+            *transcript.speakers,
+            TranscriptSpeaker(id=eval_id, name="eval", email=None, is_rep=True),
+        ],
+        turns=[
+            *transcript.turns,
+            TranscriptTurn(
+                speaker="eval", speaker_id=eval_id, text=f"[ab {nonce}]", start_s=last
+            ),
+        ],
     )
 
 

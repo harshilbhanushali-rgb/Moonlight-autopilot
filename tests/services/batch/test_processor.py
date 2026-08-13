@@ -114,8 +114,16 @@ class ConcurrencyTrackingClient:
             self._per_call[marker] -= 1
 
 
+SPEAKERS = [{"id": 0, "name": "rep", "email": "rep@joveo.com", "is_rep": True}]
+
+
 def marked_transcript(marker: str) -> dict:
-    return {"turns": [{"speaker": "rep", "text": f"{marker} speaking", "start_s": 0.0}]}
+    return {
+        "speakers": SPEAKERS,
+        "turns": [
+            {"speaker": "rep", "speaker_id": 0, "text": f"{marker} speaking", "start_s": 0.0}
+        ],
+    }
 
 ALL_GOOD_RESPONSES = {
     "call_type": '{"call_type": "Demo"}',
@@ -124,7 +132,10 @@ ALL_GOOD_RESPONSES = {
     "card_type": '{"card_type": "Coaching"}',
 }
 
-GOOD_TRANSCRIPT = {"turns": [{"speaker": "rep", "text": "hi there", "start_s": 0.0}]}
+GOOD_TRANSCRIPT = {
+    "speakers": SPEAKERS,
+    "turns": [{"speaker": "rep", "speaker_id": 0, "text": "hi there", "start_s": 0.0}],
+}
 # The pre-timestamp shape: stored before start_s became required, so it
 # fails Transcript validation on read.
 LEGACY_TRANSCRIPT = {"turns": [{"speaker": "rep", "text": "hi there"}]}

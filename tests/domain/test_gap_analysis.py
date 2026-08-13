@@ -2,7 +2,7 @@ import pytest
 
 from app.domain.errors import LLMOutputError
 from app.domain.gap_analysis import analyse_gaps
-from app.domain.transcript import Transcript, TranscriptTurn
+from app.domain.transcript import Transcript, TranscriptSpeaker, TranscriptTurn
 from app.domain.types import Gap
 from app.llm.client import StubLLMClient
 from app.prompts.registry import PromptFile
@@ -18,11 +18,22 @@ PROMPT = PromptFile(
 )
 
 TRANSCRIPT = Transcript(
+    speakers=[
+        TranscriptSpeaker(id=0, name="Rep", email="rep@joveo.com", is_rep=True),
+        TranscriptSpeaker(id=1, name="Buyer", email="buyer@acme.com", is_rep=False),
+    ],
     turns=[
-        TranscriptTurn(speaker="Rep", text="Let me walk you through the whole platform.", start_s=0),
-        TranscriptTurn(speaker="Buyer", text="Sure, go ahead.", start_s=41),
-        TranscriptTurn(speaker="Rep", text="rep talked for 10 minutes straight", start_s=754),
-    ]
+        TranscriptTurn(
+            speaker="Rep",
+            speaker_id=0,
+            text="Let me walk you through the whole platform.",
+            start_s=0,
+        ),
+        TranscriptTurn(speaker="Buyer", speaker_id=1, text="Sure, go ahead.", start_s=41),
+        TranscriptTurn(
+            speaker="Rep", speaker_id=0, text="rep talked for 10 minutes straight", start_s=754
+        ),
+    ],
 )
 
 

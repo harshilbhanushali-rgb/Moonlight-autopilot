@@ -30,9 +30,18 @@ def test_transcript_to_storage_shape_maps_speaker_id_to_name():
 
     assert result == {
         "turns": [
-            {"speaker": "Rep Name", "text": "Hi there", "start_s": 0.1},
-            {"speaker": "prospect@example.com", "text": "Hello", "start_s": 1.2},
-        ]
+            {"speaker": "Rep Name", "speaker_id": 0, "text": "Hi there", "start_s": 0.1},
+            {
+                "speaker": "prospect@example.com",
+                "speaker_id": 1,
+                "text": "Hello",
+                "start_s": 1.2,
+            },
+        ],
+        "speakers": [
+            {"id": 0, "name": "Rep Name", "email": "rep@example.com", "is_rep": True},
+            {"id": 1, "name": None, "email": "prospect@example.com", "is_rep": False},
+        ],
     }
 
 
@@ -57,17 +66,63 @@ def test_transcript_to_storage_shape_carries_the_turn_start_time():
 
 
 def test_transcript_to_storage_shape_falls_back_to_placeholder_when_speaker_unmatched():
+    # Real and not rare: on 3 of 51 measured calls some turns carry a speaker_id
+    # absent from Avoma's speakers list — on one, half the words. The turn is kept
+    # (it is real speech) and the id is preserved, which is what lets the input
+    # gate abstain rather than mistake unattributable speech for rep-only speech.
     transcript = AvomaTranscript(
         meeting_uuid="m1",
         uuid="t1",
-        speakers=[],
-        turns=[AvomaTranscriptTurn(speaker_id=5, text="hi", timestamps=[3.0])],
+        speakers=[AvomaSpeaker(id=0, email="rep@joveo.com", name="Rep", is_rep=True)],
+        turns=[
+            AvomaTranscriptTurn(speaker_id=0, text="hello", timestamps=[1.0]),
+            AvomaTranscriptTurn(speaker_id=5, text="hi", timestamps=[3.0]),
+        ],
         transcription_vtt_url=None,
     )
 
     result = transcript_to_storage_shape(transcript)
 
-    assert result == {"turns": [{"speaker": "speaker-5", "text": "hi", "start_s": 3.0}]}
+    assert result["turns"][1] == {
+        "speaker": "speaker-5",
+        "speaker_id": 5,
+        "text": "hi",
+        "start_s": 3.0,
+    }
+    assert [s["id"] for s in result["speakers"]] == [0]
+
+
+def test_transcript_to_storage_shape_rejects_a_transcript_with_no_speakers():
+    # Without speakers there is no way to tell whether the client said anything,
+    # so the call is skipped at the boundary rather than stored in a shape the
+    # input gate cannot judge — same treatment as an unanchorable turn.
+    transcript = AvomaTranscript(
+        meeting_uuid="m1",
+        uuid="t1",
+        speakers=[],
+        turns=[AvomaTranscriptTurn(speaker_id=0, text="hi", timestamps=[1.0])],
+        transcription_vtt_url=None,
+    )
+
+    with pytest.raises(TranscriptShapeError, match="m1"):
+        transcript_to_storage_shape(transcript)
+
+
+def test_transcript_to_storage_shape_carries_is_rep_for_every_speaker():
+    transcript = AvomaTranscript(
+        meeting_uuid="m1",
+        uuid="t1",
+        speakers=[
+            AvomaSpeaker(id=0, email="rep@joveo.com", name="Rep", is_rep=True),
+            AvomaSpeaker(id=1, email="buyer@acme.com", name="Buyer", is_rep=False),
+        ],
+        turns=[AvomaTranscriptTurn(speaker_id=1, text="hi", timestamps=[1.0])],
+        transcription_vtt_url=None,
+    )
+
+    result = transcript_to_storage_shape(transcript)
+
+    assert {s["id"]: s["is_rep"] for s in result["speakers"]} == {0: True, 1: False}
 
 
 def test_transcript_to_storage_shape_rejects_a_turn_with_no_timestamps():

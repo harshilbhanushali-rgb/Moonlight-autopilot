@@ -10,7 +10,7 @@ from app.db.models import (
     STATUS_PENDING,
     STATUS_PROCESSED,
 )
-from app.domain.transcript import Transcript, TranscriptTurn
+from app.domain.transcript import Transcript, TranscriptSpeaker, TranscriptTurn
 from app.llm.client import StubLLMClient
 from app.prompts.registry import PromptFile
 
@@ -19,12 +19,19 @@ from app.prompts.registry import PromptFile
 # check its citations against the turns (app/domain/citation.py). Gap fixtures
 # in these tests must therefore quote something that is actually in here.
 TRANSCRIPT = Transcript(
+    speakers=[
+        TranscriptSpeaker(id=0, name="rep", email="rep@joveo.com", is_rep=True),
+        TranscriptSpeaker(id=1, name="buyer", email="buyer@acme.com", is_rep=False),
+    ],
     turns=[
-        TranscriptTurn(speaker="rep", text="hi", start_s=0),
+        TranscriptTurn(speaker="rep", speaker_id=0, text="hi", start_s=0),
         TranscriptTurn(
-            speaker="buyer", text="any new vendor is not gonna happen right now", start_s=3552
+            speaker="buyer",
+            speaker_id=1,
+            text="any new vendor is not gonna happen right now",
+            start_s=3552,
         ),
-    ]
+    ],
 )
 
 

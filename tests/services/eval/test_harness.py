@@ -1,4 +1,4 @@
-from app.domain.transcript import Transcript, TranscriptTurn
+from app.domain.transcript import Transcript, TranscriptSpeaker, TranscriptTurn
 from app.domain.types import CallType, Gap
 from app.services.eval.harness import GapModeComparison, compare_gap_modes
 from app.llm.client import StubLLMClient
@@ -6,7 +6,10 @@ from app.prompts.registry import PromptRegistry
 
 
 def transcript(text):
-    return Transcript(turns=[TranscriptTurn(speaker="rep", text=text, start_s=0)])
+    return Transcript(
+        speakers=[TranscriptSpeaker(id=0, name="rep", email="rep@joveo.com", is_rep=True)],
+        turns=[TranscriptTurn(speaker="rep", speaker_id=0, text=text, start_s=0)],
+    )
 
 
 def make_registry(tmp_path):

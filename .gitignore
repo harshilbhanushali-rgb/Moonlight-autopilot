@@ -15,3 +15,7 @@ wheels/
 Call_examples.md
 problems-and-fixes.md
 Prompt.md
+
+# Real customer call transcripts — same class as Call_examples.md, which these
+# six files are extracted from. Never commit.
+Ground_Truth_call_type/

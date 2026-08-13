@@ -50,7 +50,7 @@ from app.domain.types import CallType, CardTypeContext
 from app.llm.client import OpenAICompatibleLLMClient
 from app.llm.gateway_config import load_llm_gateway_config
 from app.prompts.registry import PromptRegistry
-from app.domain.transcript import Transcript, TranscriptTurn
+from app.domain.transcript import Transcript, TranscriptSpeaker, TranscriptTurn
 from app.services.batch.repository import load_transcript
 from app.services.batch.run import _PROMPTS_ROOT, build_step_prompts
 
@@ -184,11 +184,23 @@ async def analyse_one(
         # the Transcript so it can verify citations against the turns, and the
         # nonce has to be part of what the model sees to bust the response cache.
         last = transcript_model.turns[-1].start_s if transcript_model.turns else 0.0
+        # Marked is_rep so the nonce can never read as client speech if this
+        # transcript is passed through the input gate.
+        eval_id = max((s.id for s in transcript_model.speakers), default=-1) + 1
         transcript_model = Transcript(
+            speakers=[
+                *transcript_model.speakers,
+                TranscriptSpeaker(id=eval_id, name="eval", email=None, is_rep=True),
+            ],
             turns=[
                 *transcript_model.turns,
-                TranscriptTurn(speaker="eval", text=f"[eval run {nonce}]", start_s=last),
-            ]
+                TranscriptTurn(
+                    speaker="eval",
+                    speaker_id=eval_id,
+                    text=f"[eval run {nonce}]",
+                    start_s=last,
+                ),
+            ],
         )
     transcript_text = transcript_model.render_for_prompt()
     recording_client = UsageRecordingClient(llm_client)

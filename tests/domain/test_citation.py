@@ -10,17 +10,39 @@ import pytest
 
 from app.domain.citation import verify_citations
 from app.domain.errors import LLMOutputError
-from app.domain.transcript import Transcript, TranscriptTurn
+from app.domain.transcript import Transcript, TranscriptSpeaker, TranscriptTurn
 from app.domain.types import Gap
 
 
 TRANSCRIPT = Transcript(
+    speakers=[
+        TranscriptSpeaker(id=0, name="Scott", email="scott@joveo.com", is_rep=True),
+        TranscriptSpeaker(id=1, name="Matt", email="matt@acme.com", is_rep=False),
+        TranscriptSpeaker(id=2, name="Jill", email="jill@acme.com", is_rep=False),
+    ],
     turns=[
-        TranscriptTurn(speaker="Scott", text="So what does your current stack look like?", start_s=0),
-        TranscriptTurn(speaker="Matt", text="We are coming off Radancy over the next year.", start_s=69),
-        TranscriptTurn(speaker="Jill", text="I do have to run. I'm getting pinged.", start_s=124),
-        TranscriptTurn(speaker="Matt", text="Okay. That'll work. Way over.", start_s=131),
-    ]
+        TranscriptTurn(
+            speaker="Scott",
+            speaker_id=0,
+            text="So what does your current stack look like?",
+            start_s=0,
+        ),
+        TranscriptTurn(
+            speaker="Matt",
+            speaker_id=1,
+            text="We are coming off Radancy over the next year.",
+            start_s=69,
+        ),
+        TranscriptTurn(
+            speaker="Jill",
+            speaker_id=2,
+            text="I do have to run. I'm getting pinged.",
+            start_s=124,
+        ),
+        TranscriptTurn(
+            speaker="Matt", speaker_id=1, text="Okay. That'll work. Way over.", start_s=131
+        ),
+    ],
 )
 
 
