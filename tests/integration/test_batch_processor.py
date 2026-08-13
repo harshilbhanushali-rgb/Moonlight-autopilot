@@ -1,11 +1,12 @@
 import hashlib
+import json
 import uuid
 from datetime import datetime, timezone
 
 import pytest
 from sqlalchemy import func, select, update
 
-from app.db.models import Analysis, CallStorage, PromptVersion
+from app.db.models import STATUS_PENDING, Analysis, CallStorage, PromptVersion
 from app.db.session import SessionLocal
 from app.domain.types import CallType
 from app.llm.client import StubLLMClient
@@ -390,3 +391,90 @@ async def test_a_concurrent_batch_processes_every_call_against_the_real_database
     # prompt_versions row per step rather than racing in duplicates.
     assert len({version_ids(rid)["call_type"] for rid in ids}) == 1
     assert all(v is not None for rid in ids for v in version_ids(rid).values())
+
+
+async def test_the_score_breakdown_round_trips_into_the_analysis_row(
+    recording_id, throwaway_prompts
+):
+    """Phase A end to end: the ten categories reach the JSONB column, N/A rows
+    included. Storing only the scored ones would hide the denominator the tier
+    was computed over, which is the whole thing the breakdown exists to show."""
+    seed_call_storage(recording_id, [{"speaker": "rep", "text": "hi there", "start_s": 0.0}])
+    responses = dict(GOOD_RESPONSES)
+    responses["scoring"] = json.dumps(
+        {
+            "categories": [
+                {"name": f"Category {i}", "score": "5", "evidence": "said so"}
+                for i in range(1, 8)
+            ]
+            + [
+                {"name": f"Category {i}", "score": "N/A", "evidence": "none"}
+                for i in range(8, 11)
+            ]
+        }
+    )
+    llm = StubLLMClient(responses=responses)
+
+    with SessionLocal() as session:
+        await process_batch(session=session, llm_client=llm, prompts=throwaway_prompts, limit=100)
+
+    with SessionLocal() as session:
+        row = session.execute(
+            select(Analysis).where(Analysis.avoma_recording_id == recording_id)
+        ).scalar_one()
+        assert row.call_score == "High"  # mean 5.0 over the seven that applied
+        assert len(row.call_score_categories) == 10
+        assert sum(1 for c in row.call_score_categories if c["score"] is None) == 3
+        assert row.call_score_categories[0] == {
+            "name": "Category 1",
+            "score": 5,
+            "evidence": "said so",
+        }
+
+
+async def test_a_rerun_that_skips_scoring_does_not_erase_the_stored_breakdown(
+    recording_id, throwaway_prompts
+):
+    """The None-omits-the-column rule, end to end — the breakdown's equivalent
+    of test_a_retry_does_not_null_the_versions_recorded_by_the_first_pass."""
+    seed_call_storage(recording_id, [{"speaker": "rep", "text": "hi there", "start_s": 0.0}])
+
+    with SessionLocal() as session:
+        await process_batch(
+            session=session,
+            llm_client=StubLLMClient(responses=GOOD_RESPONSES),
+            prompts=throwaway_prompts,
+            limit=100,
+        )
+
+    with SessionLocal() as session:
+        first = session.execute(
+            select(Analysis.call_score_categories).where(
+                Analysis.avoma_recording_id == recording_id
+            )
+        ).scalar_one()
+    assert first is not None
+
+    # Force a second pass in which every step is already `processed`, so
+    # scoring never runs and reports no breakdown.
+    with SessionLocal() as session:
+        session.execute(
+            update(Analysis)
+            .where(Analysis.avoma_recording_id == recording_id)
+            .values(status=STATUS_PENDING)
+        )
+        session.commit()
+        await process_batch(
+            session=session,
+            llm_client=StubLLMClient(responses=GOOD_RESPONSES),
+            prompts=throwaway_prompts,
+            limit=100,
+        )
+
+    with SessionLocal() as session:
+        second = session.execute(
+            select(Analysis.call_score_categories).where(
+                Analysis.avoma_recording_id == recording_id
+            )
+        ).scalar_one()
+    assert second == first
