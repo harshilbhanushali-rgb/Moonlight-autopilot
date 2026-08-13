@@ -107,7 +107,7 @@ byte-identical themes elsewhere in the same file.
 
 **A4. Compute the tier in code.** Mean over non-N/A categories, mapped by the
 band thresholds. **The thresholds stay at the business team's stated 4.2 / 2.8
-for Phase A.** Setting them from 46 calls of our own data would be overfitting,
+for Phase A.** Setting them from 47 calls of our own data would be overfitting,
 and the honest result of Phase A includes what the mean distribution actually
 does. Recalibration, if the data demands it, is a separate documented decision
 with its own A/B.
