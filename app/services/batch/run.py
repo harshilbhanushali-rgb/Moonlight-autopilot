@@ -14,11 +14,16 @@ from app.services.batch.processor import process_batch
 _PROMPTS_ROOT = Path(__file__).resolve().parent.parent.parent / "prompts"
 
 
-def build_step_prompts(registry: PromptRegistry, gap_rubric_mode: str) -> StepPrompts:
+def build_step_prompts(
+    registry: PromptRegistry, gap_rubric_mode: str, scoring_prompt_version: str
+) -> StepPrompts:
     return StepPrompts(
         call_type=registry.latest(kind="call_type"),
-        scoring_for=lambda call_type: registry.latest(
-            kind="scoring", call_type=call_type.name.lower()
+        # `get`, not `latest`: the scoring version is named in config.yaml so
+        # that dropping an A/B candidate into app/prompts/scoring/ cannot
+        # silently become what scores every call.
+        scoring_for=lambda call_type: registry.get(
+            kind="scoring", call_type=call_type.name.lower(), label=scoring_prompt_version
         ),
         card_type=registry.latest(kind="card_type"),
         gap_rubric_for=lambda call_type: registry.latest(
@@ -33,7 +38,9 @@ async def _run_batch() -> int:
     analyser_config = load_analyser_config()
     gateway_config = load_llm_gateway_config()
     registry = PromptRegistry(root=_PROMPTS_ROOT)
-    prompts = build_step_prompts(registry, analyser_config.gap_rubric_mode)
+    prompts = build_step_prompts(
+        registry, analyser_config.gap_rubric_mode, analyser_config.scoring_prompt_version
+    )
 
     # Built inside the loop that uses it: the client owns an httpx.AsyncClient,
     # which binds to the running loop and must not outlive it.

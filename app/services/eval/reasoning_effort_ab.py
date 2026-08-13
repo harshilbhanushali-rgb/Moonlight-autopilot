@@ -289,7 +289,9 @@ async def run_side(
     analyser_config = load_analyser_config()
     gateway_config = load_llm_gateway_config()
     registry = PromptRegistry(root=_PROMPTS_ROOT)
-    prompts = build_step_prompts(registry, analyser_config.gap_rubric_mode)
+    prompts = build_step_prompts(
+        registry, analyser_config.gap_rubric_mode, analyser_config.scoring_prompt_version
+    )
 
     baselines, inputs = load_baseline(limit)
     concurrency = concurrency or analyser_config.max_concurrent_calls

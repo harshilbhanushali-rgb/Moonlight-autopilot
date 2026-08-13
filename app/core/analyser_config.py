@@ -40,6 +40,19 @@ class AnalyserConfig:
     gap_rubric_mode: str
     batch_size: int
     max_retries: int
+    # Which app/prompts/scoring/<call_type>/<label>.txt the analyser runs.
+    #
+    # Named rather than resolved by PromptRegistry.latest(), which takes the
+    # highest version label: dropping a candidate `v3.txt` in for an A/B
+    # otherwise repoints production at an unvalidated prompt with no diff to
+    # the analyser and nothing to notice. That is not hypothetical — it
+    # happened while A/B-ing Phase B of the call-score redesign, and CLAUDE.md
+    # already records the same hazard for the gap-verification prompts.
+    #
+    # No default, deliberately. A missing value means the config has not
+    # decided which prompt scores every call, and that should stop the run
+    # rather than quietly pick the newest file on disk.
+    scoring_prompt_version: str = ""
     stale_claim_minutes: int = DEFAULT_STALE_CLAIM_MINUTES
     circuit_breaker_consecutive_failures: int = DEFAULT_CIRCUIT_BREAKER_CONSECUTIVE_FAILURES
     max_concurrent_calls: int = DEFAULT_MAX_CONCURRENT_CALLS
@@ -84,7 +97,17 @@ def load_analyser_config(path: Path | None = None) -> AnalyserConfig:
             f"got {verification_batch_size!r}"
         )
 
+    scoring_prompt_version = (section.get("scoring_prompt_version") or "").strip()
+    if not scoring_prompt_version:
+        raise ValueError(
+            "analyser.scoring_prompt_version must name the scoring prompt label to "
+            "run (e.g. 'v2'). It has no default on purpose: falling back to the "
+            "highest label on disk means adding a candidate prompt for an A/B "
+            "silently repoints production at it."
+        )
+
     return AnalyserConfig(
+        scoring_prompt_version=scoring_prompt_version,
         gap_rubric_mode=section["gap_rubric_mode"],
         batch_size=section["batch_size"],
         max_retries=section["max_retries"],

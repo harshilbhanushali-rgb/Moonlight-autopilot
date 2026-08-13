@@ -275,7 +275,7 @@ async def test_process_batch_fully_processes_a_new_call(recording_id):
     seed_call_storage(recording_id, [{"speaker": "rep", "text": "hi there", "start_s": 0.0}])
     llm = StubLLMClient(responses=GOOD_RESPONSES)
     registry = PromptRegistry(root=_PROMPTS_ROOT)
-    prompts = build_step_prompts(registry, "descriptiononly")
+    prompts = build_step_prompts(registry, "descriptiononly", "v2")
 
     with SessionLocal() as session:
         await process_batch(session=session, llm_client=llm, prompts=prompts, limit=100)
@@ -293,7 +293,7 @@ async def test_process_batch_does_not_reprocess_an_already_processed_row(recordi
     seed_call_storage(recording_id, [{"speaker": "rep", "text": "hi there", "start_s": 0.0}])
     llm = StubLLMClient(responses=GOOD_RESPONSES)
     registry = PromptRegistry(root=_PROMPTS_ROOT)
-    prompts = build_step_prompts(registry, "descriptiononly")
+    prompts = build_step_prompts(registry, "descriptiononly", "v2")
 
     with SessionLocal() as session:
         await process_batch(session=session, llm_client=llm, prompts=prompts, limit=100)
@@ -312,7 +312,7 @@ async def test_process_batch_marks_failing_step_as_failed_and_retryable(recordin
     bad_responses["scoring"] = "not valid json"
     llm = StubLLMClient(responses=bad_responses)
     registry = PromptRegistry(root=_PROMPTS_ROOT)
-    prompts = build_step_prompts(registry, "descriptiononly")
+    prompts = build_step_prompts(registry, "descriptiononly", "v2")
 
     with SessionLocal() as session:
         await process_batch(session=session, llm_client=llm, prompts=prompts, limit=100)
@@ -335,7 +335,7 @@ async def test_a_row_that_cannot_be_rendered_fails_alone_and_the_batch_carries_o
     seed_call_storage(healthy_id, [{"speaker": "rep", "text": "hi there", "start_s": 0.0}])
     llm = StubLLMClient(responses=GOOD_RESPONSES)
     registry = PromptRegistry(root=_PROMPTS_ROOT)
-    prompts = build_step_prompts(registry, "descriptiononly")
+    prompts = build_step_prompts(registry, "descriptiononly", "v2")
 
     with SessionLocal() as session:
         attempted = await process_batch(session=session, llm_client=llm, prompts=prompts, limit=100)

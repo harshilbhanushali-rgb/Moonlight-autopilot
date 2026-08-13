@@ -15,6 +15,7 @@ def test_loads_analyser_config_from_yaml(tmp_path):
         """
 analyser:
   gap_rubric_mode: fewshot
+  scoring_prompt_version: v2
   batch_size: 25
   max_retries: 4
   stale_claim_minutes: 90
@@ -25,7 +26,11 @@ analyser:
     config = load_analyser_config(path)
 
     assert config == AnalyserConfig(
-        gap_rubric_mode="fewshot", batch_size=25, max_retries=4, stale_claim_minutes=90
+        gap_rubric_mode="fewshot",
+        scoring_prompt_version="v2",
+        batch_size=25,
+        max_retries=4,
+        stale_claim_minutes=90,
     )
 
 
@@ -35,6 +40,7 @@ def test_stale_claim_minutes_falls_back_to_the_default_when_absent(tmp_path):
         """
 analyser:
   gap_rubric_mode: fewshot
+  scoring_prompt_version: v2
   batch_size: 25
   max_retries: 4
 """,
@@ -52,6 +58,7 @@ def _write(tmp_path, extra: str = ""):
         f"""
 analyser:
   gap_rubric_mode: fewshot
+  scoring_prompt_version: v2
   batch_size: 25
   max_retries: 4
 {extra}""",

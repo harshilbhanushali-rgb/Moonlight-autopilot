@@ -29,6 +29,14 @@ analyser:
   # build-time experiment (Prompt.md section 8) — not a settled default.
   # Swap this without touching code once the eval harness has a verdict.
   gap_rubric_mode: descriptiononly
+  # Which app/prompts/scoring/<call_type>/<label>.txt scores every call.
+  #
+  # Named explicitly rather than resolved by "highest version label on disk",
+  # because that is how an experiment becomes production by accident: adding a
+  # candidate v3.txt for an A/B repointed the live analyser at it with no diff
+  # to any code. Changing this line is the only way to change what scores a
+  # call, and it should follow a measured result.
+  scoring_prompt_version: v2
   batch_size: 10
   max_retries: 3
   # How many gaps are judged per entailment-verification request. Every gap the
