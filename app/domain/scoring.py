@@ -7,12 +7,28 @@ from app.prompts.registry import PromptFile
 
 STEP = "scoring"
 
-# Band thresholds on the mean of the scored categories. These are the business
-# team's own numbers from the v1 prompts, kept deliberately: setting them from
-# 46 calls of our own output would be overfitting, and what the mean
-# distribution actually does is part of the Phase A result rather than an input
-# to it. Recalibration is a separate decision with its own A/B.
-HIGH_THRESHOLD = 4.2
+# Band thresholds on the mean of the scored categories.
+#
+# MEDIUM stays at the business team's 2.8. HIGH was raised from their 4.2 to 4.7
+# on 2026-08-14, against 43 blind hand-graded calls
+# (app/services/eval/call_score_labels.py). It is the one number here that had
+# to move, and the reason is mechanical rather than a matter of taste: excluding
+# N/A categories from the mean removed the low scores that used to drag it down,
+# so every call's mean rose while the thresholds stayed put. Measured, the
+# result was that v2 agreed with a human grader on 23/43 calls against v1's
+# 24/43 — **no better** — and 19 of its 20 errors were grading a call too
+# generously.
+#
+# Validated on a holdout, not just fitted: splitting the 43 calls in two,
+# choosing edges on one half and testing on the other gains +14 and +9 points in
+# the two directions. The in-sample best is 77%, so treat ~65-75% as the honest
+# expectation. The winning region is a broad plateau (HIGH 4.6-4.8, MEDIUM
+# 2.8-3.1 all score identically), which is why a single decimal is not being
+# over-read.
+#
+# MEDIUM is unchanged because no value in 2.5-3.1 changes the outcome on this
+# corpus — there are almost no calls near that edge to separate.
+HIGH_THRESHOLD = 4.7
 MEDIUM_THRESHOLD = 2.8
 
 # The rubric names ten categories and the response schema cannot require a

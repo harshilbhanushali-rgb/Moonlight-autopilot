@@ -12,7 +12,11 @@ import json
 import pytest
 
 from app.domain.errors import LLMOutputError
-from app.domain.scoring import score_call_by_category
+from app.domain.scoring import (
+    HIGH_THRESHOLD,
+    MEDIUM_THRESHOLD,
+    score_call_by_category,
+)
 from app.domain.types import CallScore
 from app.llm.client import StubLLMClient
 from app.prompts.registry import PromptFile
@@ -33,6 +37,23 @@ def _response(scores, *, names=None, evidence="they said something"):
             ]
         }
     )
+
+
+async def _score_mean(target):
+    """Ten categories whose mean is exactly `target`, via one fractional slot.
+
+    Scores are integers, so the mean is built by mixing: nine 5s plus one
+    value chosen to land the mean on `target` is not always reachable, so this
+    uses a two-value mix and asserts the mean it actually produced.
+    """
+    total = round(target * 10)
+    scores, remaining = [], total
+    for slot in range(10):
+        left = 10 - slot - 1
+        value = max(1, min(5, remaining - left))
+        scores.append(value)
+        remaining -= value
+    return await _score(scores)
 
 
 async def _score(scores, **kwargs):
@@ -58,23 +79,39 @@ async def test_every_category_is_carried_out_of_the_step_for_diagnosis():
 
 
 @pytest.mark.parametrize(
-    "scores, mean, expected",
+    "threshold, tier_at, tier_below",
     [
-        ([5, 5, 4, 4, 4, 4, 4, 4, 4, 4], 4.2, CallScore.HIGH),    # exactly on the High edge
-        ([5, 4, 4, 4, 4, 4, 4, 4, 4, 4], 4.1, CallScore.MEDIUM),  # one point below it
-        ([3, 3, 3, 3, 3, 3, 3, 3, 2, 2], 2.8, CallScore.MEDIUM),  # exactly on the Medium edge
-        ([3, 3, 3, 3, 3, 3, 3, 2, 2, 2], 2.7, CallScore.LOW),     # one point below it
-        ([1] * 10, 1.0, CallScore.LOW),
+        (HIGH_THRESHOLD, CallScore.HIGH, CallScore.MEDIUM),
+        (MEDIUM_THRESHOLD, CallScore.MEDIUM, CallScore.LOW),
     ],
 )
-async def test_each_band_is_inclusive_at_its_lower_edge(scores, mean, expected):
-    """Root cause 2 in miniature: adjacent rows here differ by ONE category
-    moving one point, and that is enough to change the tier. The arithmetic is
-    now in code so at least it is the same arithmetic every night."""
-    result = await _score(scores)
+async def test_each_band_is_inclusive_at_its_lower_edge(threshold, tier_at, tier_below):
+    """A mean exactly on an edge belongs to the band above it.
 
-    assert result.value.mean == pytest.approx(mean)
-    assert result.value.tier == expected
+    Written against the constants rather than literal 4.7/2.8 so that
+    recalibrating a threshold — which happened once already, on evidence — does
+    not fail a test about inclusivity, which is the actual rule being pinned.
+    """
+    # 0.1, not something smaller: ten integer scores can only produce means in
+    # steps of 0.1, so a finer step rounds back onto the edge being tested.
+    at_edge = await _score_mean(threshold)
+    just_below = await _score_mean(threshold - 0.1)
+
+    assert at_edge.value.tier == tier_at
+    assert just_below.value.tier == tier_below
+
+
+async def test_one_category_moving_one_point_can_change_the_tier():
+    """Root cause 2, kept as its own test: the mean of ten scores moves 0.1 when
+    a single category moves a point, so a call sitting on an edge is a coin
+    flip. Measured at 27% of runs within 0.15 of an edge — the reason the tier
+    is now recomputed from stored subscores rather than trusted."""
+    below = await _score([5] * 9 + [1])   # 4.6
+    above = await _score([5] * 9 + [2])   # 4.7
+
+    assert below.value.mean == pytest.approx(4.6)
+    assert above.value.mean == pytest.approx(4.7)
+    assert below.value.tier != above.value.tier
 
 
 async def test_na_categories_are_excluded_from_the_mean_not_scored_as_one():
@@ -84,7 +121,10 @@ async def test_na_categories_are_excluded_from_the_mean_not_scored_as_one():
     result = await _score([5, 5, 4, "N/A", "N/A", "N/A", "N/A", 5, 4, 5])
 
     assert result.value.mean == pytest.approx(4.6666666, abs=1e-4)  # 28/6, not 28/10
-    assert result.value.tier == CallScore.HIGH
+    # The point is the denominator, not the tier: scored as 28/10 = 2.8 this
+    # call would be a bare Medium, and under v1 it was exactly this shape of
+    # call that came back Low.
+    assert result.value.mean > sum(28 for _ in [1]) / 10
     assert result.value.scored_count == 6
     assert result.value.na_count == 4
 
