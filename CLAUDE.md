@@ -223,14 +223,22 @@ error read as a clean call.
 
 ## Gap rubric versions — what we edited, and what it measured
 
-**The rubrics are no longer all `v1`, and the live version differs per call
-type.** Check `PromptRegistry.latest()` before assuming; as of 2026-08-12:
+**HARD CONSTRAINT, set by the user 2026-08-13: the business team's gap THEMES
+are fixed. We may write the prompt wording around a theme — preconditions,
+disqualifiers, examples — but a theme may not be renamed, replaced, or moved
+between call types.** Two themes had been renamed (R1 below); both renames were
+reverted on 2026-08-13. **Every live rubric now carries only original theme
+names** — verify with `PromptRegistry.latest()` before assuming otherwise.
 
-| rubric (`descriptiononly`) | files | live |
-|---|---|---|
-| discovery | v1, v2, v3 | **v3** |
-| pricing_negotiation | v1, v2 | **v2** |
-| demo, follow_up_demo, kickoff, technical_integration | v1 | v1 |
+Ruled out by the same instruction, so do not propose them again: splitting
+themes into a universal set shared across call types plus stage-specific
+extras, and widening `Kick-off`'s rubric with themes it does not already have.
+
+| rubric (`descriptiononly`) | files | live | theme names |
+|---|---|---|---|
+| discovery | v1, v2, v3, v4 | **v4** | original |
+| pricing_negotiation | v1, v2, v3 | **v3** | original |
+| demo, follow_up_demo, kickoff, technical_integration | v1 | v1 | original |
 
 All six `fewshot` files remain untouched v1 placeholders.
 
@@ -242,7 +250,9 @@ Two edits, both from `docs/gap-rubric-review-2026-08-12.md`, both measured with
   evidence *disproving* it — discovery's `No Pre-Call Research` →
   `Incumbent Vendor Not Probed`, pricing's `No Competitive Framing` →
   `Switching Case Not Made`. Both had a 0% survival rate over 46 calls. Each
-  now states its precondition and what disproves it.
+  now states its precondition and what disproves it. **Both renames have since
+  been reverted** — see "Reverting the two renames" below. The precondition and
+  disqualifier wording was kept.
 - **R2** (`v3`, discovery only): gave the *other* three discovery themes the
   same precondition/disqualifier shape. **Tried on pricing and rejected** — it
   made `IC-Level Only` *less* reliable, not merely less frequent (v2 kept 8/9
@@ -253,6 +263,43 @@ Two edits, both from `docs/gap-rubric-review-2026-08-12.md`, both measured with
 Outcome on discovery, 13 calls, two runs, as *gaps surviving verification*:
 `v1` 9/19 and 9/18 → `v3` **8/11 and 8/9**. Nearly all of v1's useful output
 from half the raw volume.
+
+### Reverting the two renames (2026-08-13)
+
+Both renames were undone to satisfy the theme constraint, keeping the
+precondition/disqualifier wording underneath. Measured the same way — two runs,
+two nonces, `--verify-all`, judged on gaps surviving verification, criteria fixed
+in writing beforehand.
+
+**Pricing (`v3`) — clean pass, no cost.** `No Competitive Framing at Pricing
+Stage` restored: 12/12 and 12/12 surviving, against v2's 10/10 and 10/11, and the
+theme fires 2 and 2 with full survival against v2's 0 and 1. The rename had bought
+nothing — v1's own description already said *"Joveo does not establish why
+switching makes commercial sense"*, so the tightened description sits under the
+original name unchanged.
+
+**Discovery (`v4`) — passes the constraint, but the theme goes silent.**
+`No Pre-Call Research on Client's Current Stack` restored: 17 fired / 11 survived
+across two runs, against v3's 20/14. **Within noise** — run 2 was 9→7 vs 9→8 —
+and two runs cannot separate a 15% difference at 43% reproducibility, so do not
+read this as equivalence either way.
+
+Two findings from it that are worth keeping:
+
+- **Theme 4 fires zero times under its original name**, in all four runs across
+  two attempts, while the renamed version fired 1–2 per run and survived every
+  time. Whether that is a loss is genuinely unknown: this theme's only
+  *human-reviewed* firings (v1's) were **100% wrong**, and the v3 firings only
+  ever passed the verifier, which is itself 67% accurate at rejecting bad gaps.
+  Worth telling the rubric owners — a theme that never fires is the same class of
+  signal as the three themes that never fired in 46 calls.
+- **A long description suppresses the whole rubric, not just its own theme.** The
+  first restore attempt wrote 888 chars where v3 had 510, and output halved —
+  including for themes that were *byte-identical* between the arms (5→3, 4→2,
+  2→0). Trimming to 554 chars recovered most of it. This is the second
+  measurement pointing the same way, after the rationale-block finding below, so
+  treat description length as a live variable: **match the length of what you are
+  replacing.**
 
 **Three things not to re-derive:**
 
@@ -606,10 +653,10 @@ The fetcher and analyser are triggered by an in-process `BackgroundScheduler` (A
 - **Partial completion is deliberately NOT pursued** — confirmed with the user: once any step exhausts its own budget the **whole call dies** (`overall_status` → `failed_permanent`, which `claim_rows` no longer picks up), even if other steps still had retries left. A call that can't be fully analysed shouldn't become a moderator's card. The row still physically holds whatever succeeded before that point, marked `failed_permanent` so nothing treats it as complete — don't "fix" this into chasing 3-of-4 rows without asking again.
 - **~~An input gate is the highest-value unbuilt change~~ — BUILT and enabled 2026-08-13.** See "Input gate" above. Rejects exactly four of 51 stored calls with zero false positives, against a criterion fixed in writing beforehand. Rejected calls are stored and marked rather than skipped at fetch, for the dedup reason recorded there.
 - **Supplier and partner calls are still analysed as sales calls, and cannot be detected from a transcript.** The HelloWork call has a real non-rep speaking 1,898 words on the account's own registered domain (`hellowork.com`), so every structural signal reads as an ordinary client call — the input gate's rules cannot reach it and neither can any rule of that shape. The durable fix is a buyer/supplier distinction on `moonlight_accounts`, i.e. Koushik's schema. **A hand-maintained denylist of job-board domains was considered and rejected**: it is a judgement call dressed as a rule, so unlike the other two it cannot be validated without labels, and it rots silently. Decided with the user 2026-08-13 to accept this for now.
-- **~~A seventh call type~~ — RULED OUT by the user 2026-08-13, final. Do not propose it again.** The six types are fixed. Work the recurring-cadence problem inside them: route those calls to `Kick-off` (whose *scoring* categories already describe ongoing delivery governance) and widen `Kick-off`'s gap rubric, whose three themes are all anchored to a single moment and so saturate at 75-100% while saying nothing. See "call_type is measured now".
-- **Split gap themes into universal and stage-specific — the highest-value rubric change, and it needs no new type.** Of Demo's nine themes only three are demo-specific (`Slide Reading`, `Demo Not Customised`, `Irrelevant Content Shown`); the other six (`Unanswered Questions`, `Seller-Dominated`, `Wrong People on the Call`, `Competitive Intelligence Not Used`, `Imprecise Messaging`, `Missed Strategic Moments`) are true of any sales call. **Demo is the only rubric that has universal themes, and the only one that does not saturate** — the 3-theme rubrics contain nothing but narrow absence-claims, so a model that must report something reports those. This is a better-supported mechanism than the "rubric size" correlation recorded earlier. Giving every rubric the universal set plus its own specifics would: absorb mixed-stage calls (a discovery/demo call keeps most of what matters), relieve saturation, cut the duplication across six rubrics that currently copy-paste variants of the same theme, and reduce how much a wrong `call_type` costs. **Still a hypothesis** — it explains the saturation and mixed-call data but has not been measured, and mechanism claims have been wrong twice in this project.
+- **~~A seventh call type~~ — RULED OUT by the user 2026-08-13, final. Do not propose it again.** The six types are fixed. **Nor may `Kick-off`'s gap rubric be widened with themes it does not have** — that was the suggested workaround and it is ruled out by the theme constraint (see "Gap rubric versions"). Recurring cadence calls therefore keep being routed to `Kick-off` and receiving its three moment-anchored themes; that residual damage is accepted, not solved.
+- **~~Split gap themes into universal and stage-specific~~ — RULED OUT by the user 2026-08-13. Do not propose it again.** Themes may not move between call types. The *observation* behind it still stands and is worth reporting to the rubric owners rather than acting on: of Demo's nine themes only three are demo-specific, the other six are true of any sales call, and **Demo is the only rubric with universal themes and the only one that does not saturate**. So Kick-off cannot report a rep who dominated the call or left questions unanswered — those themes are not on its list — while its own three narrow absence-claims fire on 75–100% of its calls. That is a rubric-design finding for Anantu's team, not a change we make.
 - **~~call_type prompt wording~~ — do not pursue.** Measured: 6/8 then 8/8 on identical held-out input, so no prompt change is verifiable at this sample size. Revisit only with more labelled calls.
-- **Whether to extend R2 to the four untouched rubrics** — adding precondition/disqualifier clauses to every theme improved discovery (8 surviving gaps vs 6–7, at higher precision) and *failed* on pricing. There is no general rule here, so each of demo, follow_up_demo, kickoff and technical_integration needs its own A/B before adopting. Kick-off is the most tempting (all three of its themes fire on 75–100% of its calls) and the least conclusive — only **4** kick-off calls exist in the corpus, so fetch more before measuring. See "Gap rubric versions".
+- **Whether to extend R2 to the four untouched rubrics — still open, and the only rubric lever left.** Adding precondition/disqualifier clauses *to the existing themes* is permitted (it changes wording, not themes), and it improved discovery while *failing* on pricing, so each of demo, follow_up_demo, kickoff and technical_integration needs its own A/B before adopting. Kick-off is the most tempting (all three themes fire on 75–100% of its calls) and the least conclusive — only **4** kick-off calls exist, so fetch more first. **Match the length of the description you replace**: a 74%-longer rewrite measurably suppressed byte-identical themes elsewhere in the same file. See "Gap rubric versions".
 - **Two themes still need attention and neither has been touched.** `Wrong People on the Call` (demo) fired 4/8 and the verifier kept **4 of 4**, yet both hand-reviewed instances were wrong — one fired because a rep said "I'll have to check" and a colleague answered seven seconds later. It passes every downstream check, so nothing catches it. And three themes have **never fired in 46 calls** (`Slide Reading & Poor Storytelling`, `Irrelevant or Inaccurate Content Shown`, `Unclear Ownership of Action Items`) — either the behaviour is absent or the wording is unmatchable, and the data cannot tell which.
 - **Nothing produced by R1/R2 has been hand-reviewed**, so the pipeline's gap quality is now measured against the entailment verifier rather than against a human. That verifier keeps 90% of good gaps and removes 67% of bad ones, so it is a proxy, and it is currently the binding constraint on knowing whether changes help. Getting ~50 calls labelled by a real Moonlight auditor would be worth more than any further prompt work.
 - **Remaining placeholder prompts** — `gap_rubric/*-fewshot.yaml` and `gap_fill/v1.txt` are still placeholder files under `app/prompts/`; must be swapped for the business team's real versions before any output relying on them is trustworthy. (`scoring/`, `gap_rubric/*-descriptiononly.yaml`, `card_type/`, and `call_type/` now have real content — see "Hard scope boundaries" above.)
