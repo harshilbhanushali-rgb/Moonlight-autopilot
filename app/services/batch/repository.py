@@ -15,9 +15,15 @@ logger = logging.getLogger(__name__)
 
 
 def seed_missing_analysis_rows(session: Session) -> int:
-    """Inserts a pending `analysis` row for every `call_storage` row that
-    doesn't have one yet. call_storage itself is never written to here —
-    it's the (deferred) Call Fetcher's table; this only reads it."""
+    """Inserts a pending `analysis` row for every analysable `call_storage` row
+    that doesn't have one yet. call_storage itself is never written to here —
+    it's the Call Fetcher's table; this only reads it.
+
+    Rows the input gate excluded are skipped, which is the whole mechanism by
+    which an excluded call costs nothing: with no `analysis` row it is never
+    claimed, never sent to the gateway, and never appears in the table
+    Koushik's side reads. No new `status` value is introduced for them.
+    """
     result = session.execute(
         text(
             """
@@ -27,7 +33,8 @@ def seed_missing_analysis_rows(session: Session) -> int:
             )
             SELECT cs.avoma_recording_id, 'pending', 'pending', 'pending', 'pending', 'pending', 0
             FROM call_storage cs
-            WHERE NOT EXISTS (
+            WHERE cs.excluded_reason IS NULL
+              AND NOT EXISTS (
                 SELECT 1 FROM analysis a WHERE a.avoma_recording_id = cs.avoma_recording_id
             )
             ON CONFLICT (avoma_recording_id) DO NOTHING

@@ -55,13 +55,32 @@ def new_recording_id():
     _cleanup(created)
 
 
-def seed_call_storage(recording_id: str, transcript_turns: list[dict]) -> None:
+DEFAULT_SPEAKERS = [
+    {"id": 0, "name": "rep", "email": "rep@joveo.com", "is_rep": True},
+    {"id": 1, "name": "buyer", "email": "buyer@acme.com", "is_rep": False},
+]
+
+
+def seed_call_storage(
+    recording_id: str,
+    transcript_turns: list[dict],
+    *,
+    speakers: list[dict] | None = None,
+) -> None:
+    """`speaker_id` defaults to 0 (the rep) so existing call sites need not
+    care about speaker identity. A turn may still override it, and a caller
+    that omits `start_s` deliberately still produces a transcript that fails
+    validation — that shape is the subject of one of these tests."""
+    turns = [{"speaker_id": 0, **turn} for turn in transcript_turns]
     with SessionLocal() as session:
         session.add(
             CallStorage(
                 avoma_recording_id=recording_id,
                 client_record_id="test-client",
-                transcript={"turns": transcript_turns},
+                transcript={
+                    "turns": turns,
+                    "speakers": DEFAULT_SPEAKERS if speakers is None else speakers,
+                },
                 call_metadata={},
                 fetched_at=datetime.now(timezone.utc),
             )

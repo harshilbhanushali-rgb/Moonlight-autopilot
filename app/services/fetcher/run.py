@@ -2,6 +2,7 @@ import argparse
 
 from app.avoma.client import AvomaClient
 from app.core.config import settings
+from app.core.input_gate_config import load_input_gate_config
 from app.db.client_session import get_client_session
 from app.db.session import get_session
 from app.services.fetcher.fetcher import fetch_new_calls
@@ -18,6 +19,7 @@ def main(argv: list[str] | None = None) -> None:
     args = parser.parse_args(argv)
 
     avoma_client = AvomaClient(base_url=settings.avoma_base_url, api_key=settings.avoma_api_key)
+    input_gate_config = load_input_gate_config()
     client_session = get_client_session()
     our_session = get_session()
     try:
@@ -26,13 +28,16 @@ def main(argv: list[str] | None = None) -> None:
             our_session=our_session,
             avoma_client=avoma_client,
             limit=args.limit,
+            input_gate_config=input_gate_config,
         )
         print(
             f"Fetcher run complete: {summary.candidates} candidate(s) processed, "
-            f"{summary.fetched} fetched, {summary.skipped_no_transcript} skipped "
+            f"{summary.fetched} fetched, {summary.excluded} stored but excluded "
+            f"from analysis (input gate — see logs), "
+            f"{summary.skipped_no_transcript} skipped "
             f"(no transcript yet — will retry next run), "
             f"{summary.skipped_malformed_transcript} skipped (transcript missing "
-            f"turn timestamps — see logs)."
+            f"turn timestamps or speakers — see logs)."
         )
     finally:
         client_session.close()

@@ -38,6 +38,22 @@ class CallStorage(Base):
     call_metadata: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
     fetched_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
 
+    # The input gate's verdict, written by the fetcher. NULL means the call is
+    # analysable; anything else is an app.domain.types.ExclusionReason value and
+    # makes seed_missing_analysis_rows skip the row, so the call never reaches
+    # the LLM and never becomes a moderator's card.
+    #
+    # The row is stored either way, deliberately: dedup decides novelty by
+    # absence from this table, so a call we declined to store would be
+    # re-fetched from Avoma on every run forever, with no record of the
+    # rejection. Keeping the transcript also means the gate can be re-run with
+    # different settings without going back to Avoma.
+    excluded_reason: Mapped[str | None] = mapped_column(String, nullable=True)
+    # Human-readable evidence for that verdict, e.g. "271 words across 6 turns,
+    # below the 300-word floor". Exists so an exclusion can be reviewed without
+    # re-reading the transcript.
+    excluded_detail: Mapped[str | None] = mapped_column(Text, nullable=True)
+
 
 class PromptVersion(Base):
     """Append-only registry of exact prompt/rubric content used to produce
