@@ -96,10 +96,14 @@ analyser:
 # platform-switch artifact, the client no-show, and a 183-word call — with zero
 # false positives.
 input_gate:
-  # Starts off deliberately. The gate reports (app.services.eval.input_gate_report)
-  # before it enforces, and an absent or unset section must never silently begin
-  # excluding calls.
-  enabled: false
+  # Enabled 2026-08-13, after app.services.eval.input_gate_report measured the
+  # gate over all 51 stored calls and met its pre-registered criterion: exactly
+  # four rejections (30, 183 and 271 words, plus the client no-show), zero false
+  # positives. Report: docs/eval/2026-08-13-input-gate-report.json.
+  #
+  # Default when this key is absent is still false — an unset section must never
+  # silently begin excluding calls.
+  enabled: true
   # Total words below which there is no conversation to judge. The three
   # provably-empty calls sit at 30, 183 and 271; the next-thinnest is 1120,
   # whose Low score may well be legitimate. 300 sits in that 4x gap with nothing

@@ -382,9 +382,75 @@ a single 30-word turn (Discovery/Low), a recording that captures only the meetin
 moving to Zoom (Discovery/Low), a client no-show where two Joveo staff talk to
 each other (Follow-up Demo/Low), and a supply negotiation where the counterparty
 is a job board refusing Joveo access (Discovery/**Medium/Risk with a coaching
-gap**). All are mechanically detectable — word count, no client-domain
-participant, a "moving to Zoom" ending. An input gate needs no ground truth to
-validate, which makes it the cheapest real improvement available.
+gap**). **Three of the four are now excluded by the input gate** — see below. The
+fourth is not detectable and is accepted as out of scope. An earlier version of
+this paragraph claimed all four were mechanically detectable; that was wrong.
+
+## Input gate — refuses calls with no assessable conversation
+
+`app/domain/input_gate.py::evaluate_input_gate` runs **in the fetcher**, before an
+`analysis` row exists, so a rejected call costs no gateway request. Enabled
+2026-08-13 after measurement; `config.yaml`'s `input_gate:` block.
+
+Two rules, both reading only the transcript — no account data:
+
+1. **`no_conversation`** — total words below `min_words` (300).
+2. **`no_client_speech`** — nobody Avoma marks `is_rep=False` had *attributed
+   turns*. It checks speech, not attendance: a `speakers` entry only records who
+   Avoma associated with the meeting, which does not establish that they were
+   there or said anything.
+
+R1 is evaluated first, so a call failing both reports the more specific reason.
+
+**This does not breach the "gap detection is purely LLM reasoning" boundary** —
+that forbids code re-deriving a *gap* from transcript text. The gate decides
+whether a call is analysed at all and never inspects it for coaching content.
+
+Four things not to re-derive (all measured over 51 real calls,
+`problems-and-fixes.md` 8.17):
+
+- **Do NOT reintroduce matching speaker email domains against
+  `moonlight_accounts.domain`.** That was the original design and it rejects
+  **27 of 51 calls, 24 of them good** — account domains carry `www.`/`about.`
+  prefixes, the subdomain sits on the account side, and subsidiaries mail from
+  the parent (account `prattwhitney.com`, speakers on `rtx.com`). `is_rep` agreed
+  with `joveo.com` membership on every speaker of all 51 calls.
+- **R2 abstains when speech comes from an unresolved `speaker_id` and no non-rep
+  is linked.** On 3 of 51 calls some turns carry a `speaker_id` absent from
+  `speakers` — on one, 3,141 of 6,319 words. That branch is what takes R2 from
+  one false positive to zero: on the NHS demo the client *did* speak, through ids
+  Avoma never resolved. When a non-rep **is** linked, unresolved ids are ignored
+  — R2 already has its answer.
+- **Rejected calls are still STORED**, carrying `excluded_reason` and
+  `excluded_detail`. `filter_new_calls` decides novelty purely by absence from
+  `call_storage`, so a call we declined to store would be re-fetched from Avoma
+  every run forever with no record of the rejection. Keeping the transcript also
+  lets the gate be re-run at different settings without going back to Avoma.
+- **The mechanism is `seed_missing_analysis_rows`' `WHERE excluded_reason IS
+  NULL`.** No `analysis` row means never claimed, never sent to the gateway, and
+  nothing new in the table Koushik's side reads.
+
+**Measured, and the criterion was fixed in writing before the run**
+(`app/services/eval/input_gate_report.py`, report in
+`docs/eval/2026-08-13-input-gate-report.json`): exactly four rejections — 30, 183
+and 271 words plus the client no-show — and **zero false positives**. The
+183-word call is not in `call_type_labels.py::UNCLASSIFIABLE` but is one of the
+three sub-300-word calls Part 5 of `problems-and-fixes.md` already identified.
+
+**No minimum-client-speech threshold, deliberately.** Across accepted calls the
+client speaks a median of **2,101 words** and only one falls under 200 (the
+abstention case). There is no cluster of near-silent clients, so the number would
+have been invented.
+
+Two one-off scripts, neither scheduled: `app/services/fetcher/backfill.py`
+re-fetches transcripts (keyed on `call_storage`, **not** `moonlight_calls`, so
+the 19 orphaned calls are recovered — Avoma is unaffected by that churn) and
+re-stamps exclusions; `app/services/batch/mark_excluded.py` sets
+`analysis.status = 'excluded'` on the four pre-existing rows while leaving
+`call_type`/`call_score`/`risk_gap_analysis`/`card_type` untouched, because those
+are the A/B baseline. **That `status` value is the one part of this change that
+touches a contract we do not own** — new excluded calls produce no row at all, so
+it only ever appears on those four historical rows. Koushik's side needs telling.
 
 ## Two databases — do not confuse them
 
@@ -514,7 +580,7 @@ The fetcher and analyser are triggered by an in-process `BackgroundScheduler` (A
 ## Configuration
 
 - **`.env`** (gitignored, never committed) — secrets and connection strings: `DATABASE_URL` (our Neon DB), `CONVERSATIONAL_EXPERIENCE_RDS_*` (client DB), `LLM_GATEWAY_URL`/`LLM_GATEWAY_KEY`, `AVOMA_BASE_URL`/`AVOMA_API_KEY`.
-- **`config.yaml`** (checked in) — non-secret tunables: `llm_gateway:` (model, timeout, retry count, trace metadata), `analyser:` (`gap_rubric_mode: descriptiononly|fewshot` — still an unvalidated experiment, see Open decisions; `batch_size`; `max_retries`; `stale_claim_minutes` — how long a `processing` claim may sit before it's assumed dead, see "Failure isolation"; `max_concurrent_calls` — how many calls are analysed at once, so also the ceiling on simultaneous gateway requests; validated `>= 1` at load because 0 builds a semaphore nothing can acquire and the batch would hang silently), `scheduler:` (`hour`/`minute`/`timezone` — when the in-process cron fires).
+- **`config.yaml`** (checked in) — non-secret tunables: `llm_gateway:` (model, timeout, retry count, trace metadata), `analyser:` (`gap_rubric_mode: descriptiononly|fewshot` — still an unvalidated experiment, see Open decisions; `batch_size`; `max_retries`; `stale_claim_minutes` — how long a `processing` claim may sit before it's assumed dead, see "Failure isolation"; `max_concurrent_calls` — how many calls are analysed at once, so also the ceiling on simultaneous gateway requests; validated `>= 1` at load because 0 builds a semaphore nothing can acquire and the batch would hang silently), `scheduler:` (`hour`/`minute`/`timezone` — when the in-process cron fires), `input_gate:` (`enabled`; `min_words` — validated `>= 0` at load; `require_client_speech` — separately switchable so one rule can ship without the other; see "Input gate").
   - `max_concurrent_calls: 4` is a **starting point, not a measured optimum** — this gateway's rate limits aren't documented anywhere we control. Raise it while watching for HTTP 429s (which arrive as `APIStatusError`, so they count as transport failures and can trip the circuit breaker). See Open decisions.
 
 ## Open decisions — flag, don't silently resolve
@@ -529,7 +595,8 @@ The fetcher and analyser are triggered by an in-process `BackgroundScheduler` (A
 - **`CardTableClient`** (writing Type/Gap into Koushik's external manual-card table) — still a `NotImplementedError` in `app/api/deps.py`. Blocked on that table's schema, which hasn't been shared yet.
 - **Account-level risk rollup** — surface this if a task seems to need it; not in this build's scope.
 - **Partial completion is deliberately NOT pursued** — confirmed with the user: once any step exhausts its own budget the **whole call dies** (`overall_status` → `failed_permanent`, which `claim_rows` no longer picks up), even if other steps still had retries left. A call that can't be fully analysed shouldn't become a moderator's card. The row still physically holds whatever succeeded before that point, marked `failed_permanent` so nothing treats it as complete — don't "fix" this into chasing 3-of-4 rows without asking again.
-- **An input gate is the highest-value unbuilt change, and it needs no ground truth.** 4 of 32 in-scope calls are not sales calls (see "call_type is measured now") and every reject is structural: a word-count floor, no participant on the client's email domain, a transcript that ends by moving to another platform. Because the criteria are mechanical rather than judgement calls, the gate can be validated without labels — unlike everything else on this list. Undecided: whether a rejected call gets a distinct `status` (so it is visibly excluded rather than silently scored) or is skipped at fetch time. Prefer the former; the project's pattern is visible status over silent state.
+- **~~An input gate is the highest-value unbuilt change~~ — BUILT and enabled 2026-08-13.** See "Input gate" above. Rejects exactly four of 51 stored calls with zero false positives, against a criterion fixed in writing beforehand. Rejected calls are stored and marked rather than skipped at fetch, for the dedup reason recorded there.
+- **Supplier and partner calls are still analysed as sales calls, and cannot be detected from a transcript.** The HelloWork call has a real non-rep speaking 1,898 words on the account's own registered domain (`hellowork.com`), so every structural signal reads as an ordinary client call — the input gate's rules cannot reach it and neither can any rule of that shape. The durable fix is a buyer/supplier distinction on `moonlight_accounts`, i.e. Koushik's schema. **A hand-maintained denylist of job-board domains was considered and rejected**: it is a judgement call dressed as a rule, so unlike the other two it cannot be validated without labels, and it rots silently. Decided with the user 2026-08-13 to accept this for now.
 - **~~A seventh call type~~ — RULED OUT by the user 2026-08-13, final. Do not propose it again.** The six types are fixed. Work the recurring-cadence problem inside them: route those calls to `Kick-off` (whose *scoring* categories already describe ongoing delivery governance) and widen `Kick-off`'s gap rubric, whose three themes are all anchored to a single moment and so saturate at 75-100% while saying nothing. See "call_type is measured now".
 - **Split gap themes into universal and stage-specific — the highest-value rubric change, and it needs no new type.** Of Demo's nine themes only three are demo-specific (`Slide Reading`, `Demo Not Customised`, `Irrelevant Content Shown`); the other six (`Unanswered Questions`, `Seller-Dominated`, `Wrong People on the Call`, `Competitive Intelligence Not Used`, `Imprecise Messaging`, `Missed Strategic Moments`) are true of any sales call. **Demo is the only rubric that has universal themes, and the only one that does not saturate** — the 3-theme rubrics contain nothing but narrow absence-claims, so a model that must report something reports those. This is a better-supported mechanism than the "rubric size" correlation recorded earlier. Giving every rubric the universal set plus its own specifics would: absorb mixed-stage calls (a discovery/demo call keeps most of what matters), relieve saturation, cut the duplication across six rubrics that currently copy-paste variants of the same theme, and reduce how much a wrong `call_type` costs. **Still a hypothesis** — it explains the saturation and mixed-call data but has not been measured, and mechanism claims have been wrong twice in this project.
 - **~~call_type prompt wording~~ — do not pursue.** Measured: 6/8 then 8/8 on identical held-out input, so no prompt change is verifiable at this sample size. Revisit only with more labelled calls.
@@ -537,7 +604,7 @@ The fetcher and analyser are triggered by an in-process `BackgroundScheduler` (A
 - **Two themes still need attention and neither has been touched.** `Wrong People on the Call` (demo) fired 4/8 and the verifier kept **4 of 4**, yet both hand-reviewed instances were wrong — one fired because a rep said "I'll have to check" and a colleague answered seven seconds later. It passes every downstream check, so nothing catches it. And three themes have **never fired in 46 calls** (`Slide Reading & Poor Storytelling`, `Irrelevant or Inaccurate Content Shown`, `Unclear Ownership of Action Items`) — either the behaviour is absent or the wording is unmatchable, and the data cannot tell which.
 - **Nothing produced by R1/R2 has been hand-reviewed**, so the pipeline's gap quality is now measured against the entailment verifier rather than against a human. That verifier keeps 90% of good gaps and removes 67% of bad ones, so it is a proxy, and it is currently the binding constraint on knowing whether changes help. Getting ~50 calls labelled by a real Moonlight auditor would be worth more than any further prompt work.
 - **Remaining placeholder prompts** — `gap_rubric/*-fewshot.yaml` and `gap_fill/v1.txt` are still placeholder files under `app/prompts/`; must be swapped for the business team's real versions before any output relying on them is trustworthy. (`scoring/`, `gap_rubric/*-descriptiononly.yaml`, `card_type/`, and `call_type/` now have real content — see "Hard scope boundaries" above.)
-- **Thin-content gate** — 3 of 26 sampled calls had under 300 words of actual conversation (one had 30) and were all scored `Low` with 0 gaps, which reads as "bad rep" when it means "nobody said anything". Not an Avoma or data-integrity issue — see the transcript-contract section. Undecided: whether to skip such calls, mark them a distinct status, or analyse them with a caveat, and where the word-count floor sits.
+- **~~Thin-content gate~~ — RESOLVED 2026-08-13 by the input gate.** Calls under 300 words are excluded at fetch with `excluded_reason = 'no_conversation'`, which is the "distinct status" option this decision preferred. Three of 51 stored calls are affected (30, 183, 271 words). **The ambiguous ~1000–2000 word band remains untouched and deliberately so** — a `Low` there may well be legitimate, and unlike the sub-300 calls there is no labelled evidence to settle it. Do not raise `min_words` into that band without it.
 - **Full historical backfill** — the Call Fetcher has been run against 46 of 245 real calls (`--limit`) for validation, not the full `moonlight_calls` backlog. Confirm scope before running it unbounded. **Measured 2026-08-11:** per-call latency is **64.7s** at `reasoning_effort: high` (not the ~82s previously recorded here), and 46 calls take **346s wall-clock at `max_concurrent_calls: 10`**. So the remaining ~199 calls is roughly **25 minutes**, down from ~4.5h serial. `medium` would not help — it is 61.3s/call, ~5% faster. Note the daily-throughput cap below applies to a scheduled run, not to a manual `python -m app.services.batch.run`.
 - **`max_concurrent_calls: 10` is safe for a batch, but the gateway's ceiling has now been found.** 92 real calls' worth of traffic (two full 46-call A/B sides) produced zero HTTP 429s and zero step errors at 10. **However, on 2026-08-12 a 429 did appear** — `litellm.RateLimitError` wrapping a Vertex AI `RESOURCE_EXHAUSTED`, with no fallback model group configured for `gemini-3.5-flash`, so it surfaced rather than being absorbed. It hit during eval traffic (three rubric versions per call plus per-gap verification at `--concurrency 6`), not during a batch run — so the limit is on *total concurrent requests to the gateway*, which the eval harnesses add to independently of `max_concurrent_calls`. Don't run a batch and an eval sweep at once, and space repeat A/B runs. If you raise it, watch for 429s: they surface as `APIStatusError`, which the breaker counts as a transport failure, so throttling presents as an outage rather than as backpressure. A separate probe confirmed 10 simultaneous requests are fine even with 16–25KB transcript bodies.
 - **The analyser processes at most `batch_size` calls per scheduled day** — `run_daily_pipeline` calls `batch_run.main()` exactly once, and `main()` calls `process_batch` once with `limit=batch_size` (currently 10). Concurrency made each batch ~4x faster in wall-clock but did **not** change this cap, so it is now the binding constraint: with 245 calls in `moonlight_calls` the backlog drains at 10/day, and if daily NB volume ever exceeds 10 it grows without bound. Surfaced, deliberately not changed — the fix is either looping `process_batch` until it returns 0 or sizing `batch_size` to real volume, and which one is right depends on how much LLM spend per night is acceptable. Ask before changing it.
@@ -559,6 +626,22 @@ uv run uvicorn app.main:app --reload       # runs the Manual Card Auto-Fill API 
                                             # scheduler: hour/minute/timezone) — no separate cron needed
 uv run python -m app.services.fetcher.run [--limit N]   # manual/ad-hoc Call Fetcher run — omit --limit for full run
 uv run python -m app.services.batch.run                  # manual/ad-hoc AI Analyser batch pass
+
+# Input gate — see "Input gate". The report writes nothing; the other two are
+# one-offs and are NOT wired into the scheduler.
+uv run python -m app.services.eval.input_gate_report [--scope all] [--out F.json]
+uv run python -m app.services.fetcher.backfill [--dry-run] [--limit N]   # re-fetch transcripts, re-stamp exclusions
+uv run python -m app.services.batch.mark_excluded [--dry-run]            # status='excluded' on pre-existing rows
 ```
+
+**Two environment gotchas that will cost an hour.** Neon's hostname does not
+resolve on this machine: resolve it via `8.8.8.8` and append `&hostaddr=<ip>` to
+`DATABASE_URL` (keep `host` set so SNI/TLS still work) — needed for `alembic` and
+`pytest -m integration`. **Resolve A records only**; an AAAA answer yields
+"Network is unreachable". Separately, the client RDS
+(`CONVERSATIONAL_EXPERIENCE_RDS_URL`) resolves to a private `172.31.x.x` address
+reachable only over Tailscale, as does the LLM gateway — if `tailscale status`
+says "Logged out", anything touching `moonlight_calls`/`moonlight_accounts` or the
+gateway fails with a connection timeout while Neon keeps working.
 
 Integration tests (`tests/integration/`) always clean up their own rows (via fixtures) — never leave test data behind in either database. That now includes `prompt_versions`: any `process_batch`/autofill call registers prompt content, so `tests/integration/test_batch_processor.py`'s autouse `no_prompt_version_residue` fixture deletes whatever a test registered, dropping FK references first so it doesn't depend on fixture teardown order. Never write to `moonlight_calls`/`moonlight_accounts` from any test or code path; they're Koushik's tables.

@@ -22,6 +22,13 @@ STATUS_PROCESSING = "processing"
 STATUS_PROCESSED = "processed"
 STATUS_FAILED = "failed"
 STATUS_FAILED_PERMANENT = "failed_permanent"
+# Row-level only, and only ever set by app/services/batch/mark_excluded.py on
+# rows that already existed when the input gate was introduced. Calls excluded
+# from now on never get an `analysis` row at all, so this value exists purely to
+# stop those historical rows reading as valid cards. It is NOT in claim_rows'
+# retryable set. Koushik's side reads this table, so this is the one value in
+# this change that touches a contract we do not own — see the design doc.
+STATUS_EXCLUDED = "excluded"
 
 
 class CallStorage(Base):
