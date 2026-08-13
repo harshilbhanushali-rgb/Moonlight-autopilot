@@ -131,6 +131,60 @@ LABELS: list[Label] = [
         "'let me double check' with no owner or date; and several minutes were spent "
         "watching a slow feed URL load on the call instead of taking it offline.",
     ),
+    Label(
+        53,
+        "High",
+        "Agenda sent in advance and worked through: job ingestion, funnel stages, easy "
+        "apply, credentials, pixel. Proposed a pixel-swap plan built around the client's "
+        "constraints rather than his own ('I don't want to put you on the spot now'), and "
+        "asked for a backup point of contact while she was away the next day - genuinely "
+        "exemplary risk management. Left with API keys committed, a Rich meeting agreed "
+        "and a named backup. Steve was straight about the unsigned SOW rather than hiding "
+        "it. Nearest thing to a coaching point is that the Rich meeting was left to the "
+        "client to schedule.",
+        borderline=True,
+    ),
+    Label(
+        378,
+        "Medium",
+        "Handled the real objection well: client had been told '$25,000 minimums per "
+        "month' while her incumbent delivers on $4,000, and the rep corrected it, asked "
+        "for her current campaign data to benchmark apples-to-apples, and probed the "
+        "right question - clicks or conversions. Surfaced a genuine improvement (she has "
+        "no conversion tracking at all) and gave a concrete fallback on the Facebook "
+        "brand-handle blocker. Coaching point: the two sellers were visibly unaligned on "
+        "their own product in front of the client ('which social product is that for?'), "
+        "and the $25k confusion originated in Joveo's own earlier messaging. "
+        "NOTE: Avoma marks Rune Highmore (Yoke, now merged with Joveo) as a CLIENT "
+        "speaker though he is selling - a speaker-attribution error, not a rep error.",
+    ),
+    Label(
+        50,
+        "High",
+        "The call I would actually show other reps. Opened by offering to help build her "
+        "internal business case rather than pushing the product. Offered a reference "
+        "customer but disciplined about when - 'it needs to be the last step, you should "
+        "be right at the finish line' - instead of burning it early. Probed properly: "
+        "noticed time-to-fill was suspiciously fast, asked about attrition, and uncovered "
+        "that 0-10 day turnover is the real pain, then tied it to cost. David separately "
+        "owned a genuine service failure outright ('that's a miss on our end, and I "
+        "apologise') with root cause and fix. Marked borderline for one real miss: the "
+        "client said 'if we don't move forward with this technology, I won't be here that "
+        "long' - a champion-at-risk signal - and it passed with a joke.",
+        borderline=True,
+    ),
+    Label(
+        56,
+        "Medium",
+        "Nargis carried this: tracker current, Mexicali plan with budget tiering agreed, "
+        "New Zealand call booked live, weekly rescheduled, and she surfaced a Phenom "
+        "pixel item the client had forgotten ('thank you for reminding me'). Scott was "
+        "the coaching point - could not say where Raytheon UK stood ('I don't know where "
+        "we're at with that right now'), did not know what the Sonic Jobs setup form was "
+        "asking for, and the client had to prompt him for the SOW she has been waiting "
+        "on. Roughly eleven of forty-two minutes are the two reps waiting before the "
+        "client joined.",
+    ),
 ]
 
 
