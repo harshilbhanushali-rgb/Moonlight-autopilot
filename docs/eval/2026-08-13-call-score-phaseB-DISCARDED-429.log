@@ -1,0 +1,420 @@
+52 calls x 2 versions x 2 repeats = 208 scoring requests
+WARNING __main__: call 261 v3 r0 failed: Error code: 429 - {'error': {'message': 'litellm.RateLimitError: litellm.RateLimitError: vertex_aiException - {\n  "error": {\n    "code": 429,\n    "message": "Resource exhausted. Please try again later. Please refer to https://cloud.google.com/vertex-ai/generative-ai/docs/error-code-429 for more details.",\n    "status": "RESOURCE_EXHAUSTED"\n  }\n}\nNo fallback model group found for original model_group=gemini-3.5-flash. Fallbacks=[{\'ai-studio-gemini-2.0-flash\': [\'ai-studio-gemini-3.5-flash\']}, {\'ai-studio-gemini-2.5-flash\': [\'ai-studio-gemini-3.5-flash\']}, {\'ai-studio-gemini-2.5-flash-lite\': [\'ai-studio-gemini-3.1-flash-lite\']}, {\'ai-studio-gemini-3.1-flash-lite-preview\': [\'ai-studio-gemini-3.1-flash-lite\']}, {\'ai-studio-gemini-2.5-pro\': [\'ai-studio-gemini-3.1-pro-preview\']}]. Received Model Group=gemini-3.5-flash\nAvailable Model Group Fallbacks=None\nError doing the fallback: litellm.RateLimitError: litellm.RateLimitError: vertex_aiException - {\n  "error": {\n    "code": 429,\n    "message": "Resource exhausted. Please try again later. Please refer to https://cloud.google.com/vertex-ai/generative-ai/docs/error-code-429 for more details.",\n    "status": "RESOURCE_EXHAUSTED"\n  }\n}\nNo fallback model group found for original model_group=gemini-3.5-flash. Fallbacks=[{\'ai-studio-gemini-2.0-flash\': [\'ai-studio-gemini-3.5-flash\']}, {\'ai-studio-gemini-2.5-flash\': [\'ai-studio-gemini-3.5-flash\']}, {\'ai-studio-gemini-2.5-flash-lite\': [\'ai-studio-gemini-3.1-flash-lite\']}, {\'ai-studio-gemini-3.1-flash-lite-preview\': [\'ai-studio-gemini-3.1-flash-lite\']}, {\'ai-studio-gemini-2.5-pro\': [\'ai-studio-gemini-3.1-pro-preview\']}]', 'type': 'throttling_error', 'param': None, 'code': '429'}}
+WARNING __main__: call 260 v3 r1 failed: Error code: 429 - {'error': {'message': 'litellm.RateLimitError: litellm.RateLimitError: vertex_aiException - {\n  "error": {\n    "code": 429,\n    "message": "Resource exhausted. Please try again later. Please refer to https://cloud.google.com/vertex-ai/generative-ai/docs/error-code-429 for more details.",\n    "status": "RESOURCE_EXHAUSTED"\n  }\n}\nNo fallback model group found for original model_group=gemini-3.5-flash. Fallbacks=[{\'ai-studio-gemini-2.0-flash\': [\'ai-studio-gemini-3.5-flash\']}, {\'ai-studio-gemini-2.5-flash\': [\'ai-studio-gemini-3.5-flash\']}, {\'ai-studio-gemini-2.5-flash-lite\': [\'ai-studio-gemini-3.1-flash-lite\']}, {\'ai-studio-gemini-3.1-flash-lite-preview\': [\'ai-studio-gemini-3.1-flash-lite\']}, {\'ai-studio-gemini-2.5-pro\': [\'ai-studio-gemini-3.1-pro-preview\']}]. Received Model Group=gemini-3.5-flash\nAvailable Model Group Fallbacks=None\nError doing the fallback: litellm.RateLimitError: litellm.RateLimitError: vertex_aiException - {\n  "error": {\n    "code": 429,\n    "message": "Resource exhausted. Please try again later. Please refer to https://cloud.google.com/vertex-ai/generative-ai/docs/error-code-429 for more details.",\n    "status": "RESOURCE_EXHAUSTED"\n  }\n}\nNo fallback model group found for original model_group=gemini-3.5-flash. Fallbacks=[{\'ai-studio-gemini-2.0-flash\': [\'ai-studio-gemini-3.5-flash\']}, {\'ai-studio-gemini-2.5-flash\': [\'ai-studio-gemini-3.5-flash\']}, {\'ai-studio-gemini-2.5-flash-lite\': [\'ai-studio-gemini-3.1-flash-lite\']}, {\'ai-studio-gemini-3.1-flash-lite-preview\': [\'ai-studio-gemini-3.1-flash-lite\']}, {\'ai-studio-gemini-2.5-pro\': [\'ai-studio-gemini-3.1-pro-preview\']}]', 'type': 'throttling_error', 'param': None, 'code': '429'}}
+WARNING __main__: call 266 v2 r1 failed: Error code: 429 - {'error': {'message': 'litellm.RateLimitError: litellm.RateLimitError: vertex_aiException - {\n  "error": {\n    "code": 429,\n    "message": "Resource exhausted. Please try again later. Please refer to https://cloud.google.com/vertex-ai/generative-ai/docs/error-code-429 for more details.",\n    "status": "RESOURCE_EXHAUSTED"\n  }\n}\nNo fallback model group found for original model_group=gemini-3.5-flash. Fallbacks=[{\'ai-studio-gemini-2.0-flash\': [\'ai-studio-gemini-3.5-flash\']}, {\'ai-studio-gemini-2.5-flash\': [\'ai-studio-gemini-3.5-flash\']}, {\'ai-studio-gemini-2.5-flash-lite\': [\'ai-studio-gemini-3.1-flash-lite\']}, {\'ai-studio-gemini-3.1-flash-lite-preview\': [\'ai-studio-gemini-3.1-flash-lite\']}, {\'ai-studio-gemini-2.5-pro\': [\'ai-studio-gemini-3.1-pro-preview\']}]. Received Model Group=gemini-3.5-flash\nAvailable Model Group Fallbacks=None\nError doing the fallback: litellm.RateLimitError: litellm.RateLimitError: vertex_aiException - {\n  "error": {\n    "code": 429,\n    "message": "Resource exhausted. Please try again later. Please refer to https://cloud.google.com/vertex-ai/generative-ai/docs/error-code-429 for more details.",\n    "status": "RESOURCE_EXHAUSTED"\n  }\n}\nNo fallback model group found for original model_group=gemini-3.5-flash. Fallbacks=[{\'ai-studio-gemini-2.0-flash\': [\'ai-studio-gemini-3.5-flash\']}, {\'ai-studio-gemini-2.5-flash\': [\'ai-studio-gemini-3.5-flash\']}, {\'ai-studio-gemini-2.5-flash-lite\': [\'ai-studio-gemini-3.1-flash-lite\']}, {\'ai-studio-gemini-3.1-flash-lite-preview\': [\'ai-studio-gemini-3.1-flash-lite\']}, {\'ai-studio-gemini-2.5-pro\': [\'ai-studio-gemini-3.1-pro-preview\']}]', 'type': 'throttling_error', 'param': None, 'code': '429'}}
+WARNING __main__: call 267 v2 r1 failed: Error code: 429 - {'error': {'message': 'litellm.RateLimitError: litellm.RateLimitError: vertex_aiException - {\n  "error": {\n    "code": 429,\n    "message": "Resource exhausted. Please try again later. Please refer to https://cloud.google.com/vertex-ai/generative-ai/docs/error-code-429 for more details.",\n    "status": "RESOURCE_EXHAUSTED"\n  }\n}\nNo fallback model group found for original model_group=gemini-3.5-flash. Fallbacks=[{\'ai-studio-gemini-2.0-flash\': [\'ai-studio-gemini-3.5-flash\']}, {\'ai-studio-gemini-2.5-flash\': [\'ai-studio-gemini-3.5-flash\']}, {\'ai-studio-gemini-2.5-flash-lite\': [\'ai-studio-gemini-3.1-flash-lite\']}, {\'ai-studio-gemini-3.1-flash-lite-preview\': [\'ai-studio-gemini-3.1-flash-lite\']}, {\'ai-studio-gemini-2.5-pro\': [\'ai-studio-gemini-3.1-pro-preview\']}]. Received Model Group=gemini-3.5-flash\nAvailable Model Group Fallbacks=None\nError doing the fallback: litellm.RateLimitError: litellm.RateLimitError: vertex_aiException - {\n  "error": {\n    "code": 429,\n    "message": "Resource exhausted. Please try again later. Please refer to https://cloud.google.com/vertex-ai/generative-ai/docs/error-code-429 for more details.",\n    "status": "RESOURCE_EXHAUSTED"\n  }\n}\nNo fallback model group found for original model_group=gemini-3.5-flash. Fallbacks=[{\'ai-studio-gemini-2.0-flash\': [\'ai-studio-gemini-3.5-flash\']}, {\'ai-studio-gemini-2.5-flash\': [\'ai-studio-gemini-3.5-flash\']}, {\'ai-studio-gemini-2.5-flash-lite\': [\'ai-studio-gemini-3.1-flash-lite\']}, {\'ai-studio-gemini-3.1-flash-lite-preview\': [\'ai-studio-gemini-3.1-flash-lite\']}, {\'ai-studio-gemini-2.5-pro\': [\'ai-studio-gemini-3.1-pro-preview\']}]', 'type': 'throttling_error', 'param': None, 'code': '429'}}
+WARNING __main__: call 268 v2 r1 failed: Error code: 429 - {'error': {'message': 'litellm.RateLimitError: litellm.RateLimitError: vertex_aiException - {\n  "error": {\n    "code": 429,\n    "message": "Resource exhausted. Please try again later. Please refer to https://cloud.google.com/vertex-ai/generative-ai/docs/error-code-429 for more details.",\n    "status": "RESOURCE_EXHAUSTED"\n  }\n}\nNo fallback model group found for original model_group=gemini-3.5-flash. Fallbacks=[{\'ai-studio-gemini-2.0-flash\': [\'ai-studio-gemini-3.5-flash\']}, {\'ai-studio-gemini-2.5-flash\': [\'ai-studio-gemini-3.5-flash\']}, {\'ai-studio-gemini-2.5-flash-lite\': [\'ai-studio-gemini-3.1-flash-lite\']}, {\'ai-studio-gemini-3.1-flash-lite-preview\': [\'ai-studio-gemini-3.1-flash-lite\']}, {\'ai-studio-gemini-2.5-pro\': [\'ai-studio-gemini-3.1-pro-preview\']}]. Received Model Group=gemini-3.5-flash\nAvailable Model Group Fallbacks=None\nError doing the fallback: litellm.RateLimitError: litellm.RateLimitError: vertex_aiException - {\n  "error": {\n    "code": 429,\n    "message": "Resource exhausted. Please try again later. Please refer to https://cloud.google.com/vertex-ai/generative-ai/docs/error-code-429 for more details.",\n    "status": "RESOURCE_EXHAUSTED"\n  }\n}\nNo fallback model group found for original model_group=gemini-3.5-flash. Fallbacks=[{\'ai-studio-gemini-2.0-flash\': [\'ai-studio-gemini-3.5-flash\']}, {\'ai-studio-gemini-2.5-flash\': [\'ai-studio-gemini-3.5-flash\']}, {\'ai-studio-gemini-2.5-flash-lite\': [\'ai-studio-gemini-3.1-flash-lite\']}, {\'ai-studio-gemini-3.1-flash-lite-preview\': [\'ai-studio-gemini-3.1-flash-lite\']}, {\'ai-studio-gemini-2.5-pro\': [\'ai-studio-gemini-3.1-pro-preview\']}]', 'type': 'throttling_error', 'param': None, 'code': '429'}}
+WARNING __main__: call 269 v2 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 269 v3 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 269 v3 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 271 v2 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 271 v2 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 271 v3 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 271 v3 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 272 v2 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 272 v2 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 272 v3 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 272 v3 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 273 v2 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 273 v2 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 273 v3 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 273 v3 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 274 v2 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 274 v2 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 274 v3 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 274 v3 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 275 v2 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 275 v2 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 275 v3 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 275 v3 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 276 v2 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 276 v2 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 276 v3 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 276 v3 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 377 v2 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 377 v2 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 377 v3 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 377 v3 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 378 v2 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 378 v2 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 378 v3 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 378 v3 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 379 v2 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 380 v2 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 379 v2 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 380 v2 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 379 v3 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 380 v3 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 379 v3 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 380 v3 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 381 v2 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 458 v2 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 381 v2 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 458 v2 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 381 v3 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 458 v3 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 381 v3 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 458 v3 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 459 v2 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 460 v2 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 459 v2 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 460 v2 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 459 v3 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 460 v3 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 459 v3 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 460 v3 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 461 v2 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 268 v3 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 462 v2 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 461 v2 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 462 v2 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 461 v3 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 462 v3 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 461 v3 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 462 v3 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 270 v2 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 270 v3 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 270 v3 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 259 v3 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 267 v3 r0 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 267 v3 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+WARNING __main__: call 264 v3 r1 failed: Error code: 429 - {'error': {'message': "No deployments available for selected model, Try again in 60 seconds. Passed model=gemini-3.5-flash. pre-call-checks=False, cooldown_list=['19a1569e6bc932e1dd3cbe69c885a1f80310dc7391f8dca696bdf27a42bf7a96', 'e10e1219f906209a0f8e629a6fa6d28d7a6dbf97a6779b7ba8765f1f3dc52213']", 'type': 'None', 'param': 'None', 'code': '429'}}
+
+==============================================================================
+TIER DISTRIBUTION  (first repeat of each arm)
+==============================================================================
+call type                                       v2                        v3
+  Demo                               H4   M2   L0              H5   M0   L0 
+  Discovery                          H1   M3   L2              H0   M4   L2 
+  Follow-up Demo                     H4   M2   L0              H5   M0   L0 
+  Kick-off                           H3   M1   L0              H2   M1   L0 
+  Pricing/Negotiation                H0   M3   L4              H0   M5   L1 
+  Technical Integration              H4   M3   L0              H3   M4   L0 
+  ALL                                H16  M14  L6              H15  M14  L3 
+
+  H/M/L counts.  Key question: can every call type reach every tier?
+
+==============================================================================
+A-3  TIER REACHABILITY  (call types that never produce a given tier)
+==============================================================================
+  v2: 5 of 6 call types
+      Demo (no Low, n=13)
+      Follow-up Demo (no Low, n=9)
+      Kick-off (no Low, n=4)
+      Pricing/Negotiation (no High, n=9)
+      Technical Integration (no Low, n=7)
+  v3: 6 of 6 call types
+      Demo (no Low, n=13)
+      Discovery (no High, n=10)
+      Follow-up Demo (no Low, n=9)
+      Kick-off (no Low, n=4)
+      Pricing/Negotiation (no High, n=9)
+      Technical Integration (no Low, n=7)
+
+==============================================================================
+A-1  REPRODUCIBILITY  (same prompt, same settings, two fresh runs)
+==============================================================================
+  v2: 28/31 calls gave the same tier twice (90%)
+      High <-> Medium         3
+  v3: 24/28 calls gave the same tier twice (86%)
+      High <-> Medium         4
+
+==============================================================================
+A-2  PRICING/NEGOTIATION LOW RATE  (baseline 8/9 = 89%)
+==============================================================================
+  v2: 7/13 runs Low (54%)
+  v3: 2/12 runs Low (17%)
+
+==============================================================================
+A-4  PER-CATEGORY BREAKDOWN  (v2)
+==============================================================================
+
+  Demo
+    category                                                     n/a   mean   spread
+    Discovery Validation (Re-confirming known pains upfront)    27%   2.62      1-4
+    Storytelling & Contextual Demo (Not feature dumping)        18%   4.67      3-5
+    Tailored Feature-to-Pain Mapping                             0%   4.64      4-5
+    Engagement & Check-ins (Interactive vs. lecture)             0%   4.36      3-5
+    Business Value & ROI Framing                                 0%   4.73      3-5
+    Handling Feature/Product Objections                         18%   4.67      3-5
+    Buying Committee Engagement                                  0%   4.55      3-5
+    Agenda & Time Management                                     0%   3.45      2-5
+    Competitive Positioning                                      0%   4.82      4-5
+    Next Steps & Mutual Action Plan Setup                        0%   4.09      2-5
+
+  Discovery
+    category                                                     n/a   mean   spread
+    Preparation & Account/ATS Research                           0%   3.17      1-5
+    Agenda Setting & Control                                     0%   1.75      1-3
+    Credibility & Advisor Positioning                            0%   3.50      1-5
+    Active Listening & Probing                                   0%   3.25      2-5
+    Surface Pain vs. Business Impact Discovery (2-3 levels d     0%   2.50      1-5
+    Root Cause Identification                                    0%   2.67      1-4
+    Adaptability & Script Flexibility                            0%   3.67      1-5
+    PASTOR Usage (Problem & Amplify focus)                       0%   1.83      1-4
+    Value-Driven Elevator Pitch (Contextual)                    17%   2.70      2-4
+    Talk Time Balance (Target: Prospect 55–70%)                  0%   4.42      2-5
+
+  Follow-up Demo
+    category                                                     n/a   mean   spread
+    Recap of Previous Meetings & Unresolved Items                0%   4.10      3-5
+    Deep-Dive Use Case Execution (Tailored to specific stake     0%   4.60      4-5
+    Addressing New/Expanded Buying Committee Members            90%   4.00      4-4
+    Proof Concept / Validation Framing                          10%   3.67      3-4
+    Probing for Hidden Dynamic Changes or Blockers               0%   4.00      3-5
+    Value Defense Against Competing Solutions                   10%   3.78      2-5
+    Adaptability to Unexpected Technical/Business Questions      0%   4.60      4-5
+    Engagement of Secondary Stakeholders                        70%   5.00      5-5
+    Commercial/Timeline Alignment Check                         20%   4.50      4-5
+    Securing Hard Next Steps                                    10%   4.56      2-5
+
+  Kick-off
+    category                                                     n/a   mean   spread
+    Executive Reassurance & Value Realization Setup             14%   4.00      3-5
+    Goal & KPI Alignment (Defining success metrics clearly)      0%   2.86      2-4
+    Roles, Responsibilities & Governance Framework               0%   4.14      4-5
+    Onboarding Timeline & Milestone Review                       0%   4.57      4-5
+    Change Management & Adoption Risk Identification             0%   3.86      2-5
+    Mutual Accountability Establishment                          0%   4.86      4-5
+    Communication Rhythm & Cadence Setting                       0%   3.86      3-5
+    Stakeholder Engagement (Sponsors vs. Operational Team)       0%   4.71      4-5
+    Active Listening & Addressing Onboarding Anxiety             0%   4.43      2-5
+    Immediate First Action Item Alignment                        0%   4.71      4-5
+
+  Pricing/Negotiation
+    category                                                     n/a   mean   spread
+    Preparation on Decision Criteria & Procurement Process       8%   2.58      1-4
+    Value Anchor Defense (Defending price with ROI/Business     69%   2.00      1-4
+    Control of Commercial Dynamics (Avoiding premature disco    38%   2.50      2-4
+    Give-Get Discipline (Trading value for concessions)         69%   1.50      1-2
+    Handling Price Objections & Commercial Pushback             77%   2.00      1-4
+    Stakeholder Alignment (Procurement, Legal, Champion)         0%   2.92      2-4
+    Urgency & Deal Momentum Creation                             0%   2.46      1-4
+    Executive Presence under Pressure                           23%   2.70      2-5
+    Clarity on Approval & Contracting Timelines                 46%   2.57      1-4
+    Securing Closing Commitments                                 0%   2.92      1-5
+
+  Technical Integration
+    category                                                     n/a   mean   spread
+    Technical Preparation & Architecture Understanding          14%   4.25      4-5
+    Technical Credibility & Expert Positioning                   0%   4.21      3-5
+    Requirement Scoping & Boundary Enforcement                   0%   3.93      3-5
+    Risk Identification & Mitigation Strategy                    0%   4.29      4-5
+    Feasibility Alignment (ATS/Data flow limitations)           14%   4.67      4-5
+    Clear Technical Workflow Explanation (Simplifying comple     0%   4.21      4-5
+    Security/Compliance/Data Governance Control                 57%   2.67      2-3
+    Active Problem Solving with Technical Teams                 14%   4.25      4-5
+    Timeline & Resource Allocation Clarity                       0%   4.50      3-5
+    Technical Next Steps & Ownership Setup                       0%   4.43      3-5
+
+  MEAN DISTRIBUTION (v2) — where the band edges 2.8 / 4.2 fall
+    min/p25/median/p75/max: 1.33  3.20  4.00  4.40  4.88
+    within 0.15 of a band edge: 13/67 (19%)  <- these are the coin flips
+
+  CATEGORY VOLATILITY (v2) — same call, two identical runs
+    Recap of Previous Meetings & Unresolved Items               25% identical   0 N/A flips of 4
+    Adaptability & Script Flexibility                           33% identical   0 N/A flips of 6
+    Goal & KPI Alignment (Defining success metrics clearly)     33% identical   0 N/A flips of 3
+    Root Cause Identification                                   33% identical   0 N/A flips of 6
+    Securing Closing Commitments                                33% identical   0 N/A flips of 6
+    Surface Pain vs. Business Impact Discovery (2-3 levels d    33% identical   0 N/A flips of 6
+    Urgency & Deal Momentum Creation                            33% identical   0 N/A flips of 6
+    Agenda & Time Management                                    40% identical   0 N/A flips of 5
+    Discovery Validation (Re-confirming known pains upfront)    40% identical   1 N/A flips of 5
+    Technical Next Steps & Ownership Setup                      43% identical   0 N/A flips of 7
+    Control of Commercial Dynamics (Avoiding premature disco    50% identical   3 N/A flips of 6
+    Executive Presence under Pressure                           50% identical   1 N/A flips of 6
+    Preparation & Account/ATS Research                          50% identical   0 N/A flips of 6
+    Preparation on Decision Criteria & Procurement Process      50% identical   1 N/A flips of 6
+    Securing Hard Next Steps                                    50% identical   1 N/A flips of 4
+    Value Defense Against Competing Solutions                   50% identical   1 N/A flips of 4
+    Value-Driven Elevator Pitch (Contextual)                    50% identical   0 N/A flips of 6
+    Active Problem Solving with Technical Teams                 57% identical   0 N/A flips of 7
+    Technical Credibility & Expert Positioning                  57% identical   0 N/A flips of 7
+    Tailored Feature-to-Pain Mapping                            60% identical   0 N/A flips of 5
+    Active Listening & Addressing Onboarding Anxiety            67% identical   0 N/A flips of 3
+    Change Management & Adoption Risk Identification            67% identical   0 N/A flips of 3
+    Credibility & Advisor Positioning                           67% identical   0 N/A flips of 6
+    Executive Reassurance & Value Realization Setup             67% identical   1 N/A flips of 3
+    PASTOR Usage (Problem & Amplify focus)                      67% identical   0 N/A flips of 6
+    Roles, Responsibilities & Governance Framework              67% identical   0 N/A flips of 3
+    Stakeholder Engagement (Sponsors vs. Operational Team)      67% identical   0 N/A flips of 3
+    Talk Time Balance (Target: Prospect 55–70%)                 67% identical   0 N/A flips of 6
+    Feasibility Alignment (ATS/Data flow limitations)           71% identical   0 N/A flips of 7
+    Risk Identification & Mitigation Strategy                   71% identical   0 N/A flips of 7
+    Commercial/Timeline Alignment Check                         75% identical   0 N/A flips of 4
+    Proof Concept / Validation Framing                          75% identical   0 N/A flips of 4
+    Business Value & ROI Framing                                80% identical   0 N/A flips of 5
+    Buying Committee Engagement                                 80% identical   0 N/A flips of 5
+    Engagement & Check-ins (Interactive vs. lecture)            80% identical   0 N/A flips of 5
+    Handling Feature/Product Objections                         80% identical   0 N/A flips of 5
+    Next Steps & Mutual Action Plan Setup                       80% identical   0 N/A flips of 5
+    Storytelling & Contextual Demo (Not feature dumping)        80% identical   0 N/A flips of 5
+    Active Listening & Probing                                  83% identical   0 N/A flips of 6
+    Agenda Setting & Control                                    83% identical   0 N/A flips of 6
+    Clarity on Approval & Contracting Timelines                 83% identical   0 N/A flips of 6
+    Give-Get Discipline (Trading value for concessions)         83% identical   1 N/A flips of 6
+    Handling Price Objections & Commercial Pushback             83% identical   1 N/A flips of 6
+    Value Anchor Defense (Defending price with ROI/Business     83% identical   0 N/A flips of 6
+    Clear Technical Workflow Explanation (Simplifying comple    86% identical   0 N/A flips of 7
+    Requirement Scoping & Boundary Enforcement                  86% identical   0 N/A flips of 7
+    Technical Preparation & Architecture Understanding          86% identical   0 N/A flips of 7
+    Timeline & Resource Allocation Clarity                      86% identical   0 N/A flips of 7
+    Adaptability to Unexpected Technical/Business Questions    100% identical   0 N/A flips of 4
+    Addressing New/Expanded Buying Committee Members           100% identical   0 N/A flips of 4
+    Communication Rhythm & Cadence Setting                     100% identical   0 N/A flips of 3
+    Competitive Positioning                                    100% identical   0 N/A flips of 5
+    Deep-Dive Use Case Execution (Tailored to specific stake   100% identical   0 N/A flips of 4
+    Engagement of Secondary Stakeholders                       100% identical   0 N/A flips of 4
+    Immediate First Action Item Alignment                      100% identical   0 N/A flips of 3
+    Mutual Accountability Establishment                        100% identical   0 N/A flips of 3
+    Onboarding Timeline & Milestone Review                     100% identical   0 N/A flips of 3
+    Probing for Hidden Dynamic Changes or Blockers             100% identical   0 N/A flips of 4
+    Security/Compliance/Data Governance Control                100% identical   0 N/A flips of 7
+    Stakeholder Alignment (Procurement, Legal, Champion)       100% identical   0 N/A flips of 6
+
+==============================================================================
+A-4  PER-CATEGORY BREAKDOWN  (v3)
+==============================================================================
+
+  Demo
+    category                                                     n/a   mean   spread
+    Preparation & Pre-Call Research                              0%   4.50      3-5
+    Agenda Setting & Call Control                                0%   3.62      3-5
+    Active Listening & Probing                                   0%   5.00      5-5
+    Handling Objections & Hard Questions                         0%   4.38      4-5
+    Business Value & Outcome Framing                             0%   4.75      4-5
+    Next Steps & Mutual Commitment                               0%   4.50      3-5
+    Storytelling & Contextual Demo (Not feature dumping)        12%   4.71      4-5
+    Tailored Feature-to-Pain Mapping                             0%   4.75      4-5
+    Engagement & Check-ins (Interactive vs. lecture)             0%   5.00      5-5
+    Competitive Positioning                                      0%   4.75      4-5
+
+  Discovery
+    category                                                     n/a   mean   spread
+    Preparation & Pre-Call Research                              0%   3.45      2-5
+    Agenda Setting & Call Control                                0%   2.36      1-3
+    Active Listening & Probing                                   0%   3.64      2-5
+    Handling Objections & Hard Questions                         0%   3.82      2-5
+    Business Value & Outcome Framing                             0%   3.18      2-4
+    Next Steps & Mutual Commitment                               0%   3.09      2-4
+    Credibility & Advisor Positioning                            0%   3.82      2-5
+    Surface Pain vs. Business Impact Discovery (2-3 levels d     0%   2.82      2-5
+    Root Cause Identification                                    0%   2.82      1-4
+    PASTOR Usage (Problem & Amplify focus)                       0%   2.09      1-4
+
+  Follow-up Demo
+    category                                                     n/a   mean   spread
+    Preparation & Pre-Call Research                              0%   4.50      2-5
+    Agenda Setting & Call Control                                0%   3.40      2-5
+    Active Listening & Probing                                   0%   4.80      4-5
+    Handling Objections & Hard Questions                        20%   4.62      3-5
+    Business Value & Outcome Framing                             0%   4.30      2-5
+    Next Steps & Mutual Commitment                               0%   4.20      2-5
+    Recap of Previous Meetings & Unresolved Items                0%   4.00      4-4
+    Deep-Dive Use Case Execution (Tailored to specific stake     0%   4.70      4-5
+    Proof Concept / Validation Framing                          40%   3.67      3-4
+    Probing for Hidden Dynamic Changes or Blockers               0%   3.90      2-5
+
+  Kick-off
+    category                                                     n/a   mean   spread
+    Preparation & Pre-Call Research                              0%   3.17      2-5
+    Agenda Setting & Call Control                                0%   3.00      2-4
+    Active Listening & Probing                                   0%   4.33      3-5
+    Handling Objections & Hard Questions                         0%   4.33      4-5
+    Business Value & Outcome Framing                             0%   4.00      3-5
+    Next Steps & Mutual Commitment                               0%   4.83      4-5
+    Goal & KPI Alignment (Defining success metrics clearly)      0%   3.00      2-4
+    Roles, Responsibilities & Governance Framework               0%   4.67      4-5
+    Onboarding Timeline & Milestone Review                       0%   4.50      4-5
+    Communication Rhythm & Cadence Setting                       0%   4.00      3-5
+
+  Pricing/Negotiation
+    category                                                     n/a   mean   spread
+    Preparation & Pre-Call Research                              0%   3.33      2-5
+    Agenda Setting & Call Control                                0%   2.50      1-4
+    Active Listening & Probing                                   0%   3.83      2-5
+    Handling Objections & Hard Questions                        17%   3.20      2-4
+    Business Value & Outcome Framing                             0%   3.58      2-4
+    Next Steps & Mutual Commitment                               0%   3.50      2-5
+    Value Anchor Defense (Defending price with ROI/Business     67%   2.25      1-4
+    Control of Commercial Dynamics (Avoiding premature disco    58%   1.80      1-2
+    Urgency & Deal Momentum Creation                             0%   2.83      1-4
+    Clarity on Approval & Contracting Timelines                 33%   3.00      2-4
+
+  Technical Integration
+    category                                                     n/a   mean   spread
+    Preparation & Pre-Call Research                              0%   4.07      2-5
+    Agenda Setting & Call Control                                7%   2.77      1-5
+    Active Listening & Probing                                   0%   3.93      2-5
+    Handling Objections & Hard Questions                         0%   3.86      2-5
+    Business Value & Outcome Framing                             0%   3.57      2-5
+    Next Steps & Mutual Commitment                               0%   4.00      2-5
+    Technical Credibility & Expert Positioning                   0%   4.50      4-5
+    Requirement Scoping & Boundary Enforcement                   0%   3.79      2-5
+    Risk Identification & Mitigation Strategy                    0%   4.29      2-5
+    Feasibility Alignment (ATS/Data flow limitations)            7%   4.38      3-5
+
+  MEAN DISTRIBUTION (v3) — where the band edges 2.8 / 4.2 fall
+    min/p25/median/p75/max: 1.78  3.38  3.80  4.30  5.00
+    within 0.15 of a band edge: 14/61 (23%)  <- these are the coin flips
+
+  CATEGORY VOLATILITY (v3) — same call, two identical runs
+    Feasibility Alignment (ATS/Data flow limitations)           29% identical   1 N/A flips of 7
+    Roles, Responsibilities & Governance Framework              33% identical   0 N/A flips of 3
+    Surface Pain vs. Business Impact Discovery (2-3 levels d    40% identical   0 N/A flips of 5
+    Proof Concept / Validation Framing                          50% identical   2 N/A flips of 4
+    Risk Identification & Mitigation Strategy                   57% identical   0 N/A flips of 7
+    Technical Credibility & Expert Positioning                  57% identical   0 N/A flips of 7
+    Credibility & Advisor Positioning                           60% identical   0 N/A flips of 5
+    Preparation & Pre-Call Research                             64% identical   0 N/A flips of 28
+    Clarity on Approval & Contracting Timelines                 67% identical   0 N/A flips of 6
+    Competitive Positioning                                     67% identical   0 N/A flips of 3
+    Control of Commercial Dynamics (Avoiding premature disco    67% identical   1 N/A flips of 6
+    Onboarding Timeline & Milestone Review                      67% identical   0 N/A flips of 3
+    Storytelling & Contextual Demo (Not feature dumping)        67% identical   1 N/A flips of 3
+    Tailored Feature-to-Pain Mapping                            67% identical   0 N/A flips of 3
+    Urgency & Deal Momentum Creation                            67% identical   0 N/A flips of 6
+    Handling Objections & Hard Questions                        68% identical   0 N/A flips of 28
+    Business Value & Outcome Framing                            71% identical   0 N/A flips of 28
+    Next Steps & Mutual Commitment                              71% identical   0 N/A flips of 28
+    Agenda Setting & Call Control                               75% identical   1 N/A flips of 28
+    Root Cause Identification                                   80% identical   0 N/A flips of 5
+    Active Listening & Probing                                  82% identical   0 N/A flips of 28
+    Value Anchor Defense (Defending price with ROI/Business     83% identical   0 N/A flips of 6
+    Requirement Scoping & Boundary Enforcement                  86% identical   0 N/A flips of 7
+    Communication Rhythm & Cadence Setting                     100% identical   0 N/A flips of 3
+    Deep-Dive Use Case Execution (Tailored to specific stake   100% identical   0 N/A flips of 4
+    Engagement & Check-ins (Interactive vs. lecture)           100% identical   0 N/A flips of 3
+    Goal & KPI Alignment (Defining success metrics clearly)    100% identical   0 N/A flips of 3
+    PASTOR Usage (Problem & Amplify focus)                     100% identical   0 N/A flips of 5
+    Probing for Hidden Dynamic Changes or Blockers             100% identical   0 N/A flips of 4
+    Recap of Previous Meetings & Unresolved Items              100% identical   0 N/A flips of 4
+
+==============================================================================
+ERRORS
+==============================================================================
+  v2: 37
+      id=266 RateLimitError: Error code: 429 - {'error': {'message': 'litellm.RateLimitError: litellm.RateLimitEr
+      id=267 RateLimitError: Error code: 429 - {'error': {'message': 'litellm.RateLimitError: litellm.RateLimitEr
+      id=268 RateLimitError: Error code: 429 - {'error': {'message': 'litellm.RateLimitError: litellm.RateLimitEr
+      id=269 RateLimitError: Error code: 429 - {'error': {'message': "No deployments available for selected model
+      id=270 RateLimitError: Error code: 429 - {'error': {'message': "No deployments available for selected model
+      id=271 RateLimitError: Error code: 429 - {'error': {'message': "No deployments available for selected model
+      id=271 RateLimitError: Error code: 429 - {'error': {'message': "No deployments available for selected model
+      id=272 RateLimitError: Error code: 429 - {'error': {'message': "No deployments available for selected model
+      id=272 RateLimitError: Error code: 429 - {'error': {'message': "No deployments available for selected model
+      id=273 RateLimitError: Error code: 429 - {'error': {'message': "No deployments available for selected model
+  v3: 43
+      id=259 RateLimitError: Error code: 429 - {'error': {'message': "No deployments available for selected model
+      id=260 RateLimitError: Error code: 429 - {'error': {'message': 'litellm.RateLimitError: litellm.RateLimitEr
+      id=261 RateLimitError: Error code: 429 - {'error': {'message': 'litellm.RateLimitError: litellm.RateLimitEr
+      id=264 RateLimitError: Error code: 429 - {'error': {'message': "No deployments available for selected model
+      id=267 RateLimitError: Error code: 429 - {'error': {'message': "No deployments available for selected model
+      id=267 RateLimitError: Error code: 429 - {'error': {'message': "No deployments available for selected model
+      id=268 RateLimitError: Error code: 429 - {'error': {'message': "No deployments available for selected model
+      id=269 RateLimitError: Error code: 429 - {'error': {'message': "No deployments available for selected model
+      id=269 RateLimitError: Error code: 429 - {'error': {'message': "No deployments available for selected model
+      id=270 RateLimitError: Error code: 429 - {'error': {'message': "No deployments available for selected model
+
+wrote docs/eval/2026-08-13-call-score-phaseB.json

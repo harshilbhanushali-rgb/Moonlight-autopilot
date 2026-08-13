@@ -37,6 +37,7 @@ import time
 from collections import Counter, defaultdict
 from pathlib import Path
 
+from openai import APIStatusError
 from sqlalchemy import select
 
 from app.core.config import settings
@@ -126,11 +127,35 @@ def _with_nonce(transcript: Transcript, nonce: str) -> Transcript:
     )
 
 
+async def _retry_on_throttle(coro_factory, *, attempts=4, base_delay=20.0):
+    """Retries a 429 with linear backoff.
+
+    Deliberately here and not in app/llm/client.py, which does not retry
+    APIStatusError on purpose — in a batch, throttling should surface as a
+    visible per-step failure. An eval sweep is different: a 429 partway through
+    silently shrinks the sample, and a comparison run that loses a third of its
+    calls cannot answer the question it was started for. That is not
+    hypothetical — the first Phase B run lost 80 of 208 requests to Vertex
+    RESOURCE_EXHAUSTED and had to be discarded.
+    """
+    for attempt in range(attempts):
+        try:
+            return await coro_factory()
+        except APIStatusError as exc:
+            if exc.status_code != 429 or attempt == attempts - 1:
+                raise
+            delay = base_delay * (attempt + 1)
+            logger.warning("429 from the gateway, retrying in %.0fs", delay)
+            await asyncio.sleep(delay)
+
+
 async def _score_once(llm_client, call, prompt, version, nonce):
     text = _with_nonce(call["transcript"], nonce).render_for_prompt()
     started = time.perf_counter()
     if version in TIER_ONLY_VERSIONS:
-        result = await score_call(llm_client=llm_client, transcript=text, prompt=prompt)
+        result = await _retry_on_throttle(
+            lambda: score_call(llm_client=llm_client, transcript=text, prompt=prompt)
+        )
         return {
             "tier": result.value.value,
             "mean": None,
@@ -139,7 +164,9 @@ async def _score_once(llm_client, call, prompt, version, nonce):
             "error": None,
         }
 
-    result = await score_call_by_category(llm_client=llm_client, transcript=text, prompt=prompt)
+    result = await _retry_on_throttle(
+        lambda: score_call_by_category(llm_client=llm_client, transcript=text, prompt=prompt)
+    )
     breakdown = result.value
     return {
         "tier": breakdown.tier.value,
