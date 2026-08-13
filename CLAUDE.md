@@ -23,7 +23,7 @@ There's no separate cron infra (no k8s CronJob, no GitHub Actions schedule) — 
 - No account-level risk rollup (aggregating risk across an account's calls) — currently unscoped. If work seems to require this, flag it explicitly rather than building a workaround or silently skipping it.
 - Gap detection is **purely LLM-based reasoning** — no deterministic/rule-based checks (no hand-coded talk-time-ratio calculators, keyword matching, etc.). No code path may independently re-derive or corroborate a gap call from the transcript text. **Confirmed with the user 2026-08-12:** an *LLM* second pass that only ever drops gaps whose evidence contradicts their claim is within this boundary — it is still LLM reasoning and it never invents a gap. See "Gap entailment verification" below. Deterministic corroboration remains banned.
 - The scoring prompt and gap-theme rubric are owned/provided by the business team — treated as pluggable, versioned files under `app/prompts/`. **Two `descriptiononly` rubrics have since been edited on our side** (discovery, pricing_negotiation) after an audit found themes firing on evidence that disproved them; the edits are measured and the originals are retained as `v1`. See "Gap rubric versions" below. Anantu's team should see those diffs rather than discover them — `docs/gap-rubric-review-2026-08-12.md` is the drafted, unsent recommendation. Real content so far: `scoring/<call_type>/v1.txt` and `gap_rubric/<call_type>/*-descriptiononly.yaml` (both call-type-scoped, mirroring `gap_rubric/`'s layout, since the business rubric differs per Call Type); `card_type/v1.txt`; `call_type/v1.txt`. Still **placeholder content** pending the real prompts from Anantu's team: `gap_rubric/*-fewshot.yaml` (the annotated-example counterpart to the descriptiononly rubrics) and `gap_fill/v1.txt`.
-  - `scoring/<call_type>/v1.txt` reasons over a rich 10-category rubric internally but must respond with only `{"call_score": "High"|"Medium"|"Low"}` — the category breakdown and qualitative coaching text the business team's prompt also produces are intentionally not parsed or persisted (`analysis.call_score` is a single `String` column); revisit if that richer output needs to be stored.
+  - `scoring/<call_type>/` reasons over a 10-category rubric. **`v1` kept the categories internal and returned only `{"call_score": ...}`; `v2` onward returns the ten subscores and the tier is computed in code** — see "Call Score is scored by category" below. The qualitative coaching text the business team's prompt also produces is still not parsed or persisted.
   - `card_type/v1.txt` classifies Risk vs. Coaching by *where the problem originates* — a deal/client-side fact (Risk) vs. rep execution/skill (Coaching) — not by severity. Risk is meant to be the minority case; if a mix of both is present, Risk wins.
   - `call_type/v1.txt` was built from 6 real labeled transcripts (one per Call Type) in `Call_examples.md` (repo root) — keep that file if the prompt needs revisiting. Classifies by dominant activity/purpose, not keywords, since technical jargon overlaps between Kick-off and Technical Integration, and product-walkthrough content overlaps between Demo and Follow-up Demo.
 - `avoma_type_label` on `moonlight_calls` is FYI only — confirmed with the user not to filter on it, despite values like `"Exclude from Review"` looking tempting to.
@@ -210,6 +210,54 @@ Citation validation cannot see any of this: those quotes are all real speech.
   `app/prompts/gap_verification/`, because `PromptRegistry.latest()` takes the
   highest version label and a `v2-*.txt` dropped in there would silently
   repoint the production verifier at an unvalidated prompt.
+
+## Call Score is scored by category, and the tier is arithmetic
+
+`app/domain/scoring.py::score_call_by_category` asks the model to score each of
+the prompt's ten rubric categories `1`–`5` **or `N/A`**, with an evidence quote
+each, and computes the mean and tier itself. `v1`'s contract — score ten
+categories internally, return only `{"call_score": ...}` — is kept as
+`score_call` **solely** so `call_score_ab.py` can run it as a control arm.
+
+Design and criteria (fixed before the run):
+`docs/superpowers/specs/2026-08-13-call-score-redesign-design.md`. Results:
+`docs/eval/2026-08-13-call-score-phase-a.md`. Failures: `problems-and-fixes.md`
+Part 9.
+
+- **`analyser.scoring_prompt_version` in `config.yaml` names the live prompt.**
+  Not `PromptRegistry.latest()` — that takes the highest label, so adding an
+  A/B candidate `v3.txt` repointed production at an unvalidated prompt with no
+  code diff. No default; blank raises at load. Same hazard CLAUDE.md already
+  records for the gap-verification prompts, which dodged it by keeping the
+  experimental arm out of `app/prompts/` — scoring can't, since its A/B needs
+  real files.
+- **N/A is excluded from the mean, and that is the fix that worked.** An
+  occasion that never arose is not a rep failure. Pricing/Negotiation went from
+  **18/18 runs Low to 9/18**; on those calls *Value Anchor Defense*,
+  *Give-Get Discipline* and *Handling Price Objections* are each N/A ~67% of the
+  time, and `v1` was scoring them 1.
+- **Three ways the arithmetic can lie, all rejected as `LLMOutputError`** so
+  they take the normal retry/dead-letter path: a list that isn't exactly ten
+  categories (nine rows raise the mean if the missing one was about to score 1),
+  a duplicate name (double-weights a category), and fewer than three categories
+  applying (a mean over two is not a call score; the input gate already refuses
+  calls with no conversation).
+- **Computing the tier in code does not breach "no deterministic/rule-based
+  checks."** That boundary is about *gap detection* and about re-deriving a call
+  *from transcript text*. This is arithmetic on ten numbers the LLM produced —
+  the same category as `citation.py` checking a citation but never the judgement.
+- **`call_score_categories` follows the prompt-hash rule: `None` omits the
+  column, never writes NULL.** `persist_analysis_result` upserts in place, so a
+  partial re-run would otherwise erase a breakdown an earlier pass recorded.
+  The 51 pre-existing rows stay NULL — they genuinely have no breakdown. **Do
+  not backfill them.**
+- **Evidence quotes are NOT verified against the transcript**, unlike gap
+  citations. Deliberate: a fabricated gap quote reaches a moderator as an
+  uncheckable card, whereas a subscore is only read alongside the tier it
+  explains. Revisit only if subscores start being surfaced on their own.
+- **Band thresholds stay at the business team's 4.2 / 2.8.** Tuning them on 47
+  calls of our own output is overfitting, and the sweep shows it does not work
+  anyway — see Open decisions.
 
 ## Card Type sees the gaps
 
@@ -628,7 +676,7 @@ The fetcher and analyser are triggered by an in-process `BackgroundScheduler` (A
 
 ## Per-call outputs (Analysis Table row)
 
-1. **Call Score** — High/Medium/Low (categorical — NOT numeric; `analysis.call_score` is a `String` column, fixed after an earlier modeling mistake), from the business-provided scoring prompt run against the transcript.
+1. **Call Score** — High/Medium/Low (categorical — NOT numeric; `analysis.call_score` is a `String` column, fixed after an earlier modeling mistake). The model scores the prompt's ten rubric categories `1`–`5` or `N/A` with an evidence quote each; the mean over the non-N/A ones is taken **in code** and mapped to a tier. The breakdown is stored on `analysis.call_score_categories`. See "Call Score is scored by category" below.
 2. **Call Type** — one of: Discovery, Demo, Follow-up Demo, Pricing/Negotiation, Technical Integration, Kick-off.
 3. **Risk/Gap Analysis** — transcript checked against the call-type-specific gap-theme rubric. Each reported gap carries `evidence_type` (`"dialogue"` or `"explanation"`), `evidence`, an optional `timestamp`, and a `confidence` level. Enforced by `app/domain/gap_analysis.py`: `evidence_type: "dialogue"` requires a `timestamp`; `evidence_type: "explanation"` must not have one — never fabricate a timestamp for a whole-call pattern.
 4. **Card Type** — Coaching or Risk, via `app/domain/card_type.py::classify_card_type` — the one shared classifier, structurally reused by both the batch pipeline and Manual Card Auto-Fill (an optional-fields `CardTypeContext` DTO, not two implementations).
@@ -636,14 +684,16 @@ The fetcher and analyser are triggered by an in-process `BackgroundScheduler` (A
 ## Configuration
 
 - **`.env`** (gitignored, never committed) — secrets and connection strings: `DATABASE_URL` (our Neon DB), `CONVERSATIONAL_EXPERIENCE_RDS_*` (client DB), `LLM_GATEWAY_URL`/`LLM_GATEWAY_KEY`, `AVOMA_BASE_URL`/`AVOMA_API_KEY`.
-- **`config.yaml`** (checked in) — non-secret tunables: `llm_gateway:` (model, timeout, retry count, trace metadata), `analyser:` (`gap_rubric_mode: descriptiononly|fewshot` — still an unvalidated experiment, see Open decisions; `batch_size`; `max_retries`; `stale_claim_minutes` — how long a `processing` claim may sit before it's assumed dead, see "Failure isolation"; `max_concurrent_calls` — how many calls are analysed at once, so also the ceiling on simultaneous gateway requests; validated `>= 1` at load because 0 builds a semaphore nothing can acquire and the batch would hang silently), `scheduler:` (`hour`/`minute`/`timezone` — when the in-process cron fires), `input_gate:` (`enabled`; `min_words` — validated `>= 0` at load; `require_client_speech` — separately switchable so one rule can ship without the other; see "Input gate").
+- **`config.yaml`** (checked in) — non-secret tunables: `llm_gateway:` (model, timeout, retry count, trace metadata), `analyser:` (`gap_rubric_mode: descriptiononly|fewshot` — still an unvalidated experiment, see Open decisions; **`scoring_prompt_version`** — which `scoring/<call_type>/<label>.txt` scores every call, named explicitly because `PromptRegistry.latest()` takes the highest label, so adding an A/B candidate `v3.txt` silently repointed production at it; no default, and a blank value raises at config load; `batch_size`; `max_retries`; `stale_claim_minutes` — how long a `processing` claim may sit before it's assumed dead, see "Failure isolation"; `max_concurrent_calls` — how many calls are analysed at once, so also the ceiling on simultaneous gateway requests; validated `>= 1` at load because 0 builds a semaphore nothing can acquire and the batch would hang silently), `scheduler:` (`hour`/`minute`/`timezone` — when the in-process cron fires), `input_gate:` (`enabled`; `min_words` — validated `>= 0` at load; `require_client_speech` — separately switchable so one rule can ship without the other; see "Input gate").
   - `max_concurrent_calls: 4` is a **starting point, not a measured optimum** — this gateway's rate limits aren't documented anywhere we control. Raise it while watching for HTTP 429s (which arrive as `APIStatusError`, so they count as transport failures and can trip the circuit breaker). See Open decisions.
 
 ## Open decisions — flag, don't silently resolve
 
-- **The pipeline is not reproducible, and that outranks every other open decision here.** Measured 2026-08-11 over 46 calls: re-running the **identical** input at the **identical** settings reproduces all four outputs on only **43% of calls**. `call_score` flips on 22% (10/46), `call_type` on 11%, and gap count differs on 43% (total gaps 86 vs 77 between two `high` runs). Score churn skews toward the middle — `Low→Medium` 5, `High→Low` 2, `Medium→Low`/`High→Medium`/`Medium→High` 1 each — which *hints* the scoring rubric's Low/Medium boundary is underspecified rather than the model being random, but that is a hypothesis, not a result. Not diagnosed: gateway vs. model vs. genuinely ambiguous rubric boundaries. Two consequences that bite immediately:
+- **The pipeline is not reproducible, and that outranks every other open decision here.** Measured 2026-08-11 over 46 calls: re-running the **identical** input at the **identical** settings reproduces all four outputs on only **43% of calls**. `call_score` flips on 22% (10/46), `call_type` on 11%, and gap count differs on 43% (total gaps 86 vs 77 between two `high` runs).
+  - **The score half is now diagnosed — it is the band edges, not the model.** Measured 2026-08-13 over 47 calls with a same-run control: `v1` reproduces its tier on 68%, `v2` on 74%. **27% of runs land within 0.15 of a band edge**, and since the tier is a threshold on a mean of ten scores, one category moving one point shifts the mean by 0.1 and crosses it. The earlier "the Low/Medium boundary is underspecified" hypothesis was close but wrong in kind: the boundary isn't vague, it's *sitting where the mass is*. Not diagnosed for the other three steps.
   - A moderator's card depends on which night the call was processed; two runs can disagree High vs Low. Worth raising with whoever owns the scoring prompt.
   - **Any single-run prompt comparison here reads noise as signal.** The first pass of the `reasoning_effort` A/B did exactly that and produced a confident, wrong "70% agreement" number. Always measure the same-setting control first.
+- **Whether to move the call-score band thresholds — open, and the sweep says moving them alone does NOT work.** `app/services/eval/call_score_bands.py` re-derives tiers from stored subscores at zero gateway cost. Every threshold pair that restores tier reachability across all six call types costs re-run agreement, and every pair that buys agreement does so by pushing 26 of 47 calls into the wide High band. The cause is that median mean differs by **1.5 points between call types** (Demo 4.50, Kick-off 4.40, Technical Integration 4.33, Follow-up Demo 4.30 vs Discovery 3.20, Pricing 2.86) — two clusters, not a spectrum. **So do not tune thresholds as a standalone fix**; they can only be revisited once the category sets are equally satisfiable.
 - **Few-shot vs. description-only** gap prompting — both modes are wired (`gap_rubric_mode` in `config.yaml`, distinct `prompt_versions` entries), but which one wins is still unvalidated. `app/services/eval/harness.py` runs both side by side. **A single run of each cannot separate them** at a 43% reproduction rate — this needs the same-setting control and probably several runs per mode. See `docs/eval/2026-08-11-reasoning-effort-ab.md` for the method.
 - **~~`reasoning_effort: high` has never been validated against `medium`~~ — RESOLVED 2026-08-11.** Measured over all 46 calls: `medium` and `high` are **indistinguishable on output quality**, every difference falling inside the model's own run-to-run variance. Full writeup and raw data: `docs/eval/2026-08-11-reasoning-effort-ab.md`. Either setting is fine; `medium` saves 22% of reasoning tokens (5,935 vs 7,620/call) for only ~5% of wall-clock. **The old premise here was wrong** — `high` measures **64.7s/call** fresh, not ~82s, and `medium` 61.3s, so switching does *not* halve anything. Don't reopen this expecting a speedup.
   - Use `app/services/eval/reasoning_effort_ab.py` for any repeat. It never writes to `analysis` (the 46 rows are the baseline and must survive), and it takes `--nonce` — mandatory, see the cache note below.
@@ -688,6 +738,12 @@ uv run python -m app.services.batch.run                  # manual/ad-hoc AI Anal
 uv run python -m app.services.eval.input_gate_report [--scope all] [--out F.json]
 uv run python -m app.services.fetcher.backfill [--dry-run] [--limit N]   # re-fetch transcripts, re-stamp exclusions
 uv run python -m app.services.batch.mark_excluded [--dry-run]            # status='excluded' on pre-existing rows
+
+# Call score. --nonce is mandatory (gateway response cache); neither writes to
+# `analysis`. The band sweep costs nothing — it re-derives tiers from the
+# subscores already saved in the A/B's JSON.
+uv run python -m app.services.eval.call_score_ab --versions v2,v3 --nonce X --repeats 2 --out F.json
+uv run python -m app.services.eval.call_score_bands F.json [--version v3]
 ```
 
 **Two environment gotchas that will cost an hour.** Neon's hostname does not
@@ -699,5 +755,7 @@ resolve on this machine: resolve it via `8.8.8.8` and append `&hostaddr=<ip>` to
 reachable only over Tailscale, as does the LLM gateway — if `tailscale status`
 says "Logged out", anything touching `moonlight_calls`/`moonlight_accounts` or the
 gateway fails with a connection timeout while Neon keeps working.
+
+**Integration tests can eat the real backlog, and `tests/integration/conftest.py` is what stops them.** `process_batch` claims *any* claimable row, and the batch tests call it with `limit=100` against real Neon — so a test that seeds one call also analyses whatever real calls sit in `pending`, writing `StubLLMClient`'s canned answers over them as `processed`. That happened on 2026-08-13 to five real calls (`call_type=Demo`, `call_score=High`, categories literally named `Category 1..10`); nothing errored. The autouse `protect_claimable_analysis_rows` fixture snapshots every claimable row and restores it verbatim afterwards — restoring the *whole row*, because a `failed` row can hold real partial output that blanking would destroy. Consequences: **never assert an exact `attempted` count** from `process_batch` in an integration test (the backlog is shared — use `>=`), and `app/services/batch/revert_stub_written_rows.py` repairs any row that predates the fixture, fingerprinting on the impossible category names.
 
 Integration tests (`tests/integration/`) always clean up their own rows (via fixtures) — never leave test data behind in either database. That now includes `prompt_versions`: any `process_batch`/autofill call registers prompt content, so `tests/integration/test_batch_processor.py`'s autouse `no_prompt_version_residue` fixture deletes whatever a test registered, dropping FK references first so it doesn't depend on fixture teardown order. Never write to `moonlight_calls`/`moonlight_accounts` from any test or code path; they're Koushik's tables.
