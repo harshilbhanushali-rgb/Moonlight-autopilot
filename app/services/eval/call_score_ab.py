@@ -33,6 +33,7 @@ import json
 import logging
 import statistics
 import sys
+import time
 from collections import Counter, defaultdict
 from pathlib import Path
 
@@ -127,9 +128,16 @@ def _with_nonce(transcript: Transcript, nonce: str) -> Transcript:
 
 async def _score_once(llm_client, call, prompt, version, nonce):
     text = _with_nonce(call["transcript"], nonce).render_for_prompt()
+    started = time.perf_counter()
     if version in TIER_ONLY_VERSIONS:
         result = await score_call(llm_client=llm_client, transcript=text, prompt=prompt)
-        return {"tier": result.value.value, "mean": None, "categories": None, "error": None}
+        return {
+            "tier": result.value.value,
+            "mean": None,
+            "categories": None,
+            "duration_s": round(time.perf_counter() - started, 1),
+            "error": None,
+        }
 
     result = await score_call_by_category(llm_client=llm_client, transcript=text, prompt=prompt)
     breakdown = result.value
@@ -140,6 +148,11 @@ async def _score_once(llm_client, call, prompt, version, nonce):
             {"name": c.name, "score": c.score, "evidence": c.evidence}
             for c in breakdown.categories
         ],
+        # Wall-clock under whatever concurrency the run used, so it compares
+        # arms within one run and says nothing about absolute latency. v2's
+        # response is roughly ten times longer than v1's, which is the cost
+        # A-5 exists to bound.
+        "duration_s": round(time.perf_counter() - started, 1),
         "error": None,
     }
 
@@ -164,6 +177,7 @@ async def _run_call(llm_client, call, prompts_by_version, versions, repeats, non
                         "tier": None,
                         "mean": None,
                         "categories": None,
+                        "duration_s": None,
                         "error": f"{type(exc).__name__}: {exc}",
                     }
                 )
@@ -281,6 +295,23 @@ def report(results, versions):
         if tiers:
             low = sum(1 for t in tiers if t == "Low")
             print(f"  {version}: {low}/{len(tiers)} runs Low ({low / len(tiers):.0%})")
+
+    print("\n" + "=" * 78)
+    print("A-5  SCORING-STEP LATENCY  (wall-clock under this run's concurrency)")
+    print("=" * 78)
+    for version in versions:
+        times = [
+            run["duration_s"]
+            for r in results
+            for run in r["arms"][version]
+            if run.get("duration_s")
+        ]
+        if times:
+            times.sort()
+            print(f"  {version}: median {times[len(times) // 2]:.1f}s   "
+                  f"p90 {times[int(0.9 * (len(times) - 1))]:.1f}s   max {times[-1]:.1f}s")
+        else:
+            print(f"  {version}: not recorded (run predates the timing field)")
 
     _category_report(results, versions)
     _errors(results, versions)
