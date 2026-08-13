@@ -1,0 +1,50 @@
+[
+  {
+    "analysis_id": 41,
+    "tier": "Medium",
+    "borderline": false,
+    "reason": "Strong team prep for a strategic account: a pre-read sent the day before, an agenda built from what Emma had shared, and a custom competitive-insights report pulled specifically for UPS rather than the generic demo section. KJ was honest about the limits of the estimated-spend data ('this is not 100% accurate, plus minus 10 range... it's a directional view'). The coaching point is the close: Scott opened it with 'I know we didn't really have this thing planned for any sort of next steps' with minutes left, then Matt disclosed a hard hold on all new vendors and a live RFP process, and Scott asked nothing about the RFP's timing, criteria or stakeholders. Jill rescued it by proposing a 30-minute roadmap call, which Matt accepted and expanded to EMEA, but no date was set and she immediately had to drop. A next step should be planned before the call, not improvised after the buyer says no."
+  },
+  {
+    "analysis_id": 49,
+    "tier": "Medium",
+    "borderline": false,
+    "reason": "Joveo is a co-vendor on a partner-led kickoff, and Nargis carried the Joveo side: she asked the operational questions nobody else did (sandbox access, change turnaround and downtime) and, in the final minute, caught that the feed needed Joveo tracking parameters or Marie would see no data in unified analytics — Marie then asked her to prioritise it that day. Two coaching points. Marie, the client, was the one who spotted the wrong feed was loaded (3,125 RTX-wide jobs against ~1,800 expected Raytheon US, with Collins roles showing), days before a launch she had already buffered internally. And the feed ownership was visibly muddled in front of her: 'didn't we create another feed? maybe that was supposed to have some tracking in it.' Scott contributed essentially nothing beyond an intro on his own customer's kickoff."
+  },
+  {
+    "analysis_id": 257,
+    "tier": "Medium",
+    "borderline": false,
+    "reason": "Productive regroup that produced real qualification: Brendan let Rochelle talk and got the incumbent's failure in her own words (three days of unqualified leads, 'it took weeks to get an answer'), the pilot scope (rehab, ~3,600 jobs), the budget ('probably 25' thousand a month) and the tracking constraint, then asked good follow-ups on easy-apply versus redirect and how she actually measures spam. Ashlie was disciplined — 'I was resisting the temptation to solution live on the call' — and offered to map integration options against capabilities so Rochelle could decide informed. Coaching point: Rochelle named the one question that decides the deal — 'my biggest concern is how are you guys handling Indeed... that would be a huge gamble' — and, on a question she had raised on a previous call too, it was deferred again to 'we can come back with a solidified strategy.' No pilot success criteria were agreed and no next meeting was booked, only a follow-up email."
+  },
+  {
+    "analysis_id": 262,
+    "tier": "Medium",
+    "borderline": false,
+    "reason": "Credible senior-led RFP demo with genuine account-specific prep — Jesse used a real live Givaudan job title as the weak-title example, Yazad correctly rerouted the whole integration story from SuccessFactors to Phenom once Sam explained their actual architecture, and set honest expectations rather than overselling speed ('we can only move as fast as the resources that you have'). The bespoke career-site page their CTO's team had built for Givaudan was a strong close. Coaching point is pacing and scope: roughly the first 25 minutes went on founder history and unrequested platform modules, which triggered a procurement flag from Gergo ('the proposal you have sent us is covering all the modules, or that's gonna be priced differently?') and left so little time that Sam had to cut them off — 'just because of the time, can we see how to launch the campaign?' The close was passive too: they accepted 'end of July' without probing evaluation criteria or securing any interim step."
+  },
+  {
+    "analysis_id": 268,
+    "tier": "High",
+    "borderline": true,
+    "reason": "The call I would show other reps. They arrived with an actual analysis rather than a pitch: 1,725 live jobs reviewed, a budget split across all eight managing companies against the $40k, a role mix with target CPAs, and a named diagnosis of what the incumbent had not been doing (no apply caps, no zero-apply boosts, no daily expired-job sweep). Steve opened by volunteering that programmatic could be fast-tracked because its security review is lighter than the AI interviewer's PII review — actively clearing the client's own procurement path unprompted. The standout is the Indeed decision: they chose to leave organic traffic routed through Hiring Thing because its silver partnership performs better, giving up their own attribution for the client's result. Ashlie also refused to bluff, saying plainly 'what I don't have is the performance predictions' and converting it into a defined deliverable. Borderline only because that forecast was exactly the guidance Delia had asked for, and Camille had to point out at the end that two of the ten managing companies were missing from the plan."
+  },
+  {
+    "analysis_id": 271,
+    "tier": "Medium",
+    "borderline": false,
+    "reason": "Prateek ran a genuinely live end-to-end demo — brand-matched career site, Spanish-language chat, real apply, real invite email and OTP, a full AI voice interview, the scored report with transcript, then calendar-synced scheduling — and was honest where it cost him, saying flatly that accessibility for blind or deaf candidates 'is not something we're trying to solve in the AI interview yet' and that the ISIMS interviewer integration is not built. Nargis was equally firm and specific that the Paychex integration is confirmed with a sandbox already created. The coaching point is time management against the client's stated priority: Delia said sponsoring positions was 'top of mind at the moment,' the AI flow ran roughly forty minutes, she had to interrupt at the fifteen-minute mark to get to programmatic, and unified analytics — the visibility Anna twice asked for because 'we're just sort of in the dark' — got zero minutes and an apology. Anna's specific question about niche nursing boards also got a capability answer, not a strategy answer."
+  },
+  {
+    "analysis_id": 275,
+    "tier": "Medium",
+    "borderline": false,
+    "reason": "Good demo craft in one respect: Doug opened by asking the client to walk him through their own AI workflow map before he presented anything, which surfaced their human-in-the-loop philosophy and their reasoning about therapists being 'human centered.' He was consistently honest about limits (cannot switch languages mid-interview, 'we are not currently a language assessment tool') and converted a repeated request into a credible product commitment. He also asked for a genuinely high-value next step, 45 minutes with Joveo product to walk their map. Coaching point: the demo assets were wrong for the account. On a mental-health company hiring clinicians he showed a registered-nurse flow that asks about a class A commercial driver's licence, then answered Marilyn's question about interviewing on suicidality and therapeutic modalities by analogy to a Panda Express sous-chef question, conceding 'this is kind of a bad example.' He also flagged his hard 5pm stop only near the end and never reached the flow he had planned, and Steve closed with no date on a call where Megan was openly asking for pricing to 'plant the seeds' internally."
+  },
+  {
+    "analysis_id": 379,
+    "tier": "Medium",
+    "borderline": false,
+    "reason": "Well-run weekly: Jordan drove the agenda campaign by campaign, untangled the Meta blocker by separating ad-account access from branding rights and landing on the simpler route ('it eliminates a step'), committed to a recap email of 'what I owe you, what you owe,' and updated the shared Rocketlane tracker live. He was transparent about the credit process including his own inexperience with it ('It's my first one. Full transparency'), and got himself invited onto the Yoke call to stop the second-hand messaging. Coaching point: twice in one call he could not confirm his own company's position. Kathy read Dan's email on minimum spend aloud to him and questioned a '$25k minimum' that 'seemed a little out there,' and on the Mojo Social transition he told her 'I don't know if that's actually true.' A wrong commercial number circulating at a client should be chased down internally, not resolved by attending a meeting about it tomorrow."
+  }
+]
