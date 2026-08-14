@@ -2,7 +2,7 @@
 
 **Date:** 2026-08-11 · **Model:** `gemini-3.5-flash` · **n:** 46 calls (every `processed`
 row in `analysis`, all six call types) · **Harness:**
-`app/services/eval/reasoning_effort_ab.py` · **Raw data:** `docs/eval/reasoning-effort-*.json`
+`eval/reasoning_effort_ab.py` · **Raw data:** `docs/eval/reasoning-effort-*.json`
 
 ## Verdict
 
@@ -102,12 +102,12 @@ Both were caught by the control disagreeing in a way the model could not explain
 ```bash
 # fresh both sides, same nonce -- the only valid form of this comparison
 N="fresh-$(date +%s)"
-uv run python -m app.services.eval.reasoning_effort_ab --effort high   --nonce "$N"
-uv run python -m app.services.eval.reasoning_effort_ab --effort medium --nonce "$N"
-uv run python -m app.services.eval.reasoning_effort_ab --compare-runs <high.json> <medium.json>
+uv run python -m eval.reasoning_effort_ab --effort high   --nonce "$N"
+uv run python -m eval.reasoning_effort_ab --effort medium --nonce "$N"
+uv run python -m eval.reasoning_effort_ab --compare-runs <high.json> <medium.json>
 
 # the control: fresh high vs the stored rows
-uv run python -m app.services.eval.reasoning_effort_ab --compare <high.json>
+uv run python -m eval.reasoning_effort_ab --compare <high.json>
 ```
 
 The harness never writes to `analysis` — the 46 stored rows are the baseline and

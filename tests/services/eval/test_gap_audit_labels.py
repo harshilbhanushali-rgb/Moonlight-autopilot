@@ -1,7 +1,7 @@
 """The hand labels are the only human ground truth in the project about whether
 a gap is correct, so the accessor they are read through is worth pinning."""
 
-from app.services.eval.gap_audit_labels import LABELS, lookup
+from eval.gap_audit_labels import LABELS, lookup
 
 
 def test_a_label_is_found_by_theme_prefix():

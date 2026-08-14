@@ -22,7 +22,7 @@ fire, does the evidence hold up?
 
 Never writes to `analysis`.
 
-    uv run python -m app.services.eval.rubric_version_ab \\
+    uv run python -m eval.rubric_version_ab \\
         --call-type discovery --theme "Incumbent Vendor Not Probed" \\
         --old-theme "No Pre-Call Research" --nonce r1
 """

@@ -8,7 +8,7 @@ Read `docs/eval/2026-08-14-call-score-grading-standard.md` before quoting a
 number. The labels are one non-auditor reviewer's judgements, so this measures
 agreement with that reviewer, not with Moonlight's standard.
 
-    uv run python -m app.services.eval.call_score_accuracy \\
+    uv run python -m eval.call_score_accuracy \\
         docs/eval/2026-08-13-call-score-phaseA.json
 
 Reports, per version:
@@ -30,7 +30,7 @@ import json
 from collections import Counter, defaultdict
 from pathlib import Path
 
-from app.services.eval.call_score_labels import UNGRADABLE, LABELS, gradable
+from eval.call_score_labels import UNGRADABLE, LABELS, gradable
 
 ORDER = {"Low": 0, "Medium": 1, "High": 2}
 

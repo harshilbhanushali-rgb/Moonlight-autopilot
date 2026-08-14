@@ -15,8 +15,8 @@ every rubric measurement so far was computed against.
 Also re-evaluates the input gate, so history gets `excluded_reason` too rather
 than only calls fetched from now on.
 
-    uv run python -m app.services.fetcher.backfill --dry-run
-    uv run python -m app.services.fetcher.backfill [--limit N]
+    uv run python -m scripts.backfill --dry-run
+    uv run python -m scripts.backfill [--limit N]
 """
 
 import argparse

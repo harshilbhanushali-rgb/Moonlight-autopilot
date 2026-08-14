@@ -22,7 +22,7 @@ selection is held constant and the prompt version is the only thing that varies.
 
 Never writes to `analysis`.
 
-    uv run python -m app.services.eval.call_score_ab --nonce a1 --out a1.json
+    uv run python -m eval.call_score_ab --nonce a1 --out a1.json
 """
 
 from __future__ import annotations

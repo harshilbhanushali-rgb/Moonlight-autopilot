@@ -3,8 +3,8 @@
 Closes the loop that `verification_replay.py` opens: the replay says which gaps
 the verifier kept, this says whether keeping them was right.
 
-    uv run python -m app.services.eval.verification_replay --nonce run3 --out run3.json
-    uv run python -m app.services.eval.score_verification run3.json
+    uv run python -m eval.verification_replay --nonce run3 --out run3.json
+    uv run python -m eval.score_verification run3.json
 
 **The number that matters is wrong drops, not bad gaps removed.** A verifier
 that rejects everything scores perfectly on the bad gaps and destroys the
@@ -22,7 +22,7 @@ import json
 from collections import defaultdict
 from pathlib import Path
 
-from app.services.eval.gap_audit_labels import lookup
+from eval.gap_audit_labels import lookup
 
 # Themes that fired on 75-100% of their call type in the 2026-08-12 audit. A
 # saturated theme dropping hard here is the signal that its definition, not the

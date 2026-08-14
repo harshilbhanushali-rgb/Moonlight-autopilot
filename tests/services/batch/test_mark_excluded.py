@@ -7,7 +7,7 @@ conversation in it.
 """
 
 from app.db.models import STATUS_EXCLUDED, STATUS_PROCESSED
-from app.services.batch.mark_excluded import mark_excluded_analyses
+from scripts.mark_excluded import mark_excluded_analyses
 
 
 class FakeSession:

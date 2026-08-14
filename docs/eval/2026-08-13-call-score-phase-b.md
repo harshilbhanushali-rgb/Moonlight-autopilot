@@ -6,7 +6,7 @@
 **Reproduce:**
 
 ```bash
-uv run python -m app.services.eval.call_score_ab --versions v2,v3 --nonce phaseB2 \
+uv run python -m eval.call_score_ab --versions v2,v3 --nonce phaseB2 \
     --repeats 2 --concurrency 4 --out docs/eval/2026-08-13-call-score-phaseB.json
 ```
 

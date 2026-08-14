@@ -27,8 +27,8 @@ Two things to know about how confident to be in each finding:
   surrounding transcript. Where this document leans on those, it says so. They are not
   business ground truth and should get a second pair of eyes.
 
-Raw data and the harnesses that produced it: `app/services/eval/verification_replay.py`,
-`app/services/eval/theme_falsifiability.py`.
+Raw data and the harnesses that produced it: `eval/verification_replay.py`,
+`eval/theme_falsifiability.py`.
 
 ---
 

@@ -10,9 +10,9 @@ Like `reasoning_effort_ab.py`, this **never writes to `analysis`**. Those rows
 are the baseline for prompt comparisons and must survive; results go to a JSON
 file for review.
 
-    uv run python -m app.services.eval.verification_replay --nonce run1
-    uv run python -m app.services.eval.verification_replay --limit 5 --out x.json
-    uv run python -m app.services.eval.verification_replay --framing neutral --nonce n1
+    uv run python -m eval.verification_replay --nonce run1
+    uv run python -m eval.verification_replay --limit 5 --out x.json
+    uv run python -m eval.verification_replay --framing neutral --nonce n1
 
 `--nonce` matters on any repeat run: the gateway serves a response cache keyed
 on the request messages, so an unvaried replay silently scores cached answers
@@ -46,7 +46,7 @@ from app.llm.factory import build_llm_client
 from app.llm.gateway_config import load_llm_gateway_config
 from app.prompts.registry import PromptRegistry
 from app.services.batch.run import _PROMPTS_ROOT
-from app.services.eval.neutral_framing import (
+from eval.neutral_framing import (
     NEUTRAL_DIALOGUE_PROMPT,
     NEUTRAL_EXPLANATION_PROMPT,
     dialogue_body,
@@ -262,7 +262,7 @@ def main() -> None:
         help="'production' asks whether the quote supports the claim (the "
              "shipped verifier). 'neutral' asks whether the call exhibits the "
              "theme at all, withholding the claim and the pre-picked quote — "
-             "see app/services/eval/neutral_framing.py",
+             "see eval/neutral_framing.py",
     )
     args = parser.parse_args()
     asyncio.run(

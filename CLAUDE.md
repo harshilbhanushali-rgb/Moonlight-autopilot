@@ -53,7 +53,6 @@ app/
     batch/                   # AI Analyser: repository.py, processor.py, orchestrator.py, run.py
     autofill/                # worker.py (background task), repository.py
     fetcher/                 # Call Fetcher: transform.py, repository.py, fetcher.py, run.py
-    eval/                     # few-shot vs description-only comparison harness
     scheduler/                # in-process cron: ledger.py, pipeline.py, scheduler.py
   schemas/                 # Pydantic request/response models
   db/
@@ -68,9 +67,28 @@ app/
   avoma/
     client.py                # AvomaClient — GET /v1/transcriptions/?meeting_uuid=...
   prompts/                 # versioned prompt/rubric files (business-team-owned content)
+eval/                     # measurement harnesses + hand labels — NOT production
+scripts/                  # one-off operational scripts — NOT scheduled
 tests/                    # mirrors app/ 1:1
   integration/             # hits real Neon + real client RDS DB — see Testing below
 ```
+
+**`app/` contains only what the pipeline runs.** Moved out 2026-08-14, because
+the boundary had blurred: `app/services/eval/` held 17 measurement harnesses and
+three one-off scripts sat beside production modules, so "what ships" could not be
+read off the tree.
+
+- **`eval/`** — every A/B harness, accuracy scorer and hand-label set
+  (`call_score_labels.py`, `call_type_labels.py`, `gap_audit_labels.py`). Run by
+  hand, never by the scheduler. **Nothing in `app/` imports it**, and that
+  direction must stay one-way — a production module reaching into `eval/` would
+  make a measurement tool load-bearing.
+- **`scripts/`** — `backfill.py`, `mark_excluded.py`,
+  `revert_stub_written_rows.py`. Manual, deliberately unscheduled, each
+  documenting the incident it exists for.
+- They are **not** under `tests/` on purpose: they are operational tools rather
+  than tests, three of them are hand-labelled *data*, and `tests/services/eval/`
+  already holds the pytest tests **for** this code.
 
 ## The transcript contract carries timestamps — don't drop them again
 
@@ -190,10 +208,10 @@ Citation validation cannot see any of this: those quotes are all real speech.
   so an edit to either changes `risk_gap_analysis` as much as an edit to the
   rubric. Each is NULL when that verifier had no gap of its kind to judge.
 - `verification_prompts=None` skips the whole pass. That exists **only** for
-  `app/services/eval/harness.py`, which compares rubric wording and must see
+  `eval/harness.py`, which compares rubric wording and must see
   the rubric's raw output — filtering it would measure the verifier instead.
 - **Measured, and prompt tuning is exhausted.** Replayed over the 86 stored
-  gaps and scored against `app/services/eval/gap_audit_labels.py`: **90% of
+  gaps and scored against `eval/gap_audit_labels.py`: **90% of
   good gaps retained, 67% of bad gaps removed, 98% reproducible run-to-run**
   (verification is a 3-way classification over fixed input, so unlike the
   generator's 43% its numbers can be trusted). Two attempts to improve it by
@@ -205,7 +223,7 @@ Citation validation cannot see any of this: those quotes are all real speech.
   aims the model at the span where the contradiction lives). The remaining
   leverage is in the saturated rubric themes, not the checker.
 - **The neutral arm is kept for future comparisons** —
-  `app/services/eval/neutral_framing.py` and `verification_replay --framing
+  `eval/neutral_framing.py` and `verification_replay --framing
   neutral`. Its prompts are Python constants, *not* files under
   `app/prompts/gap_verification/`, because `PromptRegistry.latest()` takes the
   highest version label and a `v2-*.txt` dropped in there would silently
@@ -301,7 +319,7 @@ extras, and widening `Kick-off`'s rubric with themes it does not already have.
 All six `fewshot` files remain untouched v1 placeholders.
 
 Two edits, both from `docs/gap-rubric-review-2026-08-12.md`, both measured with
-`app/services/eval/rubric_version_ab.py` (added for this; takes `--nonce` and
+`eval/rubric_version_ab.py` (added for this; takes `--nonce` and
 `--verify-all`):
 
 - **R1** (`v2`, both rubrics): rewrote the one theme per rubric that fired on
@@ -399,7 +417,7 @@ The circuit breaker needs **no lock** — all coroutines share one event-loop th
 
 ## call_type is measured now — and the classifier is not the problem
 
-Hand labels exist: `app/services/eval/call_type_labels.py`, all 32 in-scope calls
+Hand labels exist: `eval/call_type_labels.py`, all 32 in-scope calls
 read in full and blind to the stored prediction. Scored by
 `call_type_accuracy.py --labelled`. Before this there was no accuracy figure at
 all, only an 11% flip rate between identical re-runs.
@@ -536,7 +554,7 @@ Four things not to re-derive (all measured over 51 real calls,
   nothing new in the table Koushik's side reads.
 
 **Measured, and the criterion was fixed in writing before the run**
-(`app/services/eval/input_gate_report.py`, report in
+(`eval/input_gate_report.py`, report in
 `docs/eval/2026-08-13-input-gate-report.json`): four rejections across all 51
 stored calls, **zero false positives**. Split by scope:
 
@@ -556,10 +574,10 @@ in-scope calls the client speaks a median of **2,681 words**, and only one falls
 under 200 — the abstention case, not a thin client. There is no cluster of
 near-silent clients, so the number would have been invented.
 
-Two one-off scripts, neither scheduled: `app/services/fetcher/backfill.py`
+Two one-off scripts, neither scheduled: `scripts/backfill.py`
 re-fetches transcripts (keyed on `call_storage`, **not** `moonlight_calls`, so
 the 19 orphaned calls are recovered — Avoma is unaffected by that churn) and
-re-stamps exclusions; `app/services/batch/mark_excluded.py` sets
+re-stamps exclusions; `scripts/mark_excluded.py` sets
 `analysis.status = 'excluded'` on the four pre-existing rows while leaving
 `call_type`/`call_score`/`risk_gap_analysis`/`card_type` untouched, because those
 are the A/B baseline. **That `status` value is the one part of this change that
@@ -704,11 +722,11 @@ The fetcher and analyser are triggered by an in-process `BackgroundScheduler` (A
   - **The score half is now diagnosed — it is the band edges, not the model.** Measured 2026-08-13 over 47 calls with a same-run control: `v1` reproduces its tier on 68%, `v2` on 74%. **27% of runs land within 0.15 of a band edge**, and since the tier is a threshold on a mean of ten scores, one category moving one point shifts the mean by 0.1 and crosses it. The earlier "the Low/Medium boundary is underspecified" hypothesis was close but wrong in kind: the boundary isn't vague, it's *sitting where the mass is*. Not diagnosed for the other three steps.
   - A moderator's card depends on which night the call was processed; two runs can disagree High vs Low. Worth raising with whoever owns the scoring prompt.
   - **Any single-run prompt comparison here reads noise as signal.** The first pass of the `reasoning_effort` A/B did exactly that and produced a confident, wrong "70% agreement" number. Always measure the same-setting control first.
-- **~~Whether to move the call-score band thresholds~~ — RESOLVED 2026-08-14. `HIGH_THRESHOLD` is now 4.7.** The objection below was correct *at the time* and is now void: it rested on having nothing but self-consistency to optimise against, and 43 blind hand grades now exist (`app/services/eval/call_score_labels.py`). Agreement with an independent grader cannot be gamed by collapsing everything into one tier the way re-run agreement can, so the sweep became a real objective. See "Call Score is scored by category" and `docs/eval/2026-08-14-call-score-accuracy.md`. The **per-call-type** finding below still stands and is still unsolved by thresholds — that is Phase B's job.
-- **The old objection, kept because the reasoning is reusable:** `app/services/eval/call_score_bands.py` re-derives tiers from stored subscores at zero gateway cost. Every threshold pair that restores tier reachability across all six call types costs re-run agreement, and every pair that buys agreement does so by pushing 26 of 47 calls into the wide High band. The cause is that median mean differs by **1.5 points between call types** (Demo 4.50, Kick-off 4.40, Technical Integration 4.33, Follow-up Demo 4.30 vs Discovery 3.20, Pricing 2.86) — two clusters, not a spectrum. **So do not tune thresholds as a standalone fix**; they can only be revisited once the category sets are equally satisfiable.
-- **Few-shot vs. description-only** gap prompting — both modes are wired (`gap_rubric_mode` in `config.yaml`, distinct `prompt_versions` entries), but which one wins is still unvalidated. `app/services/eval/harness.py` runs both side by side. **A single run of each cannot separate them** at a 43% reproduction rate — this needs the same-setting control and probably several runs per mode. See `docs/eval/2026-08-11-reasoning-effort-ab.md` for the method.
+- **~~Whether to move the call-score band thresholds~~ — RESOLVED 2026-08-14. `HIGH_THRESHOLD` is now 4.7.** The objection below was correct *at the time* and is now void: it rested on having nothing but self-consistency to optimise against, and 43 blind hand grades now exist (`eval/call_score_labels.py`). Agreement with an independent grader cannot be gamed by collapsing everything into one tier the way re-run agreement can, so the sweep became a real objective. See "Call Score is scored by category" and `docs/eval/2026-08-14-call-score-accuracy.md`. The **per-call-type** finding below still stands and is still unsolved by thresholds — that is Phase B's job.
+- **The old objection, kept because the reasoning is reusable:** `eval/call_score_bands.py` re-derives tiers from stored subscores at zero gateway cost. Every threshold pair that restores tier reachability across all six call types costs re-run agreement, and every pair that buys agreement does so by pushing 26 of 47 calls into the wide High band. The cause is that median mean differs by **1.5 points between call types** (Demo 4.50, Kick-off 4.40, Technical Integration 4.33, Follow-up Demo 4.30 vs Discovery 3.20, Pricing 2.86) — two clusters, not a spectrum. **So do not tune thresholds as a standalone fix**; they can only be revisited once the category sets are equally satisfiable.
+- **Few-shot vs. description-only** gap prompting — both modes are wired (`gap_rubric_mode` in `config.yaml`, distinct `prompt_versions` entries), but which one wins is still unvalidated. `eval/harness.py` runs both side by side. **A single run of each cannot separate them** at a 43% reproduction rate — this needs the same-setting control and probably several runs per mode. See `docs/eval/2026-08-11-reasoning-effort-ab.md` for the method.
 - **~~`reasoning_effort: high` has never been validated against `medium`~~ — RESOLVED 2026-08-11.** Measured over all 46 calls: `medium` and `high` are **indistinguishable on output quality**, every difference falling inside the model's own run-to-run variance. Full writeup and raw data: `docs/eval/2026-08-11-reasoning-effort-ab.md`. Either setting is fine; `medium` saves 22% of reasoning tokens (5,935 vs 7,620/call) for only ~5% of wall-clock. **The old premise here was wrong** — `high` measures **64.7s/call** fresh, not ~82s, and `medium` 61.3s, so switching does *not* halve anything. Don't reopen this expecting a speedup.
-  - Use `app/services/eval/reasoning_effort_ab.py` for any repeat. It never writes to `analysis` (the 46 rows are the baseline and must survive), and it takes `--nonce` — mandatory, see the cache note below.
+  - Use `eval/reasoning_effort_ab.py` for any repeat. It never writes to `analysis` (the 46 rows are the baseline and must survive), and it takes `--nonce` — mandatory, see the cache note below.
 - **Manual Auto-Fill inputs beyond comment text** — `CardTypeContext`/the autofill worker accept optional `transcript`/`call_metadata`, but whether the real integration actually populates those fields is undecided.
 - **`CardTableClient`** (writing Type/Gap into Koushik's external manual-card table) — still a `NotImplementedError` in `app/api/deps.py`. Blocked on that table's schema, which hasn't been shared yet.
 - **Account-level risk rollup** — surface this if a task seems to need it; not in this build's scope.
@@ -721,7 +739,7 @@ The fetcher and analyser are triggered by an in-process `BackgroundScheduler` (A
 - **Whether to extend R2 to the four untouched rubrics — still open, and the only rubric lever left.** Adding precondition/disqualifier clauses *to the existing themes* is permitted (it changes wording, not themes), and it improved discovery while *failing* on pricing, so each of demo, follow_up_demo, kickoff and technical_integration needs its own A/B before adopting. Kick-off is the most tempting (all three themes fire on 75–100% of its calls) and the least conclusive — only **4** kick-off calls exist, so fetch more first. **Match the length of the description you replace**: a 74%-longer rewrite measurably suppressed byte-identical themes elsewhere in the same file. See "Gap rubric versions".
 - **Two themes still need attention and neither has been touched.** `Wrong People on the Call` (demo) fired 4/8 and the verifier kept **4 of 4**, yet both hand-reviewed instances were wrong — one fired because a rep said "I'll have to check" and a colleague answered seven seconds later. It passes every downstream check, so nothing catches it. And three themes have **never fired in 46 calls** (`Slide Reading & Poor Storytelling`, `Irrelevant or Inaccurate Content Shown`, `Unclear Ownership of Action Items`) — either the behaviour is absent or the wording is unmatchable, and the data cannot tell which.
 - **Nothing produced by R1/R2 has been hand-reviewed**, so *gap* quality is still measured against the entailment verifier rather than a human. That verifier keeps 90% of good gaps and removes 67% of bad ones, so it is a proxy, and it remains the binding constraint on knowing whether gap changes help. (**Call *score* is no longer in this position** — 43 blind hand grades exist. Gaps and card_type still are.)
-- **Hand labels now exist for call score, and the method is reusable.** `app/services/eval/call_score_labels.py` (47 calls), standard pre-registered in `docs/eval/2026-08-14-call-score-grading-standard.md`, scored by `call_score_accuracy.py`. **Inter-rater agreement is 7/8 (88%)** between two independent graders — but the overlap sample is almost all Medium, so it measures the easy middle and reads optimistic. Two limits to carry: every grader read the same 15 anchor calls, so this measures agreement with **one reviewer's bar**, not Moonlight's; and ~20 auditor-graded calls from Anantu's team would make that checkable and is still the single highest-value ask.
+- **Hand labels now exist for call score, and the method is reusable.** `eval/call_score_labels.py` (47 calls), standard pre-registered in `docs/eval/2026-08-14-call-score-grading-standard.md`, scored by `call_score_accuracy.py`. **Inter-rater agreement is 7/8 (88%)** between two independent graders — but the overlap sample is almost all Medium, so it measures the easy middle and reads optimistic. Two limits to carry: every grader read the same 15 anchor calls, so this measures agreement with **one reviewer's bar**, not Moonlight's; and ~20 auditor-graded calls from Anantu's team would make that checkable and is still the single highest-value ask.
 - **`card_type` has never been measured at all** — no accuracy figure, no labels, and it is the field a moderator reads first. The labelling method and harness now exist, so this is a day's work rather than a project. It is the largest remaining dark spot in the pipeline.
 - **Remaining placeholder prompts** — `gap_rubric/*-fewshot.yaml` and `gap_fill/v1.txt` are still placeholder files under `app/prompts/`; must be swapped for the business team's real versions before any output relying on them is trustworthy. (`scoring/`, `gap_rubric/*-descriptiononly.yaml`, `card_type/`, and `call_type/` now have real content — see "Hard scope boundaries" above.)
 - **~~Thin-content gate~~ — RESOLVED 2026-08-13 by the input gate.** Calls under 300 words are excluded at fetch with `excluded_reason = 'no_conversation'`, which is the "distinct status" option this decision preferred. Three of 51 stored calls are affected (30, 183, 271 words). **The ambiguous ~1000–2000 word band remains untouched and deliberately so** — a `Low` there may well be legitimate, and unlike the sub-300 calls there is no labelled evidence to settle it. Do not raise `min_words` into that band without it.
@@ -749,17 +767,17 @@ uv run python -m app.services.batch.run                  # manual/ad-hoc AI Anal
 
 # Input gate — see "Input gate". The report writes nothing; the other two are
 # one-offs and are NOT wired into the scheduler.
-uv run python -m app.services.eval.input_gate_report [--scope all] [--out F.json]
-uv run python -m app.services.fetcher.backfill [--dry-run] [--limit N]   # re-fetch transcripts, re-stamp exclusions
-uv run python -m app.services.batch.mark_excluded [--dry-run]            # status='excluded' on pre-existing rows
+uv run python -m eval.input_gate_report [--scope all] [--out F.json]
+uv run python -m scripts.backfill [--dry-run] [--limit N]   # re-fetch transcripts, re-stamp exclusions
+uv run python -m scripts.mark_excluded [--dry-run]            # status='excluded' on pre-existing rows
 
 # Call score. --nonce is mandatory (gateway response cache); none of these write
 # to `analysis`. Only call_score_ab costs gateway requests — the other three are
 # arithmetic over its saved JSON, so they are free to re-run.
-uv run python -m app.services.eval.call_score_ab --versions v2,v3 --nonce X --repeats 2 --out F.json
-uv run python -m app.services.eval.call_score_accuracy F.json      # vs the 47 hand labels
-uv run python -m app.services.eval.call_score_bands F.json --labels # threshold sweep + holdout
-uv run python -m app.services.eval.score_evidence_audit F.json      # are the subscore quotes real
+uv run python -m eval.call_score_ab --versions v2,v3 --nonce X --repeats 2 --out F.json
+uv run python -m eval.call_score_accuracy F.json      # vs the 47 hand labels
+uv run python -m eval.call_score_bands F.json --labels # threshold sweep + holdout
+uv run python -m eval.score_evidence_audit F.json      # are the subscore quotes real
 ```
 
 **Use `--concurrency 4` or lower for `call_score_ab`.** Both arms return ten
@@ -780,6 +798,6 @@ reachable only over Tailscale, as does the LLM gateway — if `tailscale status`
 says "Logged out", anything touching `moonlight_calls`/`moonlight_accounts` or the
 gateway fails with a connection timeout while Neon keeps working.
 
-**Integration tests can eat the real backlog, and `tests/integration/conftest.py` is what stops them.** `process_batch` claims *any* claimable row, and the batch tests call it with `limit=100` against real Neon — so a test that seeds one call also analyses whatever real calls sit in `pending`, writing `StubLLMClient`'s canned answers over them as `processed`. That happened on 2026-08-13 to five real calls (`call_type=Demo`, `call_score=High`, categories literally named `Category 1..10`); nothing errored. The autouse `protect_claimable_analysis_rows` fixture snapshots every claimable row and restores it verbatim afterwards — restoring the *whole row*, because a `failed` row can hold real partial output that blanking would destroy. Consequences: **never assert an exact `attempted` count** from `process_batch` in an integration test (the backlog is shared — use `>=`), and `app/services/batch/revert_stub_written_rows.py` repairs any row that predates the fixture, fingerprinting on the impossible category names.
+**Integration tests can eat the real backlog, and `tests/integration/conftest.py` is what stops them.** `process_batch` claims *any* claimable row, and the batch tests call it with `limit=100` against real Neon — so a test that seeds one call also analyses whatever real calls sit in `pending`, writing `StubLLMClient`'s canned answers over them as `processed`. That happened on 2026-08-13 to five real calls (`call_type=Demo`, `call_score=High`, categories literally named `Category 1..10`); nothing errored. The autouse `protect_claimable_analysis_rows` fixture snapshots every claimable row and restores it verbatim afterwards — restoring the *whole row*, because a `failed` row can hold real partial output that blanking would destroy. Consequences: **never assert an exact `attempted` count** from `process_batch` in an integration test (the backlog is shared — use `>=`), and `scripts/revert_stub_written_rows.py` repairs any row that predates the fixture, fingerprinting on the impossible category names.
 
 Integration tests (`tests/integration/`) always clean up their own rows (via fixtures) — never leave test data behind in either database. That now includes `prompt_versions`: any `process_batch`/autofill call registers prompt content, so `tests/integration/test_batch_processor.py`'s autouse `no_prompt_version_residue` fixture deletes whatever a test registered, dropping FK references first so it doesn't depend on fixture teardown order. Never write to `moonlight_calls`/`moonlight_accounts` from any test or code path; they're Koushik's tables.

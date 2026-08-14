@@ -8,7 +8,7 @@ be recovered — 19 of the 51 stored calls are no longer listed in
 
 from app.avoma.client import AvomaSpeaker, AvomaTranscript, AvomaTranscriptTurn
 from app.core.input_gate_config import InputGateConfig
-from app.services.fetcher.backfill import backfill_transcripts
+from scripts.backfill import backfill_transcripts
 
 GATE_ON = InputGateConfig(enabled=True, min_words=300, require_client_speech=True)
 

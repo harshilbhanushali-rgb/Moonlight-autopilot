@@ -25,8 +25,8 @@ Anything else being rejected means the code disagrees with the phase-0
 measurement, not that the corpus changed — find out which is wrong before
 changing either.
 
-    uv run python -m app.services.eval.input_gate_report
-    uv run python -m app.services.eval.input_gate_report --out docs/eval/input-gate.json
+    uv run python -m eval.input_gate_report
+    uv run python -m eval.input_gate_report --out docs/eval/input-gate.json
 
 Scope: `--scope in` (default) restricts to calls still present in
 `moonlight_calls`, which needs the client RDS and therefore Tailscale. Use
@@ -47,7 +47,7 @@ from app.db.models import CallStorage
 from app.db.session import SessionLocal
 from app.domain.input_gate import evaluate_input_gate
 from app.domain.transcript import Transcript
-from app.services.eval.call_type_labels import UNCLASSIFIABLE
+from eval.call_type_labels import UNCLASSIFIABLE
 
 # Fixed in writing before the first run. See the module docstring.
 EXPECTED_REJECTIONS = {

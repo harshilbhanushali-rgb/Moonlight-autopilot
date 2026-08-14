@@ -16,8 +16,8 @@ Targets are derived from `call_storage.excluded_reason` rather than a hardcoded
 list, so this cannot drift from what the gate actually decided. Run the backfill
 first with the gate enabled, so history carries its reasons.
 
-    uv run python -m app.services.batch.mark_excluded --dry-run
-    uv run python -m app.services.batch.mark_excluded
+    uv run python -m scripts.mark_excluded --dry-run
+    uv run python -m scripts.mark_excluded
 """
 
 import argparse

@@ -11,7 +11,7 @@ STEP = "scoring"
 #
 # MEDIUM stays at the business team's 2.8. HIGH was raised from their 4.2 to 4.7
 # on 2026-08-14, against 43 blind hand-graded calls
-# (app/services/eval/call_score_labels.py). It is the one number here that had
+# (eval/call_score_labels.py). It is the one number here that had
 # to move, and the reason is mechanical rather than a matter of taste: excluding
 # N/A categories from the mean removed the low scores that used to drag it down,
 # so every call's mean rose while the thresholds stayed put. Measured, the
@@ -49,7 +49,7 @@ async def score_call(
 ) -> ClassificationResult[CallScore]:
     """The v1 contract: the model returns the tier and nothing else.
 
-    Kept so `app/services/eval/call_score_ab.py` can run the v1 prompts as the
+    Kept so `eval/call_score_ab.py` can run the v1 prompts as the
     control arm. Production uses `score_call_by_category`.
     """
     return await run_enum_classification_step(

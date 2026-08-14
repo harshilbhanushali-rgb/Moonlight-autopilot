@@ -1,7 +1,7 @@
 """Scores the call_type prompt against labelled transcripts.
 
-    uv run python -m app.services.eval.call_type_accuracy --dir Ground_Truth_call_type
-    uv run python -m app.services.eval.call_type_accuracy --labels labels.json --nonce r1
+    uv run python -m eval.call_type_accuracy --dir Ground_Truth_call_type
+    uv run python -m eval.call_type_accuracy --labels labels.json --nonce r1
 
 **Read this before quoting a number from the `Ground_Truth_call_type` directory.**
 Those six transcripts are the ones `app/prompts/call_type/v1.txt` was *written
@@ -86,7 +86,7 @@ def _load_from_module() -> list[dict]:
     judgement call where a second reviewer could differ neither inflates nor
     deflates the score.
     """
-    from app.services.eval.call_type_labels import strict_labels
+    from eval.call_type_labels import strict_labels
 
     return _cases_for(strict_labels())
 
@@ -212,7 +212,7 @@ def main() -> None:
         "--labelled",
         action="store_true",
         help="score against the committed hand labels in "
-             "app/services/eval/call_type_labels.py (unambiguous ones only). "
+             "eval/call_type_labels.py (unambiguous ones only). "
              "**This is the only mode that measures real accuracy** — the "
              "default --dir is the prompt's own training material.",
     )

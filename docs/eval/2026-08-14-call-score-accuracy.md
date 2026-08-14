@@ -1,14 +1,14 @@
 # Call score, measured against human grades
 
 **Date:** 2026-08-14
-**Labels:** `app/services/eval/call_score_labels.py` (47 calls, blind)
+**Labels:** `eval/call_score_labels.py` (47 calls, blind)
 **Standard:** `docs/eval/2026-08-14-call-score-grading-standard.md` (pre-registered)
 **Reproduce:**
 
 ```bash
-uv run python -m app.services.eval.call_score_accuracy docs/eval/2026-08-13-call-score-phaseA.json
-uv run python -m app.services.eval.call_score_bands  docs/eval/2026-08-13-call-score-phaseA.json --labels
-uv run python -m app.services.eval.score_evidence_audit docs/eval/2026-08-13-call-score-phaseA.json
+uv run python -m eval.call_score_accuracy docs/eval/2026-08-13-call-score-phaseA.json
+uv run python -m eval.call_score_bands  docs/eval/2026-08-13-call-score-phaseA.json --labels
+uv run python -m eval.score_evidence_audit docs/eval/2026-08-13-call-score-phaseA.json
 ```
 
 ## Method

@@ -196,8 +196,8 @@ drift.
 
 ## Phase 4 — Backfill stored transcripts
 
-**File:** `app/services/fetcher/backfill.py`, run as
-`uv run python -m app.services.fetcher.backfill [--limit N] [--dry-run]`
+**File:** `scripts/backfill.py`, run as
+`uv run python -m scripts.backfill [--limit N] [--dry-run]`
 
 Iterates `call_storage` rows and re-fetches each transcript by its stored
 `avoma_recording_id`. Keyed on our table, **not** `moonlight_calls` — that is what
@@ -225,8 +225,8 @@ exceptions are listed and understood.
 
 ## Phase 5 — Measure before enforcing
 
-**File:** `app/services/eval/input_gate_report.py`, run as
-`uv run python -m app.services.eval.input_gate_report [--out report.json]`
+**File:** `eval/input_gate_report.py`, run as
+`uv run python -m eval.input_gate_report [--out report.json]`
 
 Report-only. Runs the gate over stored transcripts with `enabled` forced on,
 **writing nothing**. One row per call: `avoma_recording_id`, title, total words,

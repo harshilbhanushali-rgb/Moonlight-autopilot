@@ -30,7 +30,7 @@ misread — and is the only variant that has produced signal.
 The test stays one-sided either way. FAILING is strong evidence a theme is
 prone to false positives. PASSING means "not proven broken", never "healthy".
 
-    uv run python -m app.services.eval.theme_falsifiability --adversarial --nonce adv1
+    uv run python -m eval.theme_falsifiability --adversarial --nonce adv1
 
 Both modes write JSON for review and touch no database table. The generated
 `observable_signals` are useful in their own right: they are the acceptance

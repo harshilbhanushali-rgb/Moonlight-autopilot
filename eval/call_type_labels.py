@@ -63,7 +63,7 @@ horse sometimes and just get this going"; Discovery Senior Living has MSA and SO
 unsigned with the integration already in a sandbox. So signature status is a
 weaker signal than the stage names suggest — judge by activity.
 
-Scored by `app/services/eval/call_type_accuracy.py`.
+Scored by `eval/call_type_accuracy.py`.
 """
 
 # Calls that cannot be given a call type, with the reason. Kept separate rather

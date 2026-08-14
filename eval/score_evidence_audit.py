@@ -14,7 +14,7 @@ not evidence of invention; a figure near 0 is.
 
 Reads a call_score_ab run and the transcripts. Never writes to `analysis`.
 
-    uv run python -m app.services.eval.score_evidence_audit \\
+    uv run python -m eval.score_evidence_audit \\
         docs/eval/2026-08-13-call-score-phaseA.json --version v2
 """
 

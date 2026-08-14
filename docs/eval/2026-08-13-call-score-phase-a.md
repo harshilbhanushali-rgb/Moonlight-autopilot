@@ -6,9 +6,9 @@
 **Reproduce:**
 
 ```bash
-uv run python -m app.services.eval.call_score_ab --nonce phaseA1 --repeats 2 --concurrency 8 \
+uv run python -m eval.call_score_ab --nonce phaseA1 --repeats 2 --concurrency 8 \
     --out docs/eval/2026-08-13-call-score-phaseA.json
-uv run python -m app.services.eval.call_score_bands docs/eval/2026-08-13-call-score-phaseA.json
+uv run python -m eval.call_score_bands docs/eval/2026-08-13-call-score-phaseA.json
 ```
 
 47 calls × 2 prompt versions × 2 repeats = 188 scoring requests, one run, zero

@@ -8,7 +8,7 @@ That is why they live in the repo rather than in a scratch file.
 ## What they are
 
 35 of the 86 gaps in `analysis` as of 2026-08-12, labelled by reading the
-transcript around each gap (`app/services/eval/verification_replay.py` produces
+transcript around each gap (`eval/verification_replay.py` produces
 the verdicts these are scored against). Keyed by
 `(analysis_id, theme-prefix)` — prefix because the theme strings contain an em
 dash that does not survive every round trip.

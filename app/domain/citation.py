@@ -85,7 +85,7 @@ def quote_coverage(quote_text: str, transcript: Transcript) -> float:
     The same measure `verify_citations` thresholds at `_MIN_COVERAGE`, exposed
     without the raise so it can be *reported* rather than enforced. Scoring's
     per-category evidence is audited with this (see
-    app/services/eval/score_evidence_audit.py) but deliberately not rejected on
+    eval/score_evidence_audit.py) but deliberately not rejected on
     it: a fabricated gap quote reaches a moderator as an uncheckable card,
     whereas a subscore is only ever read beside the tier it explains.
 

@@ -114,7 +114,7 @@ with its own A/B.
 
 ### Phase A success criteria — fixed before any run
 
-Measured by `app/services/eval/call_score_ab.py` over every stored call that
+Measured by `eval/call_score_ab.py` over every stored call that
 has a `call_type`, using each call's **stored** call type so both arms select
 the same prompt and the scoring prompt is the only variable. `--nonce` is
 mandatory: the gateway serves a response cache keyed on the request messages,

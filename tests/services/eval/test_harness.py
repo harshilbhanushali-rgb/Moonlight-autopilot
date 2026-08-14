@@ -1,6 +1,6 @@
 from app.domain.transcript import Transcript, TranscriptSpeaker, TranscriptTurn
 from app.domain.types import CallType, Gap
-from app.services.eval.harness import GapModeComparison, compare_gap_modes
+from eval.harness import GapModeComparison, compare_gap_modes
 from app.llm.client import StubLLMClient
 from app.prompts.registry import PromptRegistry
 
@@ -50,7 +50,7 @@ async def test_compare_gap_modes_runs_both_modes_for_each_transcript(tmp_path):
 async def test_compare_gap_modes_never_writes_to_the_analysis_table():
     import inspect
 
-    from app.services.eval import harness
+    from eval import harness
 
     source = inspect.getsource(harness)
     assert "app.db.models" not in source

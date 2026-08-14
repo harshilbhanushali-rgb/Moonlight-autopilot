@@ -14,7 +14,7 @@ import pytest
 from app.domain.errors import LLMOutputError
 from app.domain.transcript import Transcript, TranscriptSpeaker, TranscriptTurn
 from app.domain.types import Gap
-from app.services.eval.neutral_framing import (
+from eval.neutral_framing import (
     NEUTRAL_DIALOGUE_PROMPT,
     NEUTRAL_EXPLANATION_PROMPT,
     Presence,

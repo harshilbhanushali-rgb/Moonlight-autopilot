@@ -19,7 +19,7 @@ Two things it answers, and one it cannot:
     reporting tool rather than a tuner. Any change it motivates needs its own
     justification, not just a better score here.
 
-    uv run python -m app.services.eval.call_score_bands docs/eval/....json
+    uv run python -m eval.call_score_bands docs/eval/....json
 """
 
 from __future__ import annotations
@@ -122,7 +122,7 @@ def sweep_against_labels(results, version):
     Still a fit to 47 calls at most, so treat the winner as a hypothesis to
     confirm on the next batch of labelled calls, not as a setting to ship blind.
     """
-    from app.services.eval.call_score_labels import gradable
+    from eval.call_score_labels import gradable
 
     by_id = {row["id"]: row for row in results}
     pairs = []

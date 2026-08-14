@@ -22,8 +22,8 @@ agree with the fixture.
 Rows are reset to `pending` rather than deleted so the analyser picks them up on
 its next pass and scores them properly.
 
-    uv run python -m app.services.batch.revert_stub_written_rows            # dry run
-    uv run python -m app.services.batch.revert_stub_written_rows --apply
+    uv run python -m scripts.revert_stub_written_rows            # dry run
+    uv run python -m scripts.revert_stub_written_rows --apply
 """
 
 from __future__ import annotations

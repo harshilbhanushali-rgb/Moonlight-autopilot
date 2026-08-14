@@ -38,7 +38,7 @@ What is deliberately NOT here:
   Needs account-level classification we do not own; accepted as out of scope.
 - **A minimum amount of client speech.** A client who only says "can you hear
   me?" still leaves nothing to coach, but no threshold is invented here — see
-  `app/services/eval/input_gate_report.py` for the distribution it would come
+  `eval/input_gate_report.py` for the distribution it would come
   from.
 """
 

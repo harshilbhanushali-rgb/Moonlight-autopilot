@@ -11,7 +11,7 @@ steps, and produces a card a human moderator will eventually read.
 
 Measured over the 32 in-scope calls, **4 are not sales calls at all**, and each
 one produced a complete, confident-looking row
-(`app/services/eval/call_type_labels.py::UNCLASSIFIABLE`):
+(`eval/call_type_labels.py::UNCLASSIFIABLE`):
 
 | the recording | what the pipeline said |
 |---|---|
@@ -294,7 +294,7 @@ The steps below re-confirm it through the real code path.
 
 1. Run the transcript backfill; confirm all 51 transcripts return, now carrying
    speakers, `speaker_id` and `is_rep`.
-2. `app/services/eval/input_gate_report.py` runs the gate in **report-only** mode
+2. `eval/input_gate_report.py` runs the gate in **report-only** mode
    over the 32 in-scope calls, printing per call: total word count, rep and
    non-rep word counts, unlinked-speaker words, verdict, reason, and whether R2
    abstained.

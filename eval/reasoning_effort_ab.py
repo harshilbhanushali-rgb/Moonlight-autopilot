@@ -18,9 +18,9 @@ identical four steps in the identical order. The only difference is
 `reasoning_effort`.
 
 Usage:
-    uv run python -m app.services.eval.reasoning_effort_ab --effort medium
-    uv run python -m app.services.eval.reasoning_effort_ab --effort medium --limit 5
-    uv run python -m app.services.eval.reasoning_effort_ab --compare <results.json>
+    uv run python -m eval.reasoning_effort_ab --effort medium
+    uv run python -m eval.reasoning_effort_ab --effort medium --limit 5
+    uv run python -m eval.reasoning_effort_ab --compare <results.json>
 """
 
 from __future__ import annotations
